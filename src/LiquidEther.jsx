@@ -21,7 +21,9 @@ export default function LiquidEther({
   autoIntensity = 2.2,
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
-  autoRampDuration = 0.6
+  autoRampDuration = 0.6,
+  disableTouchOnMobile = true,
+  mobileBreakpoint = 768
 }) {
   const mountRef = useRef(null);
   const webglRef = useRef(null);
@@ -33,6 +35,9 @@ export default function LiquidEther({
 
   useEffect(() => {
     if (!mountRef.current) return;
+    const isSmallScreen =
+      typeof window !== 'undefined' && window.matchMedia && window.matchMedia(`(max-width: ${mobileBreakpoint}px)`).matches;
+    const shouldDisableTouch = disableTouchOnMobile && isSmallScreen;
 
     function makePaletteTexture(stops) {
       let arr;
@@ -138,6 +143,7 @@ export default function LiquidEther({
         this._onTouchMove = this.onDocumentTouchMove.bind(this);
         this._onTouchEnd = this.onTouchEnd.bind(this);
         this._onDocumentLeave = this.onDocumentLeave.bind(this);
+        this.disableTouch = false;
       }
       init(container) {
         this.container = container;
@@ -147,9 +153,11 @@ export default function LiquidEther({
         if (!defaultView) return;
         this.listenerTarget = defaultView;
         this.listenerTarget.addEventListener('mousemove', this._onMouseMove);
-        this.listenerTarget.addEventListener('touchstart', this._onTouchStart, { passive: true });
-        this.listenerTarget.addEventListener('touchmove', this._onTouchMove, { passive: true });
-        this.listenerTarget.addEventListener('touchend', this._onTouchEnd);
+        if (!this.disableTouch) {
+          this.listenerTarget.addEventListener('touchstart', this._onTouchStart, { passive: true });
+          this.listenerTarget.addEventListener('touchmove', this._onTouchMove, { passive: true });
+          this.listenerTarget.addEventListener('touchend', this._onTouchEnd);
+        }
         if (this.docTarget) {
           this.docTarget.addEventListener('mouseleave', this._onDocumentLeave);
         }
@@ -216,6 +224,7 @@ export default function LiquidEther({
         this.hasUserControl = true;
       }
       onDocumentTouchStart(event) {
+        if (this.disableTouch) return;
         if (event.touches.length !== 1) return;
         const t = event.touches[0];
         if (!this.updateHoverState(t.clientX, t.clientY)) return;
@@ -224,6 +233,7 @@ export default function LiquidEther({
         this.hasUserControl = true;
       }
       onDocumentTouchMove(event) {
+        if (this.disableTouch) return;
         if (event.touches.length !== 1) return;
         const t = event.touches[0];
         if (!this.updateHoverState(t.clientX, t.clientY)) return;
@@ -256,6 +266,7 @@ export default function LiquidEther({
       }
     }
     const Mouse = new MouseClass();
+    Mouse.disableTouch = shouldDisableTouch;
 
     class AutoDriver {
       constructor(mouse, manager, opts) {
