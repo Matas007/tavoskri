@@ -451,3 +451,12 @@
   }
 }
 
+.route-loading {
+  color: rgba(232, 213, 196, 0.9);
+  font-size: 1rem;
+  text-align: center;
+  padding: 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
