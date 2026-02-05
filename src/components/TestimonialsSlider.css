@@ -88,10 +88,22 @@
   margin: 0;
   font-size: clamp(1rem, 2vw, 1.2rem);
   line-height: 1.7;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  max-height: 8.5rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.testimonial-text::-webkit-scrollbar {
+  width: 6px;
+}
+
+.testimonial-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.testimonial-text::-webkit-scrollbar-thumb {
+  background: rgba(232, 213, 196, 0.45);
+  border-radius: 999px;
 }
 
 .testimonial-author {
