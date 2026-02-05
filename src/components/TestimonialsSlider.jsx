@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './TestimonialsSlider.css';
 
 const testimonials = [
@@ -25,6 +25,7 @@ const testimonials = [
 ];
 
 export default function TestimonialsSlider() {
+  const sectionRef = useRef(null);
   const [index, setIndex] = useState(0);
   const touchStartX = useRef(null);
   const touchDeltaX = useRef(0);
@@ -66,13 +67,34 @@ export default function TestimonialsSlider() {
     touchDeltaX.current = 0;
   };
 
-  return (
-    <section className="testimonials" aria-labelledby="testimonials-title">
-      <div className="testimonials-header">
-        <h2 id="testimonials-title">Atsiliepimai</h2>
-        <p>Keli klientų atsiliepimai apie mūsų darbus ir rezultatus.</p>
-      </div>
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="testimonials"
+      aria-label="Atsiliepimai"
+    >
       <div
         className="testimonials-slider"
         role="group"

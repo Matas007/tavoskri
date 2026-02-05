@@ -7,22 +7,14 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.testimonials-header {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.testimonials-header h2 {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  color: #f4e7d6;
-}
-
-.testimonials-header p {
-  margin: 0;
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
+.testimonials.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .testimonials-slider {
