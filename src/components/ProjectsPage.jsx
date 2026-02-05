@@ -1,8 +1,20 @@
+import { useState } from 'react';
 import TextType from './TextType';
 import SEO from './SEO';
 import './ProjectsPage.css';
 
 const ProjectsPage = () => {
+  const demoSites = [
+    {
+      label: 'Baldų Mantas',
+      url: 'https://baldumantas.lt/'
+    },
+    {
+      label: 'Vaistų kompensavimas',
+      url: 'https://vaistukompensavimas.lt/'
+    }
+  ];
+  const [activeDemo, setActiveDemo] = useState(0);
   const changingTexts = [
     "informacijos rinkimą",
     "specifikavimą",
@@ -39,6 +51,48 @@ const ProjectsPage = () => {
           />
         </div>
         */}
+
+        <section className="projects-demo" aria-labelledby="projects-demo-title">
+          <div className="projects-demo-header">
+            <h2 id="projects-demo-title">Live demo</h2>
+            <p>Pasibandykite realius projektus tiesiog čia.</p>
+          </div>
+
+          <div className="projects-demo-tabs" role="tablist" aria-label="Demo pasirinkimas">
+            {demoSites.map((site, index) => (
+              <button
+                key={site.url}
+                type="button"
+                role="tab"
+                aria-selected={activeDemo === index}
+                className={`projects-demo-tab ${activeDemo === index ? 'is-active' : ''}`}
+                onClick={() => setActiveDemo(index)}
+              >
+                {site.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="projects-demo-frame">
+            <iframe
+              title={`Demo - ${demoSites[activeDemo].label}`}
+              src={demoSites[activeDemo].url}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+
+          <div className="projects-demo-actions">
+            <a
+              href={demoSites[activeDemo].url}
+              target="_blank"
+              rel="noreferrer"
+              className="projects-demo-link"
+            >
+              Atidaryti naujame lange
+            </a>
+          </div>
+        </section>
 
         <div className="projects-description">
           <h2>Kaip mes dirbame</h2>
