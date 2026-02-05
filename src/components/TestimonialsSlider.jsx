@@ -87,6 +87,12 @@ export default function TestimonialsSlider() {
         </button>
 
         <div className="testimonial-card">
+          <div className="testimonial-corner-glow" aria-hidden="true" />
+          <img
+            className="testimonial-logo"
+            src="/Untitled_design__10_-removebg-preview.png"
+            alt="Tavo Skriptas"
+          />
           <div className="testimonial-quote">“</div>
           <p className="testimonial-text">{testimonials[index].text}</p>
           <div className="testimonial-author">

@@ -47,12 +47,35 @@
   flex-direction: column;
   gap: 1.25rem;
   min-height: 220px;
+  overflow: hidden;
+}
+
+.testimonial-corner-glow {
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(232, 213, 196, 0.35), transparent 70%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.testimonial-logo {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
 }
 
 .testimonial-quote {
   position: absolute;
-  top: -10px;
-  left: 20px;
+  top: 8px;
+  right: 20px;
   font-size: 4rem;
   color: rgba(232, 213, 196, 0.5);
   line-height: 1;
