@@ -4,6 +4,7 @@ import LiquidEther from './LiquidEther';
 import BubbleMenu from './BubbleMenu';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
+import TestimonialsSlider from './components/TestimonialsSlider';
 import './App.css';
 
 const AboutPage = lazy(() => import('./components/AboutPage'));
@@ -166,6 +167,7 @@ function AppContent() {
                 </Link>
               </div>
             </div>
+            <TestimonialsSlider />
             </>
           } />
           <Route path="/about" element={<AboutPage />} />
