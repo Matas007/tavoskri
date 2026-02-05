@@ -49,7 +49,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  min-height: 220px;
+  height: 260px;
   overflow: hidden;
 }
 
@@ -88,6 +88,10 @@
   margin: 0;
   font-size: clamp(1rem, 2vw, 1.2rem);
   line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .testimonial-author {

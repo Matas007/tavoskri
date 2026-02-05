@@ -5,7 +5,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   background: linear-gradient(135deg, #1a1510 0%, #2a1f15 100%);
-  padding-bottom: 260px;
 }
 
 /* Scrollbar */
@@ -451,9 +450,6 @@
     width: 100%;
   }
 
-  .app {
-    padding-bottom: 320px;
-  }
 }
 
 .route-loading {

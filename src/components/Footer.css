@@ -1,8 +1,5 @@
 .footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   width: 100%;
   background-color: #2a1f15;
   background-image:
@@ -13,9 +10,8 @@
     radial-gradient(at 41% 94%, #E8D5C4 0px, transparent 85%),
     radial-gradient(at 100% 99%, #D4A574 0px, transparent 85%);
   padding: 3rem 2rem 2rem;
-  margin-top: 0;
+  margin-top: 4rem;
   border-top: 1px solid rgba(201, 168, 130, 0.2);
-  z-index: 2;
 }
 
 .footer-magnet-bg {
