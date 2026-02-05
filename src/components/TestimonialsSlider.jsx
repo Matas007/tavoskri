@@ -5,22 +5,22 @@ const testimonials = [
   {
     name: 'Aura S.',
     company: 'UAB "Eletis"',
-    text: 'Įrašykite atsiliepimą apie svetainės ar reklamos rezultatus. Trumpai, aiškiai ir konkrečiai.'
+    text: 'Ačiū tau labai už atliktą internetinių svetainių analizę ir pastebėjimus. Ji tikrai vertinga ir reikalinga. '
   },
   {
     name: 'Giedrius V.',
     company: 'MB "Farmakoekonomikos institutas"',
-    text: 'Įrašykite atsiliepimą apie techninę kokybę, SEO ar našumą. Pvz.: po optimizacijos pagerėjo rezultatai.'
+    text: 'Po atliktų darbų pastebimai pagerėjo svetainės techninė kokybė ir našumas. Įgyvendinus SEO optimizavimo sprendimus, pasiekti apčiuopiami rezultatai – pagrindinis raktinis žodis „vaistų kompensavimas“ šiuo metu yra rodomas pirmame „Google“ paieškos puslapyje, iškart po Valstybinės ligonių kasų svetainės.'
   },
   {
     name: 'Mantas L.',
     company: 'MB "Baldu Mantas"',
-    text: 'Įrašykite trumpą atsiliepimą apie dizainą, patirtį ar bendradarbiavimą.'
+    text: 'Pagaliau. Viskas patinka sukurtoje internetinėje svetainėje.'
   },
   {
     name: 'Julija S.',
     company: 'MB "Best Baldai"',
-    text: 'Įrašykite trumpą padėką ar įspūdį apie gautą sprendimą.'
+    text: 'Ačiū už bendradarbiavimą.'
   }
 ];
 
