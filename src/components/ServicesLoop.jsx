@@ -166,7 +166,7 @@ export default function ServicesLoop() {
       {/* Pirma eilutė - slenka iš kairės į dešinę */}
       <div className="services-row">
         <div className="services-track services-track-left">
-          {[...servicesRow1, ...servicesRow1, ...servicesRow1].map((service, index) => (
+          {[...servicesRow1, ...servicesRow1].map((service, index) => (
             <div key={index} className="service-item">
               <span className="service-icon">{service.icon}</span>
               <span className="service-name">{service.name}</span>
@@ -178,7 +178,7 @@ export default function ServicesLoop() {
       {/* Antra eilutė - slenka iš dešinės į kairę */}
       <div className="services-row">
         <div className="services-track services-track-right">
-          {[...servicesRow2, ...servicesRow2, ...servicesRow2].map((service, index) => (
+          {[...servicesRow2, ...servicesRow2].map((service, index) => (
             <div key={index} className="service-item">
               <span className="service-icon">{service.icon}</span>
               <span className="service-name">{service.name}</span>
