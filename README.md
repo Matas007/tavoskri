@@ -24,7 +24,4 @@ Features
 
 - 💼 LinkedIn: [Matas Kornelijus Vanagas](https://www.linkedin.com/in/matas-kornelijus-vanagas/)
 
-## 📄 License
-
-© 2025 Tavo Skriptas. All rights reserved.
 
