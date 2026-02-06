@@ -17,24 +17,35 @@
 }
 
 .services-track {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   gap: 24px;
   white-space: nowrap;
   will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
 }
 
 /* Animacija iš kairės į dešinę */
 .services-track-left {
   -webkit-animation: scrollLeft 35s linear infinite;
+  -moz-animation: scrollLeft 35s linear infinite;
+  -o-animation: scrollLeft 35s linear infinite;
   animation: scrollLeft 35s linear infinite;
 }
 
 /* Animacija iš dešinės į kairę */
 .services-track-right {
   -webkit-animation: scrollRight 35s linear infinite;
+  -moz-animation: scrollRight 35s linear infinite;
+  -o-animation: scrollRight 35s linear infinite;
   animation: scrollRight 35s linear infinite;
 }
 
+/* Webkit/Safari/Chrome */
 @-webkit-keyframes scrollLeft {
   0% {
     -webkit-transform: translateX(0);
@@ -46,17 +57,47 @@
   }
 }
 
-@keyframes scrollLeft {
+/* Firefox */
+@-moz-keyframes scrollLeft {
   0% {
-    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
     transform: translateX(0);
   }
   100% {
-    -webkit-transform: translateX(-33.333%);
+    -moz-transform: translateX(-33.333%);
     transform: translateX(-33.333%);
   }
 }
 
+/* Opera */
+@-o-keyframes scrollLeft {
+  0% {
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -o-transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
+  }
+}
+
+/* Standard */
+@keyframes scrollLeft {
+  0% {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-33.333%);
+    -moz-transform: translateX(-33.333%);
+    -o-transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
+  }
+}
+
+/* Webkit/Safari/Chrome */
 @-webkit-keyframes scrollRight {
   0% {
     -webkit-transform: translateX(-33.333%);
@@ -68,39 +109,85 @@
   }
 }
 
+/* Firefox */
+@-moz-keyframes scrollRight {
+  0% {
+    -moz-transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
+  }
+  100% {
+    -moz-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+/* Opera */
+@-o-keyframes scrollRight {
+  0% {
+    -o-transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
+  }
+  100% {
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+/* Standard */
 @keyframes scrollRight {
   0% {
     -webkit-transform: translateX(-33.333%);
+    -moz-transform: translateX(-33.333%);
+    -o-transform: translateX(-33.333%);
     transform: translateX(-33.333%);
   }
   100% {
     -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -o-transform: translateX(0);
     transform: translateX(0);
   }
 }
 
 .service-item {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   gap: 14px;
   padding: 18px 32px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  -moz-backdrop-filter: blur(12px);
   border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
   border: 1px solid rgba(232, 213, 196, 0.25);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .service-icon {
   width: 28px;
   height: 28px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -ms-flex-negative: 0;
   flex-shrink: 0;
   color: #E8D5C4;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  -webkit-filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
 }
 
 .service-icon svg {
@@ -158,11 +245,15 @@
   /* Greitesnė animacija mažuose ekranuose */
   .services-track-left {
     -webkit-animation: scrollLeft 15s linear infinite;
+    -moz-animation: scrollLeft 15s linear infinite;
+    -o-animation: scrollLeft 15s linear infinite;
     animation: scrollLeft 15s linear infinite;
   }
 
   .services-track-right {
     -webkit-animation: scrollRight 15s linear infinite;
+    -moz-animation: scrollRight 15s linear infinite;
+    -o-animation: scrollRight 15s linear infinite;
     animation: scrollRight 15s linear infinite;
   }
 }
@@ -197,11 +288,15 @@
   /* Dar greitesnė animacija labai mažuose ekranuose */
   .services-track-left {
     -webkit-animation: scrollLeft 12s linear infinite;
+    -moz-animation: scrollLeft 12s linear infinite;
+    -o-animation: scrollLeft 12s linear infinite;
     animation: scrollLeft 12s linear infinite;
   }
 
   .services-track-right {
     -webkit-animation: scrollRight 12s linear infinite;
+    -moz-animation: scrollRight 12s linear infinite;
+    -o-animation: scrollRight 12s linear infinite;
     animation: scrollRight 12s linear infinite;
   }
 }
@@ -216,6 +311,8 @@
   .services-track-left,
   .services-track-right {
     -webkit-animation: none;
+    -moz-animation: none;
+    -o-animation: none;
     animation: none;
   }
 }
