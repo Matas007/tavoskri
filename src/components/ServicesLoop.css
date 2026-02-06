@@ -25,12 +25,12 @@
 
 /* Animacija iš kairės į dešinę */
 .services-track-left {
-  animation: scrollLeft 90s linear infinite;
+  animation: scrollLeft 70s linear infinite;
 }
 
 /* Animacija iš dešinės į kairę */
 .services-track-right {
-  animation: scrollRight 90s linear infinite;
+  animation: scrollRight 70s linear infinite;
 }
 
 
@@ -130,11 +130,11 @@
 
   /* Greitesnė animacija mažuose ekranuose */
   .services-track-left {
-    animation: scrollLeft 60s linear infinite;
+    animation: scrollLeft 50s linear infinite;
   }
 
   .services-track-right {
-    animation: scrollRight 60s linear infinite;
+    animation: scrollRight 50s linear infinite;
   }
 }
 
