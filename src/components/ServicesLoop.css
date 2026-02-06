@@ -25,29 +25,56 @@
 
 /* Animacija iš kairės į dešinę */
 .services-track-left {
+  -webkit-animation: scrollLeft 35s linear infinite;
   animation: scrollLeft 35s linear infinite;
 }
 
 /* Animacija iš dešinės į kairę */
 .services-track-right {
+  -webkit-animation: scrollRight 35s linear infinite;
   animation: scrollRight 35s linear infinite;
 }
 
-
-@keyframes scrollLeft {
+@-webkit-keyframes scrollLeft {
   0% {
+    -webkit-transform: translateX(0);
     transform: translateX(0);
   }
   100% {
+    -webkit-transform: translateX(-33.333%);
     transform: translateX(-33.333%);
+  }
+}
+
+@keyframes scrollLeft {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
+  }
+}
+
+@-webkit-keyframes scrollRight {
+  0% {
+    -webkit-transform: translateX(-33.333%);
+    transform: translateX(-33.333%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
   }
 }
 
 @keyframes scrollRight {
   0% {
+    -webkit-transform: translateX(-33.333%);
     transform: translateX(-33.333%);
   }
   100% {
+    -webkit-transform: translateX(0);
     transform: translateX(0);
   }
 }
@@ -130,11 +157,13 @@
 
   /* Greitesnė animacija mažuose ekranuose */
   .services-track-left {
-    animation: scrollLeft 25s linear infinite;
+    -webkit-animation: scrollLeft 15s linear infinite;
+    animation: scrollLeft 15s linear infinite;
   }
 
   .services-track-right {
-    animation: scrollRight 25s linear infinite;
+    -webkit-animation: scrollRight 15s linear infinite;
+    animation: scrollRight 15s linear infinite;
   }
 }
 
@@ -164,6 +193,17 @@
   .services-row {
     margin-bottom: 20px;
   }
+
+  /* Dar greitesnė animacija labai mažuose ekranuose */
+  .services-track-left {
+    -webkit-animation: scrollLeft 12s linear infinite;
+    animation: scrollLeft 12s linear infinite;
+  }
+
+  .services-track-right {
+    -webkit-animation: scrollRight 12s linear infinite;
+    animation: scrollRight 12s linear infinite;
+  }
 }
 
 /* Smooth slinkimas */
@@ -175,6 +215,7 @@
 @media (prefers-reduced-motion: reduce) {
   .services-track-left,
   .services-track-right {
+    -webkit-animation: none;
     animation: none;
   }
 }
