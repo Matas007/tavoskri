@@ -5,6 +5,7 @@ import BubbleMenu from './BubbleMenu';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
 import TestimonialsSlider from './components/TestimonialsSlider';
+import ServicesLoop from './components/ServicesLoop';
 import './App.css';
 
 const AboutPage = lazy(() => import('./components/AboutPage'));
@@ -167,6 +168,7 @@ function AppContent() {
                 </Link>
               </div>
             </div>
+            <ServicesLoop />
             <TestimonialsSlider />
             </>
           } />
