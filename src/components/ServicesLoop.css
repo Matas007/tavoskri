@@ -1,7 +1,7 @@
 .services-loop-container {
   width: 100%;
   overflow: hidden;
-  padding: 80px 0;
+  padding: 40px 0 80px;
   position: relative;
 }
 
@@ -93,7 +93,7 @@
 /* Responsive dizainas */
 @media (max-width: 1024px) {
   .services-loop-container {
-    padding: 60px 0;
+    padding: 35px 0 60px;
   }
   
   .services-track {
@@ -103,7 +103,7 @@
 
 @media (max-width: 768px) {
   .services-loop-container {
-    padding: 50px 0;
+    padding: 30px 0 50px;
   }
 
   .services-track {
@@ -140,7 +140,7 @@
 
 @media (max-width: 480px) {
   .services-loop-container {
-    padding: 40px 0;
+    padding: 25px 0 40px;
   }
 
   .service-item {
