@@ -33,10 +33,6 @@
   animation: scrollRight 90s linear infinite;
 }
 
-/* Pristabdyti animaciją, kai užvažiuojama */
-.services-track:hover {
-  animation-play-state: paused;
-}
 
 @keyframes scrollLeft {
   0% {
@@ -66,39 +62,7 @@
   -webkit-backdrop-filter: blur(12px);
   border-radius: 50px;
   border: 1px solid rgba(232, 213, 196, 0.25);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  position: relative;
-}
-
-.service-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50px;
-  padding: 1px;
-  background: linear-gradient(135deg, 
-    rgba(232, 213, 196, 0.3) 0%, 
-    rgba(201, 168, 130, 0.2) 50%, 
-    rgba(232, 213, 196, 0.3) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.service-item:hover::before {
-  opacity: 1;
-}
-
-.service-item:hover {
-  background: rgba(232, 213, 196, 0.1);
-  transform: translateY(-4px);
-  box-shadow: 
-    0 8px 30px rgba(0, 0, 0, 0.25),
-    0 0 40px rgba(232, 213, 196, 0.2);
-  border-color: rgba(232, 213, 196, 0.4);
 }
 
 .service-icon {
@@ -110,7 +74,6 @@
   flex-shrink: 0;
   color: #E8D5C4;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
-  transition: all 0.4s ease;
 }
 
 .service-icon svg {
@@ -119,23 +82,12 @@
   stroke-width: 2;
 }
 
-.service-item:hover .service-icon {
-  color: #C9A882;
-  filter: drop-shadow(0 4px 12px rgba(232, 213, 196, 0.4));
-  transform: scale(1.1) rotate(-5deg);
-}
-
 .service-name {
   font-size: 16px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   letter-spacing: 0.3px;
-  transition: color 0.4s ease;
-}
-
-.service-item:hover .service-name {
-  color: #E8D5C4;
 }
 
 /* Responsive dizainas */
