@@ -1,4 +1,5 @@
 import React from 'react';
+import Marquee from 'react-fast-marquee';
 import './ServicesLoop.css';
 
 export default function ServicesLoop() {
@@ -164,28 +165,35 @@ export default function ServicesLoop() {
   return (
     <div className="services-loop-container">
       {/* Pirma eilutė - slenka iš kairės į dešinę */}
-      <div className="services-row">
-        <div className="services-track services-track-left">
-          {[...servicesRow1, ...servicesRow1].map((service, index) => (
-            <div key={index} className="service-item">
-              <span className="service-icon">{service.icon}</span>
-              <span className="service-name">{service.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <Marquee
+        speed={40}
+        gradient={false}
+        pauseOnHover={false}
+        className="services-marquee"
+      >
+        {servicesRow1.map((service, index) => (
+          <div key={index} className="service-item">
+            <span className="service-icon">{service.icon}</span>
+            <span className="service-name">{service.name}</span>
+          </div>
+        ))}
+      </Marquee>
 
       {/* Antra eilutė - slenka iš dešinės į kairę */}
-      <div className="services-row">
-        <div className="services-track services-track-right">
-          {[...servicesRow2, ...servicesRow2].map((service, index) => (
-            <div key={index} className="service-item">
-              <span className="service-icon">{service.icon}</span>
-              <span className="service-name">{service.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <Marquee
+        speed={40}
+        gradient={false}
+        pauseOnHover={false}
+        direction="right"
+        className="services-marquee"
+      >
+        {servicesRow2.map((service, index) => (
+          <div key={index} className="service-item">
+            <span className="service-icon">{service.icon}</span>
+            <span className="service-name">{service.name}</span>
+          </div>
+        ))}
+      </Marquee>
     </div>
   );
 }

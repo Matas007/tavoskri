@@ -5,148 +5,12 @@
   position: relative;
 }
 
-.services-row {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
+.services-marquee {
   margin-bottom: 30px;
 }
 
-.services-row:last-child {
+.services-marquee:last-child {
   margin-bottom: 0;
-}
-
-.services-track {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  gap: 24px;
-  white-space: nowrap;
-  will-change: transform;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
-}
-
-/* Animacija iš kairės į dešinę */
-.services-track-left {
-  -webkit-animation: scrollLeft 35s linear infinite;
-  -moz-animation: scrollLeft 35s linear infinite;
-  -o-animation: scrollLeft 35s linear infinite;
-  animation: scrollLeft 35s linear infinite;
-}
-
-/* Animacija iš dešinės į kairę */
-.services-track-right {
-  -webkit-animation: scrollRight 35s linear infinite;
-  -moz-animation: scrollRight 35s linear infinite;
-  -o-animation: scrollRight 35s linear infinite;
-  animation: scrollRight 35s linear infinite;
-}
-
-/* Webkit/Safari/Chrome */
-@-webkit-keyframes scrollLeft {
-  0% {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-/* Firefox */
-@-moz-keyframes scrollLeft {
-  0% {
-    -moz-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    -moz-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-/* Opera */
-@-o-keyframes scrollLeft {
-  0% {
-    -o-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    -o-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-/* Standard */
-@keyframes scrollLeft {
-  0% {
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -o-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-    -moz-transform: translate3d(-100%, 0, 0);
-    -o-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-/* Webkit/Safari/Chrome */
-@-webkit-keyframes scrollRight {
-  0% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Firefox */
-@-moz-keyframes scrollRight {
-  0% {
-    -moz-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    -moz-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Opera */
-@-o-keyframes scrollRight {
-  0% {
-    -o-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    -o-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Standard */
-@keyframes scrollRight {
-  0% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-    -moz-transform: translate3d(-100%, 0, 0);
-    -o-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -o-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
 }
 
 .service-item {
@@ -158,6 +22,7 @@
   align-items: center;
   gap: 14px;
   padding: 18px 32px;
+  margin: 0 12px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -169,6 +34,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
 }
 
 .service-icon {
@@ -209,10 +75,6 @@
   .services-loop-container {
     padding: 35px 0 60px;
   }
-  
-  .services-track {
-    gap: 20px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -220,13 +82,10 @@
     padding: 30px 0 50px;
   }
 
-  .services-track {
-    gap: 16px;
-  }
-
   .service-item {
     padding: 14px 26px;
     gap: 12px;
+    margin: 0 8px;
   }
 
   .service-icon {
@@ -238,23 +97,8 @@
     font-size: 15px;
   }
 
-  .services-row {
+  .services-marquee {
     margin-bottom: 24px;
-  }
-
-  /* Greitesnė animacija mažuose ekranuose */
-  .services-track-left {
-    -webkit-animation: scrollLeft 15s linear infinite;
-    -moz-animation: scrollLeft 15s linear infinite;
-    -o-animation: scrollLeft 15s linear infinite;
-    animation: scrollLeft 15s linear infinite;
-  }
-
-  .services-track-right {
-    -webkit-animation: scrollRight 15s linear infinite;
-    -moz-animation: scrollRight 15s linear infinite;
-    -o-animation: scrollRight 15s linear infinite;
-    animation: scrollRight 15s linear infinite;
   }
 }
 
@@ -266,6 +110,7 @@
   .service-item {
     padding: 12px 22px;
     gap: 10px;
+    margin: 0 7px;
   }
 
   .service-icon {
@@ -277,42 +122,12 @@
     font-size: 14px;
   }
 
-  .services-track {
-    gap: 14px;
-  }
-
-  .services-row {
+  .services-marquee {
     margin-bottom: 20px;
-  }
-
-  /* Dar greitesnė animacija labai mažuose ekranuose */
-  .services-track-left {
-    -webkit-animation: scrollLeft 12s linear infinite;
-    -moz-animation: scrollLeft 12s linear infinite;
-    -o-animation: scrollLeft 12s linear infinite;
-    animation: scrollLeft 12s linear infinite;
-  }
-
-  .services-track-right {
-    -webkit-animation: scrollRight 12s linear infinite;
-    -moz-animation: scrollRight 12s linear infinite;
-    -o-animation: scrollRight 12s linear infinite;
-    animation: scrollRight 12s linear infinite;
   }
 }
 
 /* Smooth slinkimas */
 * {
   scroll-behavior: smooth;
-}
-
-/* Prefers reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .services-track-left,
-  .services-track-right {
-    -webkit-animation: none;
-    -moz-animation: none;
-    -o-animation: none;
-    animation: none;
-  }
 }
