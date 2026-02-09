@@ -75,9 +75,9 @@ function AppContent() {
               />
               <div className="content">
               <h1 className="title">
-                Daugiau nei <span className="gradient-text">web aplikacijų</span>
+                Stiprus prekių ženklas – <span className="gradient-text">geriausias pardavėjas</span>
                 <br />
-                kūrimas - tai skirtingos emocijos
+                ir <span className="gradient-text">geriausias pardavėjas</span>
               </h1>
               <p className="subtitle">
                 Interaktyvūs sprendimai, reaguojantys į
