@@ -69,7 +69,11 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Tavo Skriptas. Visos teisės saugomos.</p>
+        <p>
+          &copy; {new Date().getFullYear()} Tavo Skriptas. Visos teisės saugomos.
+          {' '}
+          <Link to="/privacy" className="footer-policy-link">Slapukų ir privatumo politika</Link>
+        </p>
       </div>
     </footer>
   );

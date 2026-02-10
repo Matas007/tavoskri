@@ -1,0 +1,103 @@
+.cookie-consent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1rem clamp(1rem, 4vw, 2rem);
+  background: rgba(42, 31, 21, 0.98);
+  border-top: 1px solid rgba(201, 168, 130, 0.35);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.3);
+  animation: cookie-consent-in 0.4s ease-out;
+}
+
+@keyframes cookie-consent-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.cookie-consent-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cookie-consent-text {
+  margin: 0;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.5;
+  flex: 1;
+  min-width: 200px;
+}
+
+.cookie-consent-link {
+  color: #C9A882;
+  text-decoration: underline;
+}
+
+.cookie-consent-link:hover {
+  color: #E8D5C4;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.cookie-consent-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  text-decoration: none;
+  border: none;
+}
+
+.cookie-consent-btn-primary {
+  background: linear-gradient(0deg, #9D7852 0%, #C9A882 100%);
+  color: #2a1f15;
+  box-shadow: inset 0 -2px 12px -2px rgba(255, 255, 255, 0.35);
+}
+
+.cookie-consent-btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.cookie-consent-btn-secondary {
+  background: transparent;
+  color: #E8D5C4;
+  border: 1px solid rgba(201, 168, 130, 0.5);
+}
+
+.cookie-consent-btn-secondary:hover {
+  background: rgba(201, 168, 130, 0.15);
+  color: #f9f2e9;
+}
+
+@media (max-width: 480px) {
+  .cookie-consent-inner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .cookie-consent-actions {
+    justify-content: center;
+  }
+}

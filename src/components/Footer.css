@@ -136,6 +136,16 @@
   font-size: 0.9rem;
 }
 
+.footer-policy-link {
+  color: #C9A882;
+  text-decoration: none;
+}
+
+.footer-policy-link:hover {
+  color: #E8D5C4;
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .footer-content {
