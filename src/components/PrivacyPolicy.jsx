@@ -51,11 +51,13 @@ export default function PrivacyPolicy() {
             <p>Mūsų svetainėje naudojami šie slapukai:</p>
             <ul className="privacy-list">
               <li>
-                <strong>Grįžtančio lankytojo slapukas (ts_returning)</strong> – techninis slapukas,
-                kuris leidžia svetainei atpažinti, ar jūs jau lankėtės čia anksčiau. Tai padeda
-                greičiau ir sklandžiau užkrauti puslapį antram ir vėlesniems apsilankymams
-                (sumažiname dalį animacijų našumui). Slapukas galioja 30 dienų, saugomas tik jūsų
-                įrenginyje ir nenaudojamas jokiai reklamai ar sekimui.
+                <strong>Sutikimo pasirinkimo slapukas (ts_cookie_consent)</strong> – būtinas
+                slapukas, kuris leidžia prisiminti jūsų pasirinkimą (sutikote arba atmetėte),
+                kad slapukų juosta nebūtų rodoma kiekvieno apsilankymo metu. Slapukas galioja iki
+                180 dienų.
+              </li>
+              <li>
+                <strong>Analitiniai ir rinkodaros slapukai</strong> – <strong>nenaudojame</strong>.
               </li>
             </ul>
           </section>

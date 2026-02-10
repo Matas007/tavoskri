@@ -17,22 +17,6 @@ const AdminLogin = lazy(() => import('./components/AdminLogin'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 
-const RETURNING_COOKIE = 'ts_returning';
-
-const getCookieValue = (name) => {
-  if (typeof document === 'undefined') {
-    return '';
-  }
-
-  const cookieString = `; ${document.cookie}`;
-  const parts = cookieString.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop().split(';').shift() || '';
-  }
-
-  return '';
-};
-
 function AppContent() {
   const location = useLocation();
   const [consent, setConsent] = useState(() => getConsent());
@@ -42,40 +26,30 @@ function AppContent() {
   const isArticles = location.pathname === '/articles';
   const isPrivacy = location.pathname === '/privacy';
   const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy;
-  const isReturningVisitor = getCookieValue(RETURNING_COOKIE) === '1';
-  const useOptimization = consent && isReturningVisitor;
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (consent && !isReturningVisitor) {
-      const maxAgeDays = 30;
-      const maxAgeSeconds = maxAgeDays * 24 * 60 * 60;
-      document.cookie = `${RETURNING_COOKIE}=1; max-age=${maxAgeSeconds}; path=/; samesite=lax`;
-    }
-  }, [consent, isReturningVisitor]);
 
   return (
     <div className="app">
       <div className="liquid-background">
         <LiquidEther
           colors={['#C9A882', '#E8D5C4', '#9D7852']}
-          mouseForce={useOptimization ? 10 : 15}
-          cursorSize={useOptimization ? 60 : 80}
+          mouseForce={15}
+          cursorSize={80}
           isViscous={false}
           viscous={20}
-          iterationsViscous={useOptimization ? 8 : 16}
-          iterationsPoisson={useOptimization ? 8 : 16}
-          resolution={useOptimization ? 0.18 : 0.25}
+          iterationsViscous={16}
+          iterationsPoisson={16}
+          resolution={0.25}
           isBounce={false}
-          autoDemo={!useOptimization}
-          autoSpeed={useOptimization ? 0.4 : 0.6}
-          autoIntensity={useOptimization ? 1.4 : 2.2}
-          takeoverDuration={useOptimization ? 0.15 : 0.2}
+          autoDemo
+          autoSpeed={0.6}
+          autoIntensity={2.2}
+          takeoverDuration={0.2}
           autoResumeDelay={0}
-          autoRampDuration={useOptimization ? 0.5 : 0.8}
+          autoRampDuration={0.8}
         />
       </div>
       
@@ -212,8 +186,8 @@ function AppContent() {
 
       {showFooter && <Footer />}
 
-      {showFooter && !consent && (
-        <CookieConsentBanner onAccept={() => setConsent(true)} />
+      {showFooter && consent === null && (
+        <CookieConsentBanner onAccept={(value) => setConsent(value)} />
       )}
     </div>
   );
