@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import LiquidEther from './LiquidEther';
 import BubbleMenu from './BubbleMenu';
 import Footer from './components/Footer';
+import CookieConsentBanner, { getConsent } from './components/CookieConsentBanner';
 import SEO from './components/SEO';
 import TestimonialsSlider from './components/TestimonialsSlider';
 import ServicesLoop from './components/ServicesLoop';
@@ -14,38 +15,67 @@ const ArticlesPage = lazy(() => import('./components/ArticlesPage'));
 const BookingForm = lazy(() => import('./components/BookingForm'));
 const AdminLogin = lazy(() => import('./components/AdminLogin'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+
+const RETURNING_COOKIE = 'ts_returning';
+
+const getCookieValue = (name) => {
+  if (typeof document === 'undefined') {
+    return '';
+  }
+
+  const cookieString = `; ${document.cookie}`;
+  const parts = cookieString.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(';').shift() || '';
+  }
+
+  return '';
+};
 
 function AppContent() {
   const location = useLocation();
+  const [consent, setConsent] = useState(() => getConsent());
   const isHome = location.pathname === '/';
   const isAbout = location.pathname === '/about';
   const isProjects = location.pathname === '/projects';
   const isArticles = location.pathname === '/articles';
-  const showFooter = isHome || isAbout || isProjects || isArticles;
+  const isPrivacy = location.pathname === '/privacy';
+  const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy;
+  const isReturningVisitor = getCookieValue(RETURNING_COOKIE) === '1';
+  const useOptimization = consent && isReturningVisitor;
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (consent && !isReturningVisitor) {
+      const maxAgeDays = 30;
+      const maxAgeSeconds = maxAgeDays * 24 * 60 * 60;
+      document.cookie = `${RETURNING_COOKIE}=1; max-age=${maxAgeSeconds}; path=/; samesite=lax`;
+    }
+  }, [consent, isReturningVisitor]);
 
   return (
     <div className="app">
       <div className="liquid-background">
         <LiquidEther
           colors={['#C9A882', '#E8D5C4', '#9D7852']}
-          mouseForce={15}
-          cursorSize={80}
+          mouseForce={useOptimization ? 10 : 15}
+          cursorSize={useOptimization ? 60 : 80}
           isViscous={false}
           viscous={20}
-          iterationsViscous={16}
-          iterationsPoisson={16}
-          resolution={0.25}
+          iterationsViscous={useOptimization ? 8 : 16}
+          iterationsPoisson={useOptimization ? 8 : 16}
+          resolution={useOptimization ? 0.18 : 0.25}
           isBounce={false}
-          autoDemo
-          autoSpeed={0.6}
-          autoIntensity={2.2}
-          takeoverDuration={0.2}
+          autoDemo={!useOptimization}
+          autoSpeed={useOptimization ? 0.4 : 0.6}
+          autoIntensity={useOptimization ? 1.4 : 2.2}
+          takeoverDuration={useOptimization ? 0.15 : 0.2}
           autoResumeDelay={0}
-          autoRampDuration={0.8}
+          autoRampDuration={useOptimization ? 0.5 : 0.8}
         />
       </div>
       
@@ -53,7 +83,7 @@ function AppContent() {
         <img src="/Untitled_design__10_-removebg-preview.png" alt="Tavo Skriptas Logo" />
       </Link>
 
-      {(isHome || isAbout || isProjects || isArticles) && (
+      {(isHome || isAbout || isProjects || isArticles || isPrivacy) && (
         <BubbleMenu
           menuBg="rgba(232, 213, 196, 0.95)"
           menuContentColor="#2a1f15"
@@ -176,10 +206,15 @@ function AppContent() {
           <Route path="/booking" element={<BookingForm />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
         </Routes>
       </Suspense>
 
       {showFooter && <Footer />}
+
+      {showFooter && !consent && (
+        <CookieConsentBanner onAccept={() => setConsent(true)} />
+      )}
     </div>
   );
 }
