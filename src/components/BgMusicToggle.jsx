@@ -41,8 +41,8 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
       if (v === '0') return false;
     }
 
-    // Pirmas apsilankymas / dar nepasirinko: pagal nutylėjimą paliekame OFF.
-    return false;
+    // Pirmas apsilankymas / dar nepasirinko: paliekame ON, bet gros tik po pirmos interakcijos.
+    return true;
   }, [consent]);
 
   const [enabled, setEnabled] = useState(initialEnabled);
