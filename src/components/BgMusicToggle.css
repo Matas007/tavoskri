@@ -1,0 +1,138 @@
+.bg-music-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 92px; /* virš slapukų juostos */
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+
+.bg-music-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 168, 130, 0.45);
+  background: rgba(42, 31, 21, 0.88);
+  color: #E8D5C4;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+}
+
+.bg-music-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 168, 130, 0.4);
+  background: rgba(26, 21, 16, 0.6);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.bg-music-icon.is-on {
+  background: rgba(201, 168, 130, 0.22);
+  border-color: rgba(201, 168, 130, 0.75);
+  color: #f7efe6;
+}
+
+.bg-music-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  opacity: 0.95;
+}
+
+.bg-music-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bg-music-switch-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bg-music-switch-track {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 168, 130, 0.5);
+  background: rgba(26, 21, 16, 0.65);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.bg-music-switch-thumb {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+  background: rgba(232, 213, 196, 0.95);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.bg-music-switch-input:checked + .bg-music-switch-track {
+  background: rgba(201, 168, 130, 0.25);
+  border-color: rgba(201, 168, 130, 0.8);
+}
+
+.bg-music-switch-input:checked + .bg-music-switch-track .bg-music-switch-thumb {
+  transform: translate(20px, -50%);
+  background: #f7efe6;
+}
+
+.bg-music-switch-input:focus-visible + .bg-music-switch-track {
+  outline: 2px solid rgba(201, 168, 130, 0.9);
+  outline-offset: 3px;
+}
+
+.bg-music-hint {
+  max-width: 260px;
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 168, 130, 0.35);
+  background: rgba(26, 21, 16, 0.92);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 480px) {
+  .bg-music-toggle {
+    right: 12px;
+    bottom: 104px;
+  }
+
+  .bg-music-pill {
+    padding: 0.5rem 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .bg-music-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
