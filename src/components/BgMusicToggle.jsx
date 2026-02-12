@@ -41,12 +41,12 @@ export default function BgMusicToggle({ src, consent }) {
       if (v === '0') return false;
     }
 
-    // Pirmas apsilankymas / dar nepasirinko: bandome autoplay (jei naršyklė leis).
-    return true;
+    // Pirmas apsilankymas / dar nepasirinko: pagal nutylėjimą paliekame OFF.
+    return false;
   }, [consent]);
 
   const [enabled, setEnabled] = useState(initialEnabled);
-  const [blocked, setBlocked] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   // Jei vartotojas atmetė – išjungiame muziką ir ištriname pref'ą.
   useEffect(() => {
@@ -55,6 +55,23 @@ export default function BgMusicToggle({ src, consent }) {
       setEnabled(false);
     }
   }, [consent]);
+
+  // First interaction: nuo pirmo vartotojo veiksmo leidžiame bandyti play().
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    if (hasInteracted) return undefined;
+
+    const mark = () => setHasInteracted(true);
+    window.addEventListener('pointerdown', mark, { capture: true, once: true });
+    window.addEventListener('touchstart', mark, { capture: true, once: true });
+    window.addEventListener('keydown', mark, { capture: true, once: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', mark, true);
+      window.removeEventListener('touchstart', mark, true);
+      window.removeEventListener('keydown', mark, true);
+    };
+  }, [hasInteracted]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -72,55 +89,12 @@ export default function BgMusicToggle({ src, consent }) {
     }
 
     audio.volume = 0.22;
-    const p = audio.play();
-    if (p && typeof p.catch === 'function') {
-      p.catch(() => {
-        // Autoplay su garsu dažnai blokuojamas, kol vartotojas nepaspaudžia.
-        setBlocked(true);
-      });
-    }
-  }, [enabled, consent]);
+    if (!hasInteracted) return;
 
-  // "Unlock on first interaction": jei autoplay užblokuotas, pabandom vėl po pirmo vartotojo veiksmo.
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (!enabled || !blocked) return;
-
-    let cleanedUp = false;
-
-    const tryUnlock = () => {
-      if (cleanedUp) return;
-      const p = audio.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          setBlocked(false);
-          cleanup();
-        }).catch(() => {
-          // Jei vis dar blokuoja – paliekam blocked=true, vartotojas gali perjungti jungiklį.
-          cleanup();
-        });
-      } else {
-        // Senesnėse naršyklėse play() gali negrąžinti Promise
-        setBlocked(false);
-        cleanup();
-      }
-    };
-
-    const cleanup = () => {
-      if (cleanedUp) return;
-      cleanedUp = true;
-      window.removeEventListener('pointerdown', tryUnlock, true);
-      window.removeEventListener('touchstart', tryUnlock, true);
-      window.removeEventListener('keydown', tryUnlock, true);
-    };
-
-    window.addEventListener('pointerdown', tryUnlock, { capture: true, once: true });
-    window.addEventListener('touchstart', tryUnlock, { capture: true, once: true });
-    window.addEventListener('keydown', tryUnlock, { capture: true, once: true });
-
-    return cleanup;
-  }, [enabled, blocked]);
+    audio.play().catch(() => {
+      // Jei vis tiek nepavyko (labai reta) – tyliai ignoruojam.
+    });
+  }, [enabled, consent, hasInteracted]);
 
   return (
     <div className="bg-music-toggle" aria-label="Foninės muzikos valdymas">
@@ -136,7 +110,6 @@ export default function BgMusicToggle({ src, consent }) {
             className="bg-music-switch-input"
             checked={enabled}
             onChange={() => {
-              setBlocked(false);
               setEnabled((v) => !v);
             }}
           />
@@ -149,13 +122,6 @@ export default function BgMusicToggle({ src, consent }) {
           {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
         </span>
       </div>
-
-      {blocked && (
-        <div className="bg-music-hint">
-          Naršyklė užblokavo automatinį grojimą. Paspausk bet kur puslapyje (arba perjunk jungiklį),
-          kad pradėtų groti.
-        </div>
-      )}
     </div>
   );
 }
