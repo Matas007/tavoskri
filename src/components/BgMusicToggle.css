@@ -1,0 +1,59 @@
+.bg-music-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 92px; /* virš slapukų juostos */
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+
+.bg-music-btn {
+  padding: 0.55rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 168, 130, 0.5);
+  background: rgba(42, 31, 21, 0.9);
+  color: #E8D5C4;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  backdrop-filter: blur(6px);
+}
+
+.bg-music-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(201, 168, 130, 0.8);
+}
+
+.bg-music-btn.is-on {
+  background: linear-gradient(0deg, #9D7852 0%, #C9A882 100%);
+  color: #2a1f15;
+}
+
+.bg-music-hint {
+  max-width: 260px;
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 168, 130, 0.35);
+  background: rgba(26, 21, 16, 0.92);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 480px) {
+  .bg-music-toggle {
+    right: 12px;
+    bottom: 104px;
+  }
+
+  .bg-music-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.85rem;
+  }
+}
+

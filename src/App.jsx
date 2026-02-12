@@ -4,6 +4,7 @@ import LiquidEther from './LiquidEther';
 import BubbleMenu from './BubbleMenu';
 import Footer from './components/Footer';
 import CookieConsentBanner, { getConsent } from './components/CookieConsentBanner';
+import BgMusicToggle from './components/BgMusicToggle';
 import SEO from './components/SEO';
 import TestimonialsSlider from './components/TestimonialsSlider';
 import ServicesLoop from './components/ServicesLoop';
@@ -67,6 +68,8 @@ function AppContent() {
           staggerDelay={0.12}
         />
       )}
+
+      <BgMusicToggle src="/Chain%20of%20Ghosted%20Blocks.mp3" />
 
       <Suspense fallback={<div className="route-loading">Kraunama...</div>}>
         <Routes>
