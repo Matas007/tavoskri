@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { FaMusic, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import './BgMusicToggle.css';
 
 const PREF_COOKIE = 'ts_bg_music';
@@ -81,25 +82,37 @@ export default function BgMusicToggle({ src, consent }) {
     }
   }, [enabled, consent]);
 
-  const label = enabled ? 'Muzika: ON' : 'Muzika: OFF';
-
   return (
     <div className="bg-music-toggle" aria-label="Foninės muzikos valdymas">
       <audio ref={audioRef} src={src} preload="none" loop />
-      <button
-        type="button"
-        className={`bg-music-btn ${enabled ? 'is-on' : 'is-off'}`}
-        onClick={() => {
-          setBlocked(false);
-          setEnabled((v) => !v);
-        }}
-        aria-pressed={enabled}
-      >
-        {label}
-      </button>
+      <div className="bg-music-pill" role="group" aria-label="Muzikos jungiklis">
+        <span className={`bg-music-icon ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
+          <FaMusic />
+        </span>
+
+        <label className="bg-music-switch" aria-label={enabled ? 'Išjungti muziką' : 'Įjungti muziką'}>
+          <input
+            type="checkbox"
+            className="bg-music-switch-input"
+            checked={enabled}
+            onChange={() => {
+              setBlocked(false);
+              setEnabled((v) => !v);
+            }}
+          />
+          <span className="bg-music-switch-track" aria-hidden="true">
+            <span className="bg-music-switch-thumb" aria-hidden="true" />
+          </span>
+        </label>
+
+        <span className={`bg-music-state ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
+          {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
+        </span>
+      </div>
+
       {blocked && (
         <div className="bg-music-hint">
-          Naršyklė užblokavo automatinį grojimą. Paspausk „Muzika: ON“.
+          Naršyklė užblokavo automatinį grojimą. Įjunk jungiklį, kad pradėtų groti.
         </div>
       )}
     </div>
