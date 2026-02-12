@@ -65,6 +65,29 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
     audio.currentTime = 0;
   };
 
+  // Sustabdom muziką, kai vartotojas palieka puslapį/tab'ą (kad neliktų groti fone).
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return undefined;
+
+    const stop = () => pauseNow();
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+    };
+
+    window.addEventListener('pagehide', stop);
+    window.addEventListener('beforeunload', stop);
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      window.removeEventListener('pagehide', stop);
+      window.removeEventListener('beforeunload', stop);
+      document.removeEventListener('visibilitychange', onVisibility);
+      // jei komponentas būtų nuimamas – irgi stabdom
+      stop();
+    };
+  }, []);
+
   // Jei vartotojas atmetė – išjungiame muziką ir ištriname pref'ą.
   useEffect(() => {
     if (consent === 'rejected') {
