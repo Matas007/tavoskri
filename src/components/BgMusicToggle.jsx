@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { FaMusic, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
+import { FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import './BgMusicToggle.css';
 
 const PREF_COOKIE = 'ts_bg_music';
@@ -150,8 +150,8 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
     >
       <audio ref={audioRef} src={src} preload="none" loop />
       <div className="bg-music-pill" role="group" aria-label="Muzikos jungiklis">
-        <span className={`bg-music-icon ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
-          <FaMusic />
+        <span className={`bg-music-speaker ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
+          {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
         </span>
 
         <label className="bg-music-switch" aria-label={enabled ? 'Išjungti muziką' : 'Įjungti muziką'}>
@@ -176,10 +176,6 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
             <span className="bg-music-switch-thumb" aria-hidden="true" />
           </span>
         </label>
-
-        <span className={`bg-music-state ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
-          {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
-        </span>
       </div>
 
       <button
@@ -199,7 +195,7 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
         aria-label={enabled ? 'Išjungti muziką' : 'Įjungti muziką'}
         aria-pressed={enabled}
       >
-        <FaMusic aria-hidden="true" />
+        {enabled ? <FaVolumeUp aria-hidden="true" /> : <FaVolumeMute aria-hidden="true" />}
       </button>
     </div>
   );
