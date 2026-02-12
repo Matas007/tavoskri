@@ -69,7 +69,7 @@ function AppContent() {
         />
       )}
 
-      <BgMusicToggle src="/Chain%20of%20Ghosted%20Blocks.mp3" />
+      <BgMusicToggle src="/Chain%20of%20Ghosted%20Blocks.mp3" consent={consent} />
 
       <Suspense fallback={<div className="route-loading">Kraunama...</div>}>
         <Routes>

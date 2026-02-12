@@ -57,6 +57,11 @@ export default function PrivacyPolicy() {
                 180 dienų.
               </li>
               <li>
+                <strong>Muzikos nustatymo slapukas (ts_bg_music)</strong> – funkcinis slapukas,
+                kuris (tik jums sutikus) leidžia prisiminti, ar foninė muzika palikta įjungta ar
+                išjungta. Slapukas galioja iki 180 dienų.
+              </li>
+              <li>
                 <strong>Analitiniai ir rinkodaros slapukai</strong> – <strong>nenaudojame</strong>.
               </li>
             </ul>
@@ -67,8 +72,8 @@ export default function PrivacyPolicy() {
             <p>
               Naršyklėje galite ištrinti slapukus arba riboti jų naudojimą per naršyklės
               nustatymus. Taip pat galite bet kada atšaukti sutikimą su mūsų slapukais – tada
-              ištrinsime išsaugotą sutikimą ir techninį slapuką, o svetainė veiks kaip pirmą
-              kartą atėjus (su pilna animacija). Vėliau galėsite vėl sutikti per slapukų juostą.
+              ištrinsime išsaugotą sutikimą ir funkcinį muzikos nustatymo slapuką. Vėliau galėsite
+              vėl sutikti per slapukų juostą.
             </p>
             <div className="privacy-revoke">
               <button

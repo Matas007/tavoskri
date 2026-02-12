@@ -1,33 +1,72 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import './BgMusicToggle.css';
 
-const STORAGE_KEY = 'bg_music_enabled';
+const PREF_COOKIE = 'ts_bg_music';
+const PREF_MAX_AGE_DAYS = 180;
 
-export default function BgMusicToggle({ src }) {
+const getCookieValue = (name) => {
+  if (typeof document === 'undefined') return '';
+
+  const cookieString = `; ${document.cookie}`;
+  const parts = cookieString.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(';').shift() || '';
+  }
+
+  return '';
+};
+
+const setCookieValue = (name, value, maxAgeDays) => {
+  if (typeof document === 'undefined') return;
+  const maxAgeSeconds = maxAgeDays * 24 * 60 * 60;
+  document.cookie = `${name}=${value}; max-age=${maxAgeSeconds}; path=/; samesite=lax`;
+};
+
+const deleteCookie = (name) => {
+  if (typeof document === 'undefined') return;
+  document.cookie = `${name}=; max-age=0; path=/; samesite=lax`;
+};
+
+export default function BgMusicToggle({ src, consent }) {
   const audioRef = useRef(null);
   const initialEnabled = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.localStorage?.getItem(STORAGE_KEY) === '1';
-  }, []);
+    // Jei vartotojas atmetė – muzika pagal nutylėjimą neįjungta.
+    if (consent === 'rejected') return false;
+
+    // Jei sutikta – bandom atkurti iš funkcinio slapuko.
+    if (consent === 'accepted') {
+      const v = getCookieValue(PREF_COOKIE);
+      if (v === '1') return true;
+      if (v === '0') return false;
+    }
+
+    // Pirmas apsilankymas / dar nepasirinko: bandome autoplay (jei naršyklė leis).
+    return true;
+  }, [consent]);
 
   const [enabled, setEnabled] = useState(initialEnabled);
   const [blocked, setBlocked] = useState(false);
+
+  // Jei vartotojas atmetė – išjungiame muziką ir ištriname pref'ą.
+  useEffect(() => {
+    if (consent === 'rejected') {
+      deleteCookie(PREF_COOKIE);
+      setEnabled(false);
+    }
+  }, [consent]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    // išsaugom pasirinkimą (ne slapukas)
-    try {
-      window.localStorage?.setItem(STORAGE_KEY, enabled ? '1' : '0');
-    } catch {
-      // ignore
+    // Išsaugom pasirinkimą funkcinėje atmintyje tik jei vartotojas sutiko.
+    if (consent === 'accepted') {
+      setCookieValue(PREF_COOKIE, enabled ? '1' : '0', PREF_MAX_AGE_DAYS);
     }
 
     if (!enabled) {
       audio.pause();
       audio.currentTime = 0;
-      setBlocked(false);
       return;
     }
 
@@ -40,7 +79,7 @@ export default function BgMusicToggle({ src }) {
         setEnabled(false);
       });
     }
-  }, [enabled]);
+  }, [enabled, consent]);
 
   const label = enabled ? 'Muzika: ON' : 'Muzika: OFF';
 
@@ -50,7 +89,10 @@ export default function BgMusicToggle({ src }) {
       <button
         type="button"
         className={`bg-music-btn ${enabled ? 'is-on' : 'is-off'}`}
-        onClick={() => setEnabled((v) => !v)}
+        onClick={() => {
+          setBlocked(false);
+          setEnabled((v) => !v);
+        }}
         aria-pressed={enabled}
       >
         {label}
