@@ -27,7 +27,6 @@ function AppContent() {
   const isArticles = location.pathname === '/articles';
   const isPrivacy = location.pathname === '/privacy';
   const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy;
-  const consentBannerVisible = showFooter && consent === null;
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -70,11 +69,7 @@ function AppContent() {
         />
       )}
 
-      <BgMusicToggle
-        src="/Chain%20of%20Ghosted%20Blocks.mp3"
-        consent={consent}
-        consentBannerVisible={consentBannerVisible}
-      />
+      <BgMusicToggle src="/Chain%20of%20Ghosted%20Blocks.mp3" consent={consent} />
 
       <Suspense fallback={<div className="route-loading">Kraunama...</div>}>
         <Routes>
@@ -194,7 +189,7 @@ function AppContent() {
 
       {showFooter && <Footer />}
 
-      {consentBannerVisible && (
+      {showFooter && consent === null && (
         <CookieConsentBanner onAccept={(value) => setConsent(value)} />
       )}
     </div>

@@ -10,10 +10,6 @@
   pointer-events: auto;
 }
 
-.bg-music-toggle.has-consent-banner {
-  bottom: 148px;
-}
-
 .bg-music-pill {
   display: inline-flex;
   align-items: center;
@@ -111,38 +107,6 @@
   outline-offset: 3px;
 }
 
-.bg-music-mobile-btn {
-  display: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid rgba(201, 168, 130, 0.5);
-  background: rgba(42, 31, 21, 0.88);
-  color: #E8D5C4;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.bg-music-mobile-btn:hover {
-  transform: translateY(-1px);
-  border-color: rgba(201, 168, 130, 0.85);
-}
-
-.bg-music-mobile-btn.is-on {
-  background: linear-gradient(0deg, #9D7852 0%, #C9A882 100%);
-  color: #2a1f15;
-  border-color: rgba(201, 168, 130, 0.9);
-}
-
-.bg-music-mobile-btn:focus-visible {
-  outline: 2px solid rgba(201, 168, 130, 0.9);
-  outline-offset: 3px;
-}
-
 .bg-music-hint {
   max-width: 260px;
   padding: 0.6rem 0.75rem;
@@ -161,16 +125,14 @@
     bottom: 104px;
   }
 
-  .bg-music-toggle.has-consent-banner {
-    bottom: 172px;
-  }
-
   .bg-music-pill {
-    display: none;
+    padding: 0.5rem 0.6rem;
+    gap: 0.5rem;
   }
 
-  .bg-music-mobile-btn {
-    display: inline-flex;
+  .bg-music-icon {
+    width: 32px;
+    height: 32px;
   }
 }
 
