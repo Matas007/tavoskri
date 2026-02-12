@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { FaMusic, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
+import { FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import './BgMusicToggle.css';
 
 const PREF_COOKIE = 'ts_bg_music';
@@ -46,16 +46,17 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
   }, [consent]);
 
   const [enabled, setEnabled] = useState(initialEnabled);
-  const [hasInteracted, setHasInteracted] = useState(false);
+  const [needsUnlock, setNeedsUnlock] = useState(initialEnabled);
 
   const playNow = () => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio) return Promise.resolve(false);
     audio.volume = 0.22;
     // Svarbu: mobile naršyklėse play() turi būti iškviestas per user gesture.
-    audio.play().catch(() => {
-      // Ignoruojam – jei nepavyko, vartotojas gali perjungti dar kartą.
-    });
+    return audio
+      .play()
+      .then(() => true)
+      .catch(() => false);
   };
 
   const pauseNow = () => {
@@ -93,36 +94,10 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
     if (consent === 'rejected') {
       deleteCookie(PREF_COOKIE);
       setEnabled(false);
+      setNeedsUnlock(false);
       pauseNow();
     }
   }, [consent]);
-
-  // First interaction: nuo pirmo vartotojo veiksmo leidžiame bandyti play().
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    if (hasInteracted) return undefined;
-
-    const mark = () => {
-      setHasInteracted(true);
-      // Jei muzika įjungta, bandom paleisti iškart to pačio gesto metu (mobile patikimiau).
-      if (enabled) playNow();
-    };
-    window.addEventListener('pointerdown', mark, { capture: true, once: true });
-    window.addEventListener('touchstart', mark, { capture: true, once: true });
-    window.addEventListener('keydown', mark, { capture: true, once: true });
-    window.addEventListener('mousemove', mark, { capture: true, once: true });
-    window.addEventListener('scroll', mark, { capture: true, once: true, passive: true });
-    window.addEventListener('touchmove', mark, { capture: true, once: true, passive: true });
-
-    return () => {
-      window.removeEventListener('pointerdown', mark, true);
-      window.removeEventListener('touchstart', mark, true);
-      window.removeEventListener('keydown', mark, true);
-      window.removeEventListener('mousemove', mark, true);
-      window.removeEventListener('scroll', mark, true);
-      window.removeEventListener('touchmove', mark, true);
-    };
-  }, [hasInteracted, enabled]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -137,12 +112,36 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
       pauseNow();
       return;
     }
+  }, [enabled, consent]);
 
-    if (!hasInteracted) return;
+  // "Unlock" per tikrą user gesture (patikimiausia tiek desktop, tiek mobile).
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    if (!enabled) return undefined;
+    if (!needsUnlock) return undefined;
 
-    // Fallback: jei jau buvo interakcija, užtikrinam, kad groja.
-    playNow();
-  }, [enabled, consent, hasInteracted]);
+    let cancelled = false;
+
+    const tryFromGesture = async () => {
+      if (cancelled) return;
+      const ok = await playNow();
+      if (!cancelled && ok) {
+        setNeedsUnlock(false);
+      }
+    };
+
+    // Naudojam tik „user activation“ event'us; mousemove/scroll dažnai netinka autoplay leidimams.
+    window.addEventListener('pointerdown', tryFromGesture, { capture: true, once: true });
+    window.addEventListener('touchstart', tryFromGesture, { capture: true, once: true });
+    window.addEventListener('keydown', tryFromGesture, { capture: true, once: true });
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('pointerdown', tryFromGesture, true);
+      window.removeEventListener('touchstart', tryFromGesture, true);
+      window.removeEventListener('keydown', tryFromGesture, true);
+    };
+  }, [enabled, needsUnlock]);
 
   return (
     <div
@@ -151,8 +150,8 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
     >
       <audio ref={audioRef} src={src} preload="none" loop />
       <div className="bg-music-pill" role="group" aria-label="Muzikos jungiklis">
-        <span className={`bg-music-icon ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
-          <FaMusic />
+        <span className={`bg-music-speaker ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
+          {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
         </span>
 
         <label className="bg-music-switch" aria-label={enabled ? 'Išjungti muziką' : 'Įjungti muziką'}>
@@ -164,9 +163,12 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
               const next = !enabled;
               setEnabled(next);
               if (next) {
-                playNow();
+                setNeedsUnlock(true);
+                // bandome iškart (nes tai user gesture)
+                playNow().then((ok) => ok && setNeedsUnlock(false));
               } else {
                 pauseNow();
+                setNeedsUnlock(false);
               }
             }}
           />
@@ -174,10 +176,6 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
             <span className="bg-music-switch-thumb" aria-hidden="true" />
           </span>
         </label>
-
-        <span className={`bg-music-state ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
-          {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
-        </span>
       </div>
 
       <button
@@ -187,15 +185,17 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
           const next = !enabled;
           setEnabled(next);
           if (next) {
-            playNow();
+            setNeedsUnlock(true);
+            playNow().then((ok) => ok && setNeedsUnlock(false));
           } else {
             pauseNow();
+            setNeedsUnlock(false);
           }
         }}
         aria-label={enabled ? 'Išjungti muziką' : 'Įjungti muziką'}
         aria-pressed={enabled}
       >
-        <FaMusic aria-hidden="true" />
+        {enabled ? <FaVolumeUp aria-hidden="true" /> : <FaVolumeMute aria-hidden="true" />}
       </button>
     </div>
   );
