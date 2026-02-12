@@ -77,10 +77,50 @@ export default function BgMusicToggle({ src, consent }) {
       p.catch(() => {
         // Autoplay su garsu dažnai blokuojamas, kol vartotojas nepaspaudžia.
         setBlocked(true);
-        setEnabled(false);
       });
     }
   }, [enabled, consent]);
+
+  // "Unlock on first interaction": jei autoplay užblokuotas, pabandom vėl po pirmo vartotojo veiksmo.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!enabled || !blocked) return;
+
+    let cleanedUp = false;
+
+    const tryUnlock = () => {
+      if (cleanedUp) return;
+      const p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          setBlocked(false);
+          cleanup();
+        }).catch(() => {
+          // Jei vis dar blokuoja – paliekam blocked=true, vartotojas gali perjungti jungiklį.
+          cleanup();
+        });
+      } else {
+        // Senesnėse naršyklėse play() gali negrąžinti Promise
+        setBlocked(false);
+        cleanup();
+      }
+    };
+
+    const cleanup = () => {
+      if (cleanedUp) return;
+      cleanedUp = true;
+      window.removeEventListener('pointerdown', tryUnlock, true);
+      window.removeEventListener('touchstart', tryUnlock, true);
+      window.removeEventListener('keydown', tryUnlock, true);
+    };
+
+    window.addEventListener('pointerdown', tryUnlock, { capture: true, once: true });
+    window.addEventListener('touchstart', tryUnlock, { capture: true, once: true });
+    window.addEventListener('keydown', tryUnlock, { capture: true, once: true });
+
+    return cleanup;
+  }, [enabled, blocked]);
 
   return (
     <div className="bg-music-toggle" aria-label="Foninės muzikos valdymas">
@@ -112,7 +152,8 @@ export default function BgMusicToggle({ src, consent }) {
 
       {blocked && (
         <div className="bg-music-hint">
-          Naršyklė užblokavo automatinį grojimą. Įjunk jungiklį, kad pradėtų groti.
+          Naršyklė užblokavo automatinį grojimą. Paspausk bet kur puslapyje (arba perjunk jungiklį),
+          kad pradėtų groti.
         </div>
       )}
     </div>
