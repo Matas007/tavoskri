@@ -28,7 +28,7 @@ const deleteCookie = (name) => {
   document.cookie = `${name}=; max-age=0; path=/; samesite=lax`;
 };
 
-export default function BgMusicToggle({ src, consent }) {
+export default function BgMusicToggle({ src, consent, consentBannerVisible = false }) {
   const audioRef = useRef(null);
   const initialEnabled = useMemo(() => {
     // Jei vartotojas atmetė – muzika pagal nutylėjimą neįjungta.
@@ -41,18 +41,36 @@ export default function BgMusicToggle({ src, consent }) {
       if (v === '0') return false;
     }
 
-    // Pirmas apsilankymas / dar nepasirinko: pagal nutylėjimą paliekame OFF.
-    return false;
+    // Pirmas apsilankymas / dar nepasirinko: paliekame ON, bet gros tik po pirmos interakcijos.
+    return true;
   }, [consent]);
 
   const [enabled, setEnabled] = useState(initialEnabled);
   const [hasInteracted, setHasInteracted] = useState(false);
+
+  const playNow = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = 0.22;
+    // Svarbu: mobile naršyklėse play() turi būti iškviestas per user gesture.
+    audio.play().catch(() => {
+      // Ignoruojam – jei nepavyko, vartotojas gali perjungti dar kartą.
+    });
+  };
+
+  const pauseNow = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+  };
 
   // Jei vartotojas atmetė – išjungiame muziką ir ištriname pref'ą.
   useEffect(() => {
     if (consent === 'rejected') {
       deleteCookie(PREF_COOKIE);
       setEnabled(false);
+      pauseNow();
     }
   }, [consent]);
 
@@ -61,17 +79,27 @@ export default function BgMusicToggle({ src, consent }) {
     if (typeof window === 'undefined') return undefined;
     if (hasInteracted) return undefined;
 
-    const mark = () => setHasInteracted(true);
+    const mark = () => {
+      setHasInteracted(true);
+      // Jei muzika įjungta, bandom paleisti iškart to pačio gesto metu (mobile patikimiau).
+      if (enabled) playNow();
+    };
     window.addEventListener('pointerdown', mark, { capture: true, once: true });
     window.addEventListener('touchstart', mark, { capture: true, once: true });
     window.addEventListener('keydown', mark, { capture: true, once: true });
+    window.addEventListener('mousemove', mark, { capture: true, once: true });
+    window.addEventListener('scroll', mark, { capture: true, once: true, passive: true });
+    window.addEventListener('touchmove', mark, { capture: true, once: true, passive: true });
 
     return () => {
       window.removeEventListener('pointerdown', mark, true);
       window.removeEventListener('touchstart', mark, true);
       window.removeEventListener('keydown', mark, true);
+      window.removeEventListener('mousemove', mark, true);
+      window.removeEventListener('scroll', mark, true);
+      window.removeEventListener('touchmove', mark, true);
     };
-  }, [hasInteracted]);
+  }, [hasInteracted, enabled]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -83,21 +111,21 @@ export default function BgMusicToggle({ src, consent }) {
     }
 
     if (!enabled) {
-      audio.pause();
-      audio.currentTime = 0;
+      pauseNow();
       return;
     }
 
-    audio.volume = 0.22;
     if (!hasInteracted) return;
 
-    audio.play().catch(() => {
-      // Jei vis tiek nepavyko (labai reta) – tyliai ignoruojam.
-    });
+    // Fallback: jei jau buvo interakcija, užtikrinam, kad groja.
+    playNow();
   }, [enabled, consent, hasInteracted]);
 
   return (
-    <div className="bg-music-toggle" aria-label="Foninės muzikos valdymas">
+    <div
+      className={`bg-music-toggle ${consentBannerVisible ? 'has-consent-banner' : ''}`}
+      aria-label="Foninės muzikos valdymas"
+    >
       <audio ref={audioRef} src={src} preload="none" loop />
       <div className="bg-music-pill" role="group" aria-label="Muzikos jungiklis">
         <span className={`bg-music-icon ${enabled ? 'is-on' : 'is-off'}`} aria-hidden="true">
@@ -110,7 +138,13 @@ export default function BgMusicToggle({ src, consent }) {
             className="bg-music-switch-input"
             checked={enabled}
             onChange={() => {
-              setEnabled((v) => !v);
+              const next = !enabled;
+              setEnabled(next);
+              if (next) {
+                playNow();
+              } else {
+                pauseNow();
+              }
             }}
           />
           <span className="bg-music-switch-track" aria-hidden="true">
@@ -122,6 +156,24 @@ export default function BgMusicToggle({ src, consent }) {
           {enabled ? <FaVolumeUp /> : <FaVolumeMute />}
         </span>
       </div>
+
+      <button
+        type="button"
+        className={`bg-music-mobile-btn ${enabled ? 'is-on' : 'is-off'}`}
+        onClick={() => {
+          const next = !enabled;
+          setEnabled(next);
+          if (next) {
+            playNow();
+          } else {
+            pauseNow();
+          }
+        }}
+        aria-label={enabled ? 'Išjungti muziką' : 'Įjungti muziką'}
+        aria-pressed={enabled}
+      >
+        <FaMusic aria-hidden="true" />
+      </button>
     </div>
   );
 }
