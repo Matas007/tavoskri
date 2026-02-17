@@ -25,65 +25,192 @@ const SERVICES = [
   {
     id: 'seo',
     label: 'SEO (optimizavimas)',
-    hint: 'Techninis SEO + on-page rekomendacijos + įgyvendinimai.',
+    hint: 'Meta, puslapio kokybė, GEO, struktūra, serveris, backlinkai ir kt.',
     base: { min: 350, max: 1200, weeks: [1, 3] }
   },
   {
     id: 'audit',
     label: 'Svetainės auditas',
-    hint: 'Greitis, SEO, UX, klaidos, rekomendacijos.',
+    hint: 'Pasirink, ką tiksliai ištestuoti (SEO, saugumas, greitis, UX ir kt.).',
     base: { min: 180, max: 600, weeks: [1, 2] }
   },
   {
     id: 'maintenance',
     label: 'Administravimas / priežiūra',
-    hint: 'Atnaujinimai, smulkūs pakeitimai, stebėsena.',
-    base: { min: 49, max: 249, weeks: [0, 0] }
+    hint: 'Mėnesinis planas 50–300€; metinis – 5% pigiau.',
+    base: { min: 0, max: 0, weeks: [0, 0] }
   }
 ];
 
-const OPTION_LIBRARY = {
-  common: [
-    { id: 'design_custom', label: 'Individualus dizainas (ne šablonas)', add: { min: 250, max: 800 }, weeks: [0, 1] },
-    { id: 'copywriting', label: 'Tekstų paruošimas / korekcijos', add: { min: 120, max: 450 }, weeks: [0, 1] },
-    { id: 'multilang', label: '2 kalbos (LT/EN)', add: { min: 120, max: 350 }, weeks: [0, 1] },
-    { id: 'animations', label: 'Interaktyvumas / animacijos', add: { min: 120, max: 500 }, weeks: [0, 1] },
-    { id: 'analytics_basic', label: 'Bazinis matavimas (be marketing slapukų)', add: { min: 60, max: 160 }, weeks: [0, 0] }
-  ],
-  website: [
-    { id: 'pages', label: 'Papildomi puslapiai (virš 3)', perUnit: { min: 70, max: 220 }, unitLabel: 'psl.' },
-    { id: 'blog', label: 'Straipsniai / blogas', add: { min: 180, max: 600 }, weeks: [0, 1] },
-    { id: 'booking', label: 'Registracija / rezervacija', add: { min: 220, max: 700 }, weeks: [0, 1] },
-    { id: 'cms_light', label: 'Lengvas turinio valdymas (admin)', add: { min: 280, max: 900 }, weeks: [0, 2] }
-  ],
-  webapp: [
-    { id: 'auth', label: 'Vartotojai + prisijungimas + rolės', add: { min: 350, max: 1200 }, weeks: [1, 2] },
-    { id: 'db', label: 'Duomenų bazė (schemos + CRUD)', add: { min: 300, max: 1400 }, weeks: [1, 2] },
-    { id: 'admin', label: 'Administravimo panelė', add: { min: 350, max: 1400 }, weeks: [1, 2] },
-    { id: 'integrations', label: 'Integracijos (el. paštas / API / kt.)', add: { min: 200, max: 1200 }, weeks: [0, 2] },
-    { id: 'chatbot', label: 'Pokalbių robotas', add: { min: 200, max: 1200 }, weeks: [0, 2] }
-  ],
-  ecommerce: [
-    { id: 'products', label: 'Produktų katalogas + filtrai', add: { min: 400, max: 1600 }, weeks: [1, 2] },
-    { id: 'cart', label: 'Krepšelis + checkout', add: { min: 350, max: 1400 }, weeks: [1, 2] },
-    { id: 'payments', label: 'Apmokėjimai (Paysera/Stripe/kt.)', add: { min: 300, max: 1200 }, weeks: [1, 2] },
-    { id: 'shipping', label: 'Pristatymas (kainos, būdai)', add: { min: 150, max: 600 }, weeks: [0, 1] },
-    { id: 'invoices', label: 'Sąskaitos / PDF', add: { min: 150, max: 800 }, weeks: [0, 2] }
-  ],
-  seo: [
-    { id: 'seo_tech', label: 'Techninis SEO (struktūra, indeksavimas)', add: { min: 120, max: 500 }, weeks: [0, 1] },
-    { id: 'seo_onpage', label: 'On-page SEO (meta, antraštės, turinys)', add: { min: 120, max: 450 }, weeks: [0, 1] },
-    { id: 'seo_perf', label: 'Greitis (Core Web Vitals)', add: { min: 120, max: 600 }, weeks: [0, 1] }
-  ],
-  audit: [
-    { id: 'audit_report', label: 'Detali ataskaita + prioritetai', add: { min: 80, max: 250 }, weeks: [0, 0] },
-    { id: 'audit_fix', label: 'Įgyvendinti rekomendacijas', add: { min: 200, max: 1200 }, weeks: [0, 2] }
-  ],
-  maintenance: [
-    { id: 'maint_priority', label: 'Prioritetinis reagavimas', add: { min: 40, max: 150 }, weeks: [0, 0] },
-    { id: 'maint_content', label: 'Turinio atnaujinimai (iki 4/mėn.)', add: { min: 30, max: 120 }, weeks: [0, 0] }
-  ]
+const SERVICE_OPTIONS = {
+  website: {
+    groups: [
+      {
+        title: 'Struktūra',
+        options: [
+          {
+            id: 'pages_extra',
+            type: 'number',
+            label: 'Papildomi puslapiai',
+            hint: 'virš 3 psl.',
+            min: 0,
+            max: 30,
+            unitLabel: 'psl.',
+            perUnit: { min: 70, max: 220 },
+            defaultValue: 0
+          },
+          { id: 'blog', type: 'checkbox', label: 'Straipsniai / blogas', add: { min: 180, max: 600 }, weeks: [0, 1] },
+          { id: 'booking', type: 'checkbox', label: 'Registracija / rezervacija', add: { min: 220, max: 700 }, weeks: [0, 1] }
+        ]
+      },
+      {
+        title: 'Turinys ir dizainas',
+        options: [
+          { id: 'design_custom', type: 'checkbox', label: 'Individualus dizainas (ne šablonas)', add: { min: 250, max: 800 }, weeks: [0, 1] },
+          { id: 'copywriting', type: 'checkbox', label: 'Tekstų paruošimas / korekcijos', add: { min: 120, max: 450 }, weeks: [0, 1] },
+          { id: 'multilang', type: 'checkbox', label: '2 kalbos (LT/EN)', add: { min: 120, max: 350 }, weeks: [0, 1] },
+          { id: 'animations', type: 'checkbox', label: 'Interaktyvumas / animacijos', add: { min: 120, max: 500 }, weeks: [0, 1] }
+        ]
+      },
+      {
+        title: 'Technika',
+        options: [
+          { id: 'cms_light', type: 'checkbox', label: 'Lengvas turinio valdymas (admin)', add: { min: 280, max: 900 }, weeks: [0, 2] },
+          { id: 'analytics_basic', type: 'checkbox', label: 'Bazinis matavimas (be marketing slapukų)', add: { min: 60, max: 160 }, weeks: [0, 0] }
+        ]
+      }
+    ]
+  },
+  webapp: {
+    groups: [
+      {
+        title: 'Pagrindas',
+        options: [
+          { id: 'db', type: 'checkbox', label: 'Duomenų bazė (schemos + CRUD)', add: { min: 300, max: 1400 }, weeks: [1, 2] },
+          { id: 'auth', type: 'checkbox', label: 'Vartotojai + prisijungimas + rolės', add: { min: 350, max: 1200 }, weeks: [1, 2] },
+          { id: 'admin', type: 'checkbox', label: 'Administravimo panelė', add: { min: 350, max: 1400 }, weeks: [1, 2] }
+        ]
+      },
+      {
+        title: 'Integracijos ir automatizacijos',
+        options: [
+          { id: 'integrations', type: 'checkbox', label: 'Integracijos (el. paštas / API / kt.)', add: { min: 200, max: 1200 }, weeks: [0, 2] },
+          { id: 'chatbot', type: 'checkbox', label: 'Pokalbių robotas', add: { min: 200, max: 1200 }, weeks: [0, 2] }
+        ]
+      },
+      {
+        title: 'UX ir turinys',
+        options: [
+          { id: 'design_custom', type: 'checkbox', label: 'Individualus dizainas (ne šablonas)', add: { min: 300, max: 1200 }, weeks: [0, 2] },
+          { id: 'multilang', type: 'checkbox', label: '2 kalbos (LT/EN)', add: { min: 180, max: 650 }, weeks: [0, 1] }
+        ]
+      }
+    ]
+  },
+  ecommerce: {
+    groups: [
+      {
+        title: 'Pardavimai',
+        options: [
+          { id: 'products', type: 'checkbox', label: 'Produktų katalogas + filtrai', add: { min: 400, max: 1600 }, weeks: [1, 2] },
+          { id: 'cart', type: 'checkbox', label: 'Krepšelis + checkout', add: { min: 350, max: 1400 }, weeks: [1, 2] },
+          { id: 'payments', type: 'checkbox', label: 'Apmokėjimai (Paysera/Stripe/kt.)', add: { min: 300, max: 1200 }, weeks: [1, 2] }
+        ]
+      },
+      {
+        title: 'Logistika ir dokumentai',
+        options: [
+          { id: 'shipping', type: 'checkbox', label: 'Pristatymas (kainos, būdai)', add: { min: 150, max: 600 }, weeks: [0, 1] },
+          { id: 'invoices', type: 'checkbox', label: 'Sąskaitos / PDF', add: { min: 150, max: 800 }, weeks: [0, 2] }
+        ]
+      },
+      {
+        title: 'Dizainas ir turinys',
+        options: [
+          { id: 'design_custom', type: 'checkbox', label: 'Individualus dizainas (ne šablonas)', add: { min: 300, max: 1200 }, weeks: [0, 2] },
+          { id: 'copywriting', type: 'checkbox', label: 'Tekstų paruošimas / korekcijos', add: { min: 150, max: 650 }, weeks: [0, 1] },
+          { id: 'multilang', type: 'checkbox', label: '2 kalbos (LT/EN)', add: { min: 180, max: 650 }, weeks: [0, 1] }
+        ]
+      }
+    ]
+  },
+  seo: {
+    groups: [
+      {
+        title: 'Meta ir struktūra',
+        options: [
+          { id: 'seo_meta', type: 'checkbox', label: 'Meta informacija (title/description, OG)', add: { min: 120, max: 450 }, weeks: [0, 1] },
+          { id: 'seo_links', type: 'checkbox', label: 'Nuorodų struktūra (vidinės nuorodos, architektūra)', add: { min: 150, max: 600 }, weeks: [0, 1] },
+          { id: 'seo_schema', type: 'checkbox', label: 'Struktūriniai duomenys (Schema.org)', add: { min: 120, max: 500 }, weeks: [0, 1] }
+        ]
+      },
+      {
+        title: 'Kokybė ir GEO',
+        options: [
+          { id: 'seo_quality', type: 'checkbox', label: 'Puslapio kokybė (turinys, struktūra, cannibalization, thin content)', add: { min: 180, max: 800 }, weeks: [0, 1] },
+          { id: 'seo_geo', type: 'checkbox', label: 'GEO (lokalūs signalai, vietovės puslapiai, NAP)', add: { min: 150, max: 700 }, weeks: [0, 1] },
+          { id: 'seo_content_plan', type: 'checkbox', label: 'Raktažodžių analizė + turinio planas', add: { min: 200, max: 900 }, weeks: [0, 1] }
+        ]
+      },
+      {
+        title: 'Serveris ir išorinės nuorodos',
+        options: [
+          { id: 'seo_server', type: 'checkbox', label: 'Serveris (caching, headers, CDN, redirect’ai)', add: { min: 150, max: 900 }, weeks: [0, 2] },
+          { id: 'seo_backlinks', type: 'checkbox', label: 'Išorinės nuorodos (backlinkų strategija + rekomendacijos)', add: { min: 200, max: 1200 }, weeks: [0, 2] },
+          { id: 'seo_fix', type: 'checkbox', label: 'Įgyvendinti rekomendacijas (darbo paketas)', add: { min: 200, max: 1400 }, weeks: [0, 2] }
+        ]
+      }
+    ]
+  },
+  audit: {
+    groups: [
+      {
+        title: 'Ką ištestuoti?',
+        options: [
+          { id: 'audit_security', type: 'checkbox', label: 'Saugumą (headers, konfigūracija, OWASP pagrindai)', add: { min: 120, max: 700 }, weeks: [0, 1] },
+          { id: 'audit_seo', type: 'checkbox', label: 'SEO (techninis + on-page)', add: { min: 120, max: 650 }, weeks: [0, 1] },
+          { id: 'audit_ui', type: 'checkbox', label: 'UI klaidas (vizualiniai nesklandumai, komponentai)', add: { min: 80, max: 450 }, weeks: [0, 1] },
+          { id: 'audit_ux', type: 'checkbox', label: 'UX klaidas (kelionės, konversijos, frikcija)', add: { min: 120, max: 750 }, weeks: [0, 1] },
+          { id: 'audit_co2', type: 'checkbox', label: 'Anglies dioksido pėdsaką (CO₂) + rekomendacijos', add: { min: 80, max: 350 }, weeks: [0, 1] },
+          { id: 'audit_speed', type: 'checkbox', label: 'Greičio testą (CWV) + rekomendacijos', add: { min: 100, max: 550 }, weeks: [0, 1] },
+          { id: 'audit_access_control', type: 'checkbox', label: 'Prieigos kontrolę (rolės, teisės, pavojai)', add: { min: 120, max: 700 }, weeks: [0, 1] },
+          { id: 'audit_logs', type: 'checkbox', label: 'Žurnalus (logai, klaidų stebėsena, alertai)', add: { min: 80, max: 500 }, weeks: [0, 1] }
+        ]
+      },
+      {
+        title: 'Rezultatas',
+        options: [
+          { id: 'audit_report', type: 'checkbox', label: 'Detali ataskaita + prioritetai', add: { min: 80, max: 250 }, weeks: [0, 0] },
+          { id: 'audit_fix', type: 'checkbox', label: 'Įgyvendinti rekomendacijas (darbo paketas)', add: { min: 200, max: 1200 }, weeks: [0, 2] }
+        ]
+      }
+    ]
+  },
+  maintenance: {
+    groups: [
+      {
+        title: 'Priežiūra (mėnesinis planas)',
+        options: [
+          {
+            id: 'maint_monthly',
+            type: 'number',
+            label: 'Mėnesinė priežiūros suma',
+            hint: '€/mėn.',
+            min: 50,
+            max: 300,
+            defaultValue: 120,
+            fixed: true
+          },
+          { id: 'maint_annual', type: 'checkbox', label: 'Metinis planas (−5%)', add: { min: 0, max: 0 }, weeks: [0, 0] }
+        ]
+      }
+    ]
+  }
 };
+
+function getOptionsForService(serviceId) {
+  return SERVICE_OPTIONS[serviceId]?.groups ?? [];
+}
 
 function clampNumber(value, min, max) {
   const n = Number(value);
@@ -95,18 +222,27 @@ function eur(n) {
   return new Intl.NumberFormat('lt-LT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 }
 
+function buildDefaultQuantities(serviceId) {
+  const groups = getOptionsForService(serviceId);
+  const q = {};
+  for (const g of groups) {
+    for (const opt of g.options) {
+      if (opt.type === 'number' && typeof opt.defaultValue !== 'undefined') {
+        q[opt.id] = opt.defaultValue;
+      }
+    }
+  }
+  return q;
+}
+
 export default function CalculatorPage() {
   const [serviceId, setServiceId] = useState('website');
-  const [pagesExtra, setPagesExtra] = useState(0);
   const [selected, setSelected] = useState(() => new Set());
+  const [quantities, setQuantities] = useState(() => buildDefaultQuantities('website'));
 
   const service = useMemo(() => SERVICES.find(s => s.id === serviceId) || SERVICES[0], [serviceId]);
-
-  const options = useMemo(() => {
-    const base = OPTION_LIBRARY.common;
-    const specific = OPTION_LIBRARY[serviceId] ?? [];
-    return { common: base, specific };
-  }, [serviceId]);
+  const optionGroups = useMemo(() => getOptionsForService(serviceId), [serviceId]);
+  const flatOptions = useMemo(() => optionGroups.flatMap(g => g.options), [optionGroups]);
 
   const breakdown = useMemo(() => {
     const items = [];
@@ -117,23 +253,60 @@ export default function CalculatorPage() {
 
     items.push({ label: `${service.label} (bazė)`, min: service.base.min, max: service.base.max });
 
-    // per-unit option: pagesExtra only for website
-    if (serviceId === 'website') {
-      const pagesOpt = OPTION_LIBRARY.website.find(o => o.id === 'pages');
-      const qty = clampNumber(pagesExtra, 0, 30);
-      if (pagesOpt && qty > 0) {
-        const addMin = pagesOpt.perUnit.min * qty;
-        const addMax = pagesOpt.perUnit.max * qty;
-        min += addMin;
-        max += addMax;
-        items.push({ label: `${pagesOpt.label}: +${qty} ${pagesOpt.unitLabel}`, min: addMin, max: addMax });
-      }
+    // Maintenance: skaičiuojam iš pasirinktos mėnesinės sumos
+    if (serviceId === 'maintenance') {
+      const monthly = clampNumber(quantities.maint_monthly ?? 120, 50, 300);
+      const isAnnual = selected.has('maint_annual');
+      const annual = Math.round(monthly * 12 * 0.95);
+      const monthlyTotal = monthly * 12;
+      const savings = Math.max(0, monthlyTotal - annual);
+      min = isAnnual ? annual : monthly;
+      max = isAnnual ? annual : monthly;
+      items.length = 0;
+      items.push({ label: 'Mėnesinis planas', min: monthly, max: monthly });
+      items.push({ label: 'Metinis planas (−5%)', min: annual, max: annual });
+      items.push({ label: 'Sutaupymas per metus', min: savings, max: savings });
+
+      return {
+        min,
+        max,
+        weeksMin: 0,
+        weeksMax: 0,
+        items,
+        monthly,
+        annual,
+        monthlyTotal,
+        savings,
+        isAnnual
+      };
     }
 
-    const all = [...options.common, ...options.specific].filter(o => o.id !== 'pages');
-    for (const opt of all) {
-      if (!selected.has(opt.id)) continue;
-      if (opt.add) {
+    for (const opt of flatOptions) {
+      if (opt.type === 'number') {
+        const qty = clampNumber(quantities[opt.id] ?? 0, opt.min ?? 0, opt.max ?? 999);
+        if (opt.fixed) {
+          if (qty > 0) {
+            min += qty;
+            max += qty;
+            items.push({ label: opt.label, min: qty, max: qty });
+          }
+          continue;
+        }
+        if (qty > 0 && opt.perUnit) {
+          const addMin = opt.perUnit.min * qty;
+          const addMax = opt.perUnit.max * qty;
+          min += addMin;
+          max += addMax;
+          items.push({
+            label: `${opt.label}: +${qty} ${opt.unitLabel ?? ''}`.trim(),
+            min: addMin,
+            max: addMax
+          });
+        }
+        continue;
+      }
+
+      if (opt.type === 'checkbox' && selected.has(opt.id) && opt.add) {
         min += opt.add.min;
         max += opt.add.max;
         if (opt.weeks) {
@@ -151,7 +324,7 @@ export default function CalculatorPage() {
       weeksMax,
       items
     };
-  }, [service, serviceId, options, selected, pagesExtra]);
+  }, [service, flatOptions, selected, quantities]);
 
   const toggle = (id) => {
     setSelected(prev => {
@@ -164,7 +337,7 @@ export default function CalculatorPage() {
 
   const reset = () => {
     setSelected(new Set());
-    setPagesExtra(0);
+    setQuantities(buildDefaultQuantities(serviceId));
   };
 
   return (
@@ -195,8 +368,10 @@ export default function CalculatorPage() {
                   className="calc-select"
                   value={serviceId}
                   onChange={(e) => {
-                    setServiceId(e.target.value);
-                    reset();
+                    const nextId = e.target.value;
+                    setServiceId(nextId);
+                    setSelected(new Set());
+                    setQuantities(buildDefaultQuantities(nextId));
                   }}
                 >
                   {SERVICES.map(s => (
@@ -206,54 +381,52 @@ export default function CalculatorPage() {
                 <div className="calc-hint">{service.hint}</div>
               </div>
 
-              {serviceId === 'website' && (
-                <div className="calc-field">
-                  <label className="calc-label" htmlFor="pagesExtra">Papildomi puslapiai</label>
-                  <div className="calc-inline">
-                    <input
-                      id="pagesExtra"
-                      type="number"
-                      className="calc-input"
-                      min={0}
-                      max={30}
-                      value={pagesExtra}
-                      onChange={(e) => setPagesExtra(clampNumber(e.target.value, 0, 30))}
-                    />
-                    <span className="calc-inline-suffix">virš 3 psl.</span>
-                  </div>
-                </div>
-              )}
-
               <div className="calc-section-title">Funkcijos</div>
 
               <div className="calc-options">
-                <div className="calc-options-group">
-                  <div className="calc-options-group-title">Dažniausiai</div>
-                  {options.common.map(opt => (
-                    <label key={opt.id} className="calc-check">
-                      <input
-                        type="checkbox"
-                        checked={selected.has(opt.id)}
-                        onChange={() => toggle(opt.id)}
-                      />
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
+                {optionGroups.map((group, gi) => (
+                  <div key={`${group.title}-${gi}`} className="calc-options-group">
+                    <div className="calc-options-group-title">{group.title}</div>
+                    {group.options.map((opt) => {
+                      if (opt.type === 'number') {
+                        const value = quantities[opt.id] ?? 0;
+                        return (
+                          <div key={opt.id} className="calc-number">
+                            <div className="calc-number-label">{opt.label}</div>
+                            <div className="calc-inline">
+                              <input
+                                type="number"
+                                className="calc-input"
+                                min={opt.min ?? 0}
+                                max={opt.max ?? 999}
+                                value={value}
+                                onChange={(e) => {
+                                  const next = clampNumber(e.target.value, opt.min ?? 0, opt.max ?? 999);
+                                  setQuantities(prev => ({ ...prev, [opt.id]: next }));
+                                }}
+                              />
+                              <span className="calc-inline-suffix">
+                                {opt.hint || opt.unitLabel || ''}
+                              </span>
+                            </div>
+                            {opt.note && <div className="calc-hint">{opt.note}</div>}
+                          </div>
+                        );
+                      }
 
-                <div className="calc-options-group">
-                  <div className="calc-options-group-title">Pagal pasirinktą paslaugą</div>
-                  {options.specific.filter(o => o.id !== 'pages').map(opt => (
-                    <label key={opt.id} className="calc-check">
-                      <input
-                        type="checkbox"
-                        checked={selected.has(opt.id)}
-                        onChange={() => toggle(opt.id)}
-                      />
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
+                      return (
+                        <label key={opt.id} className="calc-check">
+                          <input
+                            type="checkbox"
+                            checked={selected.has(opt.id)}
+                            onChange={() => toggle(opt.id)}
+                          />
+                          <span>{opt.label}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
 
               <div className="calc-actions">
@@ -274,7 +447,7 @@ export default function CalculatorPage() {
                 </div>
                 <div className="calc-summary-time">
                   {serviceId === 'maintenance'
-                    ? 'Mėnesinis planas'
+                    ? `Mėn.: ~${eur(breakdown.monthly)} / mėn. • Metinis: ~${eur(breakdown.annual)} / metus (−5%)`
                     : `Terminas: ~${breakdown.weeksMin}–${breakdown.weeksMax} sav.`}
                 </div>
               </div>

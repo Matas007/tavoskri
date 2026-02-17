@@ -164,6 +164,18 @@
   accent-color: #C9A882;
 }
 
+.calc-number {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.35rem 0;
+}
+
+.calc-number-label {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .calc-actions {
   display: flex;
   gap: 0.75rem;
