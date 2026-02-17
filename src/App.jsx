@@ -17,6 +17,7 @@ const BookingForm = lazy(() => import('./components/BookingForm'));
 const AdminLogin = lazy(() => import('./components/AdminLogin'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+const CalculatorPage = lazy(() => import('./components/CalculatorPage'));
 
 function AppContent() {
   const location = useLocation();
@@ -26,7 +27,9 @@ function AppContent() {
   const isProjects = location.pathname === '/projects';
   const isArticles = location.pathname === '/articles';
   const isPrivacy = location.pathname === '/privacy';
-  const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy;
+  const isCalculator = location.pathname === '/skaiciuotuvas';
+  const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy || isCalculator;
+  const consentBannerVisible = showFooter && consent === null;
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -58,7 +61,7 @@ function AppContent() {
         <img src="/Untitled_design__10_-removebg-preview.png" alt="Tavo Skriptas Logo" />
       </Link>
 
-      {(isHome || isAbout || isProjects || isArticles || isPrivacy) && (
+      {(isHome || isAbout || isProjects || isArticles || isPrivacy || isCalculator) && (
         <BubbleMenu
           menuBg="rgba(232, 213, 196, 0.95)"
           menuContentColor="#2a1f15"
@@ -69,7 +72,11 @@ function AppContent() {
         />
       )}
 
-      <BgMusicToggle src="/Chain%20of%20Ghosted%20Blocks.mp3" consent={consent} />
+      <BgMusicToggle
+        src="/Chain%20of%20Ghosted%20Blocks.mp3"
+        consent={consent}
+        consentBannerVisible={consentBannerVisible}
+      />
 
       <Suspense fallback={<div className="route-loading">Kraunama...</div>}>
         <Routes>
@@ -184,12 +191,13 @@ function AppContent() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/skaiciuotuvas" element={<CalculatorPage />} />
         </Routes>
       </Suspense>
 
       {showFooter && <Footer />}
 
-      {showFooter && consent === null && (
+      {consentBannerVisible && (
         <CookieConsentBanner onAccept={(value) => setConsent(value)} />
       )}
     </div>

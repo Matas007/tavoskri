@@ -19,6 +19,13 @@ const DEFAULT_ITEMS = [
     hoverStyles: { bgColor: '#E8D5C4', textColor: '#2a1f15' }
   },
   {
+    label: 'skaičiuotuvas',
+    href: '/skaiciuotuvas',
+    ariaLabel: 'Skaičiuotuvas',
+    rotation: -8,
+    hoverStyles: { bgColor: '#D4A574', textColor: '#ffffff' }
+  },
+  {
     label: 'projektai',
     href: '/projects',
     ariaLabel: 'Projektai',
