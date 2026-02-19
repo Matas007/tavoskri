@@ -73,6 +73,146 @@
   border-top: 1px solid rgba(201, 168, 130, 0.3);
 }
 
+.projects-insights {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(201, 168, 130, 0.3);
+  text-align: left;
+}
+
+.projects-insights h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  background: linear-gradient(147deg, #E8D5C4 0%, #C9A882 38%, #D4A574 70%, #F4E8DB 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.9rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.projects-insights-lead {
+  margin: 0 0 1.6rem;
+  color: rgba(255, 255, 255, 0.77);
+  line-height: 1.7;
+  max-width: 920px;
+}
+
+.insight-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+
+.insight-kpi {
+  border: 1px solid rgba(201, 168, 130, 0.34);
+  border-radius: 14px;
+  background: rgba(26, 20, 14, 0.62);
+  padding: 0.7rem 0.75rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.kpi-value {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 800;
+  color: #f3e6d8;
+  line-height: 1.2;
+}
+
+.kpi-label {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.projects-insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.insight-card {
+  border: 1px solid rgba(201, 168, 130, 0.3);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(21, 16, 12, 0.55);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+
+.insight-card h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  color: #f3e6d8;
+}
+
+.insight-card p {
+  margin: 0.5rem 0 0.8rem;
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.insight-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.chart-medium .ts-chart-container,
+.ts-chart-container.chart-medium {
+  height: 220px;
+}
+
+.chart-short .ts-chart-container,
+.ts-chart-container.chart-short {
+  height: 220px;
+}
+
+.radial-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.radial-caption {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.25rem;
+}
+
+.insight-progress {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.9rem;
+}
+
+.insight-progress-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.insight-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9D7852 0%, #C9A882 100%);
+  transition: width 0.4s ease;
+}
+
+.insight-footnote {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .projects-demo {
   margin-top: 3rem;
   padding-top: 2.25rem;
@@ -359,6 +499,18 @@
     gap: 1.5rem;
   }
 
+  .projects-insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .insight-split {
+    grid-template-columns: 1fr;
+  }
+
+  .insight-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .project-card {
     padding: 1.75rem 1.5rem;
   }
@@ -411,6 +563,15 @@
   .projects-description {
     margin-top: 2rem;
     padding-top: 2rem;
+  }
+
+  .projects-insights {
+    margin-top: 2rem;
+    padding-top: 2rem;
+  }
+
+  .insight-kpis {
+    grid-template-columns: 1fr;
   }
 
   .project-card {
