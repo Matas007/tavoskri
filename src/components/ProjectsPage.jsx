@@ -1,16 +1,7 @@
-import TextType from './TextType';
 import SEO from './SEO';
 import './ProjectsPage.css';
 
 const ProjectsPage = () => {
-  const changingTexts = [
-    "informacijos rinkimą",
-    "specifikavimą",
-    "projektavimą",
-    "testavimą",
-    ", kad Jūsų projektas būtų sklandžiai įgyvendintas"
-  ];
-
   return (
     <>
       <SEO 
@@ -21,24 +12,6 @@ const ProjectsPage = () => {
       <div className="projects-page">
       <div className="projects-container">
         <h1 className="projects-title">Mūsų Projektai</h1>
-        
-        {/* Temporarily disabled typing section */}
-        {/*
-        <div className="projects-typing-container">
-          <span className="static-text">Atliekame </span>
-          <TextType 
-            as="span"
-            text={changingTexts}
-            typingSpeed={75}
-            pauseDuration={1500}
-            deletingSpeed={50}
-            showCursor
-            cursorCharacter="_"
-            loop={true}
-            className="projects-text-type"
-          />
-        </div>
-        */}
 
         <div className="projects-description">
           <h2>Kaip mes dirbame</h2>
@@ -73,6 +46,23 @@ const ProjectsPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="projects-demo" aria-label="Projektų demonstracija">
+          <h2>Demo versija pasibandymui</h2>
+          <p className="projects-demo-note">
+            Žemiau galite iškart pasibandyti mano kurtos svetainės demonstracinę versiją.
+          </p>
+          <div className="projects-demo-frame-wrap">
+            <iframe
+              title="Demo svetainė"
+              src="https://seagreen-dove-125684.hostingersite.com"
+              className="projects-demo-frame"
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="clipboard-write; fullscreen"
+            />
+          </div>
+        </section>
       </div>
     </div>
     </>

@@ -69,6 +69,47 @@
   border-top: 1px solid rgba(201, 168, 130, 0.3);
 }
 
+.projects-demo {
+  margin-top: 3rem;
+  padding-top: 2.25rem;
+  border-top: 1px solid rgba(201, 168, 130, 0.25);
+  text-align: left;
+}
+
+.projects-demo h2 {
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  color: #E8D5C4;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+.projects-demo-note {
+  margin: 0 0 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.projects-demo-frame-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 460px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 130, 0.35);
+  background: rgba(26, 21, 16, 0.65);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+
+.projects-demo-frame {
+  display: block;
+  width: 100%;
+  height: 560px;
+  border: 0;
+  background: #fff;
+}
+
 .projects-description h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
   color: #E8D5C4;
@@ -212,6 +253,14 @@
     padding: 1.75rem 1.5rem;
   }
 
+  .projects-demo-frame-wrap {
+    min-height: 380px;
+  }
+
+  .projects-demo-frame {
+    height: 460px;
+  }
+
   .project-card-logo {
     width: 45px;
     height: 45px;
@@ -253,6 +302,14 @@
     padding: 1.5rem 1.25rem;
   }
 
+  .projects-demo-frame-wrap {
+    min-height: 320px;
+  }
+
+  .projects-demo-frame {
+    height: 390px;
+  }
+
   .project-card-logo {
     width: 40px;
     height: 40px;
@@ -279,6 +336,14 @@
 @media (max-width: 360px) {
   .project-card {
     padding: 1.25rem 1rem;
+  }
+
+  .projects-demo-frame-wrap {
+    min-height: 280px;
+  }
+
+  .projects-demo-frame {
+    height: 330px;
   }
 
   .project-card-logo {
