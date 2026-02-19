@@ -64,8 +64,14 @@ function useCountUp(active, target, { duration = 1100, decimals = 0 } = {}) {
       return undefined;
     }
 
+    if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') {
+      setValue(target);
+      return undefined;
+    }
+
     let frameId = 0;
-    const start = performance.now();
+    const nowSource = typeof window.performance !== 'undefined' ? window.performance : Date;
+    const start = nowSource.now();
 
     const tick = (now) => {
       const progress = Math.min((now - start) / duration, 1);
@@ -90,6 +96,11 @@ export default function ProjectsInsightsSection() {
   useEffect(() => {
     const node = sectionRef.current;
     if (!node || hasEnteredViewport) return undefined;
+    if (typeof window === 'undefined') return undefined;
+    if (typeof window.IntersectionObserver === 'undefined') {
+      setHasEnteredViewport(true);
+      return undefined;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
