@@ -328,9 +328,11 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  counter-reset: calc-item;
 }
 
 .calc-breakdown-item {
+  counter-increment: calc-item;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
@@ -347,12 +349,20 @@
 
 .calc-breakdown-label {
   min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.calc-breakdown-label::before {
+  content: counter(calc-item) ") ";
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 700;
 }
 
 .calc-breakdown-val {
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .calc-note {
@@ -415,6 +425,17 @@
 
   .calc-input {
     width: 100%;
+  }
+
+  .calc-breakdown-item {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding: 0.58rem 0;
+  }
+
+  .calc-breakdown-val {
+    justify-self: start;
+    white-space: normal;
   }
 }
 
