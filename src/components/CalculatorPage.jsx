@@ -76,7 +76,14 @@ const SERVICE_OPTIONS = {
         title: 'Technika',
         options: [
           { id: 'cms_light', type: 'checkbox', label: 'Lengvas turinio valdymas (admin)', add: { min: 280, max: 900 }, weeks: [0, 2] },
-          { id: 'analytics_basic', type: 'checkbox', label: 'Bazinis matavimas (be marketing slapukų)', add: { min: 60, max: 160 }, weeks: [0, 0] }
+          {
+            id: 'analytics_basic',
+            type: 'checkbox',
+            label: 'Bazinis veikimo matavimas (be rinkodaros slapukų)',
+            note: 'Renkami tik techniniai / funkciniai įvykiai (pvz., formos pateikimas), be sekimo tarp svetainių.',
+            add: { min: 60, max: 160 },
+            weeks: [0, 0]
+          }
         ]
       }
     ]
@@ -385,13 +392,16 @@ export default function CalculatorPage({ embedded = false }) {
           checked={selected.has(opt.id)}
           onChange={() => toggle(opt.id)}
         />
-        <span>{opt.label}</span>
+        <span>
+          {opt.label}
+          {opt.note && <small className="calc-check-note">{opt.note}</small>}
+        </span>
       </label>
     );
   };
 
   const calculatorContent = (
-    <div className="calc-card uiverse-card">
+    <div className={`calc-card uiverse-card ${embedded ? 'calc-card-embedded' : ''}`}>
       <div className="card__border" aria-hidden="true" />
 
       <header className="calc-header">
