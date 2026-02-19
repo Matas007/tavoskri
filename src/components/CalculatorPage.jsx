@@ -239,6 +239,7 @@ export default function CalculatorPage({ embedded = false }) {
   const [serviceId, setServiceId] = useState('website');
   const [selected, setSelected] = useState(() => new Set());
   const [quantities, setQuantities] = useState(() => buildDefaultQuantities('website'));
+  const [step, setStep] = useState(0);
 
   const service = useMemo(() => SERVICES.find(s => s.id === serviceId) || SERVICES[0], [serviceId]);
   const optionGroups = useMemo(() => getOptionsForService(serviceId), [serviceId]);
@@ -338,129 +339,165 @@ export default function CalculatorPage({ embedded = false }) {
   const reset = () => {
     setSelected(new Set());
     setQuantities(buildDefaultQuantities(serviceId));
+    setStep(0);
+  };
+
+  const stepCount = optionGroups.length + 2; // 0: paslauga, 1..n: grupės, last: suvestinė
+  const isServiceStep = step === 0;
+  const isSummaryStep = step === stepCount - 1;
+  const currentGroup = !isServiceStep && !isSummaryStep ? optionGroups[step - 1] : null;
+  const progress = ((step + 1) / stepCount) * 100;
+
+  const nextStep = () => setStep(s => Math.min(s + 1, stepCount - 1));
+  const prevStep = () => setStep(s => Math.max(s - 1, 0));
+
+  const renderOption = (opt) => {
+    if (opt.type === 'number') {
+      const value = quantities[opt.id] ?? 0;
+      return (
+        <div key={opt.id} className="calc-number">
+          <div className="calc-number-label">{opt.label}</div>
+          <div className="calc-inline">
+            <input
+              type="number"
+              className="calc-input"
+              min={opt.min ?? 0}
+              max={opt.max ?? 999}
+              value={value}
+              onChange={(e) => {
+                const next = clampNumber(e.target.value, opt.min ?? 0, opt.max ?? 999);
+                setQuantities(prev => ({ ...prev, [opt.id]: next }));
+              }}
+            />
+            <span className="calc-inline-suffix">
+              {opt.hint || opt.unitLabel || ''}
+            </span>
+          </div>
+          {opt.note && <div className="calc-hint">{opt.note}</div>}
+        </div>
+      );
+    }
+
+    return (
+      <label key={opt.id} className="calc-check">
+        <input
+          type="checkbox"
+          checked={selected.has(opt.id)}
+          onChange={() => toggle(opt.id)}
+        />
+        <span>{opt.label}</span>
+      </label>
+    );
   };
 
   const calculatorContent = (
     <div className="calc-card uiverse-card">
       <div className="card__border" aria-hidden="true" />
 
-          <header className="calc-header">
-            <h1 className="calc-title">Paslaugų skaičiuotuvas</h1>
-            <p className="calc-subtitle">
-              Pasirink paslaugą ir norimas funkcijas – apačioje matysi preliminarų kainos intervalą.
-            </p>
-          </header>
+      <header className="calc-header">
+        <h1 className="calc-title">Paslaugų skaičiuotuvas</h1>
+        <p className="calc-subtitle">
+          Kliento kelionė: pasirinkimai pateikiami po vieną žingsnį, kad būtų aišku ir patogu.
+        </p>
+        <div className="calc-step-meta">Žingsnis {step + 1} iš {stepCount}</div>
+        <div className="calc-progress">
+          <span className="calc-progress-fill" style={{ width: `${progress}%` }} />
+        </div>
+      </header>
 
-          <section className="calc-grid">
-            <div className="calc-panel">
-              <div className="calc-field">
-                <label className="calc-label" htmlFor="service">Paslauga</label>
-                <select
-                  id="service"
-                  className="calc-select"
-                  value={serviceId}
-                  onChange={(e) => {
-                    const nextId = e.target.value;
-                    setServiceId(nextId);
-                    setSelected(new Set());
-                    setQuantities(buildDefaultQuantities(nextId));
-                  }}
-                >
-                  {SERVICES.map(s => (
-                    <option key={s.id} value={s.id}>{s.label}</option>
-                  ))}
-                </select>
-                <div className="calc-hint">{service.hint}</div>
-              </div>
-
-              <div className="calc-section-title">Funkcijos</div>
-
-              <div className="calc-options">
-                {optionGroups.map((group, gi) => (
-                  <div key={`${group.title}-${gi}`} className="calc-options-group">
-                    <div className="calc-options-group-title">{group.title}</div>
-                    {group.options.map((opt) => {
-                      if (opt.type === 'number') {
-                        const value = quantities[opt.id] ?? 0;
-                        return (
-                          <div key={opt.id} className="calc-number">
-                            <div className="calc-number-label">{opt.label}</div>
-                            <div className="calc-inline">
-                              <input
-                                type="number"
-                                className="calc-input"
-                                min={opt.min ?? 0}
-                                max={opt.max ?? 999}
-                                value={value}
-                                onChange={(e) => {
-                                  const next = clampNumber(e.target.value, opt.min ?? 0, opt.max ?? 999);
-                                  setQuantities(prev => ({ ...prev, [opt.id]: next }));
-                                }}
-                              />
-                              <span className="calc-inline-suffix">
-                                {opt.hint || opt.unitLabel || ''}
-                              </span>
-                            </div>
-                            {opt.note && <div className="calc-hint">{opt.note}</div>}
-                          </div>
-                        );
-                      }
-
-                      return (
-                        <label key={opt.id} className="calc-check">
-                          <input
-                            type="checkbox"
-                            checked={selected.has(opt.id)}
-                            onChange={() => toggle(opt.id)}
-                          />
-                          <span>{opt.label}</span>
-                        </label>
-                      );
-                    })}
-                  </div>
+      <section className="calc-step-card">
+        {isServiceStep && (
+          <>
+            <div className="calc-section-title">1. Kokios paslaugos reikia?</div>
+            <div className="calc-field">
+              <label className="calc-label" htmlFor="service">Paslauga</label>
+              <select
+                id="service"
+                className="calc-select"
+                value={serviceId}
+                onChange={(e) => {
+                  const nextId = e.target.value;
+                  setServiceId(nextId);
+                  setSelected(new Set());
+                  setQuantities(buildDefaultQuantities(nextId));
+                }}
+              >
+                {SERVICES.map(s => (
+                  <option key={s.id} value={s.id}>{s.label}</option>
                 ))}
-              </div>
+              </select>
+              <div className="calc-hint">{service.hint}</div>
+            </div>
+          </>
+        )}
 
-              <div className="calc-actions">
-                <button type="button" className="calc-btn calc-btn-secondary" onClick={reset}>
-                  Išvalyti
-                </button>
-                <Link to="/booking" className="calc-btn calc-btn-primary">
-                  Susiskambinam
-                </Link>
+        {currentGroup && (
+          <>
+            <div className="calc-section-title">{currentGroup.title}</div>
+            <div className="calc-options-group calc-options-group-single">
+              {currentGroup.options.map(renderOption)}
+            </div>
+          </>
+        )}
+
+        {isSummaryStep && (
+          <div className="calc-summary">
+            <div className="calc-summary-card">
+              <div className="calc-summary-kicker">Preliminariai</div>
+              <div className="calc-summary-price">
+                {eur(breakdown.min)} – {eur(breakdown.max)}
+              </div>
+              <div className="calc-summary-time">
+                {serviceId === 'maintenance'
+                  ? `Mėn.: ~${eur(breakdown.monthly)} / mėn. • Metinis: ~${eur(breakdown.annual)} / metus (−5%)`
+                  : `Terminas: ~${breakdown.weeksMin}–${breakdown.weeksMax} sav.`}
               </div>
             </div>
 
-            <aside className="calc-summary">
-              <div className="calc-summary-card">
-                <div className="calc-summary-kicker">Preliminariai</div>
-                <div className="calc-summary-price">
-                  {eur(breakdown.min)} – {eur(breakdown.max)}
-                </div>
-                <div className="calc-summary-time">
-                  {serviceId === 'maintenance'
-                    ? `Mėn.: ~${eur(breakdown.monthly)} / mėn. • Metinis: ~${eur(breakdown.annual)} / metus (−5%)`
-                    : `Terminas: ~${breakdown.weeksMin}–${breakdown.weeksMax} sav.`}
-                </div>
+            <div className="calc-breakdown">
+              <div className="calc-breakdown-title">Išklotinė</div>
+              <ul className="calc-breakdown-list">
+                {breakdown.items.map((it, idx) => (
+                  <li key={idx} className="calc-breakdown-item">
+                    <span className="calc-breakdown-label">{it.label}</span>
+                    <span className="calc-breakdown-val">{eur(it.min)}–{eur(it.max)}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="calc-note">
+                Tai orientacinis įvertis. Galutinė kaina priklauso nuo apimties, turinio, integracijų
+                sudėtingumo ir terminų.
               </div>
+            </div>
 
-              <div className="calc-breakdown">
-                <div className="calc-breakdown-title">Išklotinė</div>
-                <ul className="calc-breakdown-list">
-                  {breakdown.items.map((it, idx) => (
-                    <li key={idx} className="calc-breakdown-item">
-                      <span className="calc-breakdown-label">{it.label}</span>
-                      <span className="calc-breakdown-val">{eur(it.min)}–{eur(it.max)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="calc-note">
-                  Tai orientacinis įvertis. Galutinė kaina priklauso nuo apimties, turinio, integracijų
-                  sudėtingumo ir terminų.
-                </div>
-              </div>
-            </aside>
-          </section>
+            <div className="calc-actions">
+              <button type="button" className="calc-btn calc-btn-secondary" onClick={reset}>
+                Pradėti iš naujo
+              </button>
+              <Link to="/booking" className="calc-btn calc-btn-primary">
+                Susiskambinam
+              </Link>
+            </div>
+          </div>
+        )}
+      </section>
+
+      <div className="calc-nav">
+        <button
+          type="button"
+          className="calc-btn calc-btn-secondary"
+          onClick={prevStep}
+          disabled={step === 0}
+        >
+          Atgal
+        </button>
+
+        {!isSummaryStep && (
+          <button type="button" className="calc-btn calc-btn-primary" onClick={nextStep}>
+            {step === stepCount - 2 ? 'Peržiūrėti suvestinę' : 'Toliau'}
+          </button>
+        )}
+      </div>
 
       {!embedded && (
         <div className="calc-back">
