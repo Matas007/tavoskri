@@ -26,13 +26,6 @@ const DEFAULT_ITEMS = [
     hoverStyles: { bgColor: '#9D7852', textColor: '#ffffff' }
   },
   {
-    label: 'skaičiuotuvas',
-    href: '/skaiciuotuvas',
-    ariaLabel: 'Skaičiuotuvas',
-    rotation: -8,
-    hoverStyles: { bgColor: '#D4A574', textColor: '#ffffff' }
-  },
-  {
     label: 'straipsniai',
     href: '/articles',
     ariaLabel: 'Straipsniai',

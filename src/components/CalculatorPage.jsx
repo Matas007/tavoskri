@@ -235,7 +235,7 @@ function buildDefaultQuantities(serviceId) {
   return q;
 }
 
-export default function CalculatorPage() {
+export default function CalculatorPage({ embedded = false }) {
   const [serviceId, setServiceId] = useState('website');
   const [selected, setSelected] = useState(() => new Set());
   const [quantities, setQuantities] = useState(() => buildDefaultQuantities('website'));
@@ -340,17 +340,9 @@ export default function CalculatorPage() {
     setQuantities(buildDefaultQuantities(serviceId));
   };
 
-  return (
-    <>
-      <SEO
-        title="Skaičiuotuvas - Tavo Skriptas"
-        description="Paslaugų skaičiuotuvas: pasirinkite paslaugą ir funkcijas, gaukite preliminarų kainos įvertį."
-        keywords="skaičiuotuvas, paslaugų kaina, internetinių svetainių kūrimas, web aplikacija, SEO, auditas, Tavo Skriptas"
-      />
-
-      <main className="calc-page">
-        <div className="calc-card uiverse-card">
-          <div className="card__border" aria-hidden="true" />
+  const calculatorContent = (
+    <div className="calc-card uiverse-card">
+      <div className="card__border" aria-hidden="true" />
 
           <header className="calc-header">
             <h1 className="calc-title">Paslaugų skaičiuotuvas</h1>
@@ -470,10 +462,27 @@ export default function CalculatorPage() {
             </aside>
           </section>
 
-          <div className="calc-back">
-            <Link to="/" className="calc-back-link">← Grįžti į pradžią</Link>
-          </div>
+      {!embedded && (
+        <div className="calc-back">
+          <Link to="/" className="calc-back-link">← Grįžti į pradžią</Link>
         </div>
+      )}
+    </div>
+  );
+
+  if (embedded) {
+    return <section className="calc-embedded">{calculatorContent}</section>;
+  }
+
+  return (
+    <>
+      <SEO
+        title="Skaičiuotuvas - Tavo Skriptas"
+        description="Paslaugų skaičiuotuvas: pasirinkite paslaugą ir funkcijas, gaukite preliminarų kainos įvertį."
+        keywords="skaičiuotuvas, paslaugų kaina, internetinių svetainių kūrimas, web aplikacija, SEO, auditas, Tavo Skriptas"
+      />
+      <main className="calc-page">
+        {calculatorContent}
       </main>
     </>
   );

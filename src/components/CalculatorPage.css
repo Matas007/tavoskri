@@ -9,6 +9,10 @@
   align-items: flex-start;
 }
 
+.calc-embedded {
+  margin-top: 3rem;
+}
+
 .calc-card {
   width: min(100%, 1100px);
 }

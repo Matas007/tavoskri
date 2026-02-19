@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import SEO from './SEO';
+import CalculatorPage from './CalculatorPage';
 import './ProjectsPage.css';
 
 const ProjectsPage = () => {
@@ -100,6 +101,8 @@ const ProjectsPage = () => {
             </div>
           </div>
         </div>
+
+        <CalculatorPage embedded />
       </div>
     </div>
     </>

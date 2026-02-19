@@ -17,7 +17,6 @@ const BookingForm = lazy(() => import('./components/BookingForm'));
 const AdminLogin = lazy(() => import('./components/AdminLogin'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
-const CalculatorPage = lazy(() => import('./components/CalculatorPage'));
 
 function AppContent() {
   const location = useLocation();
@@ -27,8 +26,7 @@ function AppContent() {
   const isProjects = location.pathname === '/projects';
   const isArticles = location.pathname === '/articles';
   const isPrivacy = location.pathname === '/privacy';
-  const isCalculator = location.pathname === '/skaiciuotuvas';
-  const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy || isCalculator;
+  const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy;
   const consentBannerVisible = showFooter && consent === null;
 
   useEffect(() => {
@@ -61,7 +59,7 @@ function AppContent() {
         <img src="/Untitled_design__10_-removebg-preview.png" alt="Tavo Skriptas Logo" />
       </Link>
 
-      {(isHome || isAbout || isProjects || isArticles || isPrivacy || isCalculator) && (
+      {(isHome || isAbout || isProjects || isArticles || isPrivacy) && (
         <BubbleMenu
           menuBg="rgba(232, 213, 196, 0.95)"
           menuContentColor="#2a1f15"
@@ -191,7 +189,6 @@ function AppContent() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/skaiciuotuvas" element={<CalculatorPage />} />
         </Routes>
       </Suspense>
 
