@@ -21,7 +21,8 @@
 }
 
 .calc-card-embedded {
-  width: min(100%, 680px);
+  width: fit-content;
+  max-width: min(100%, 680px);
 }
 
 .calc-card.uiverse-card {
@@ -102,6 +103,9 @@
   border-radius: 18px;
   border: 1px solid rgba(201, 168, 130, 0.28);
   background: rgba(26, 21, 16, 0.38);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .calc-summary {
@@ -185,9 +189,11 @@
 
 .calc-options-group-single {
   margin-top: 0.75rem;
-  max-width: 620px;
-  margin-left: auto;
-  margin-right: auto;
+  display: inline-flex;
+  width: fit-content;
+  min-width: 520px;
+  max-width: 100%;
+  align-self: flex-start;
 }
 
 .calc-options-group-title {
@@ -385,6 +391,11 @@
 
   .calc-options {
     grid-template-columns: 1fr;
+  }
+
+  .calc-options-group-single {
+    min-width: 0;
+    width: 100%;
   }
 
   .calc-nav {

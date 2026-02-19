@@ -52,7 +52,6 @@ const SERVICE_OPTIONS = {
             id: 'pages_extra',
             type: 'number',
             label: 'Papildomi puslapiai',
-            hint: 'virš 3 psl.',
             min: 0,
             max: 30,
             unitLabel: 'psl.',
