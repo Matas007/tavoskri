@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import SEO from './SEO';
 import CalculatorPage from './CalculatorPage';
-import ProjectsInsightsSection from './ProjectsInsightsSection';
 import './ProjectsPage.css';
 
 const ProjectsPage = () => {
@@ -102,8 +101,6 @@ const ProjectsPage = () => {
             </div>
           </div>
         </div>
-
-        <ProjectsInsightsSection />
 
         <CalculatorPage embedded />
       </div>
