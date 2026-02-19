@@ -102,6 +102,82 @@
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
 }
 
+.projects-demo-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid rgba(201, 168, 130, 0.2);
+  background: linear-gradient(180deg, rgba(42, 31, 21, 0.98), rgba(30, 22, 15, 0.94));
+}
+
+.projects-demo-window-dots {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.projects-demo-window-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.projects-demo-window-dots .dot.red { background: #ff5f56; }
+.projects-demo-window-dots .dot.yellow { background: #ffbd2e; }
+.projects-demo-window-dots .dot.green { background: #27c93f; }
+
+.projects-demo-tabs {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.projects-demo-tab {
+  border: 1px solid rgba(201, 168, 130, 0.3);
+  background: rgba(26, 21, 16, 0.45);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.projects-demo-tab:hover {
+  border-color: rgba(201, 168, 130, 0.75);
+  color: #fff;
+}
+
+.projects-demo-tab.active {
+  background: linear-gradient(0deg, #9D7852 0%, #C9A882 100%);
+  border-color: rgba(201, 168, 130, 0.9);
+  color: #2a1f15;
+}
+
+.projects-demo-live {
+  color: rgba(232, 213, 196, 0.95);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.projects-demo-live::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  margin-right: 0.45rem;
+  background: #39e38e;
+  box-shadow: 0 0 10px rgba(57, 227, 142, 0.8);
+}
+
 .projects-demo-frame {
   display: block;
   width: 100%;
@@ -257,6 +333,11 @@
     min-height: 380px;
   }
 
+  .projects-demo-topbar {
+    padding: 0.5rem 0.6rem;
+    gap: 0.45rem;
+  }
+
   .projects-demo-frame {
     height: 460px;
   }
@@ -304,6 +385,19 @@
 
   .projects-demo-frame-wrap {
     min-height: 320px;
+  }
+
+  .projects-demo-window-dots {
+    display: none;
+  }
+
+  .projects-demo-live {
+    font-size: 0.76rem;
+  }
+
+  .projects-demo-tab {
+    font-size: 0.78rem;
+    padding: 0.3rem 0.6rem;
   }
 
   .projects-demo-frame {
