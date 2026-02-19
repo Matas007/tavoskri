@@ -220,6 +220,7 @@ function getOptionsForService(serviceId) {
 }
 
 function clampNumber(value, min, max) {
+  if (value === '') return '';
   const n = Number(value);
   if (Number.isNaN(n)) return min;
   return Math.max(min, Math.min(max, n));
@@ -358,6 +359,26 @@ export default function CalculatorPage({ embedded = false }) {
   const nextStep = () => setStep(s => Math.min(s + 1, stepCount - 1));
   const prevStep = () => setStep(s => Math.max(s - 1, 0));
 
+  const handleNumberChange = (opt, rawValue) => {
+    // Leidžiam vartotojui laikinai palikti tuščią lauką, kad įvedimas "nešokinėtų".
+    if (rawValue === '') {
+      setQuantities(prev => ({ ...prev, [opt.id]: '' }));
+      return;
+    }
+    const onlyDigits = rawValue.replace(/[^\d]/g, '');
+    setQuantities(prev => ({ ...prev, [opt.id]: onlyDigits === '' ? '' : Number(onlyDigits) }));
+  };
+
+  const handleNumberBlur = (opt) => {
+    setQuantities(prev => {
+      const current = prev[opt.id];
+      const fallback = typeof opt.defaultValue !== 'undefined' ? opt.defaultValue : (opt.min ?? 0);
+      const normalized = current === '' ? fallback : current;
+      const clamped = clampNumber(normalized, opt.min ?? 0, opt.max ?? 999);
+      return { ...prev, [opt.id]: clamped };
+    });
+  };
+
   const renderOption = (opt) => {
     if (opt.type === 'number') {
       const value = quantities[opt.id] ?? 0;
@@ -371,10 +392,8 @@ export default function CalculatorPage({ embedded = false }) {
               min={opt.min ?? 0}
               max={opt.max ?? 999}
               value={value}
-              onChange={(e) => {
-                const next = clampNumber(e.target.value, opt.min ?? 0, opt.max ?? 999);
-                setQuantities(prev => ({ ...prev, [opt.id]: next }));
-              }}
+              onChange={(e) => handleNumberChange(opt, e.target.value)}
+              onBlur={() => handleNumberBlur(opt)}
             />
             <span className="calc-inline-suffix">
               {opt.hint || opt.unitLabel || ''}
