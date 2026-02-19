@@ -3,11 +3,6 @@
   height: 280px;
 }
 
-.ts-chart-container-fallback {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
 .ts-chart-tooltip {
   min-width: 180px;
   border: 1px solid rgba(201, 168, 130, 0.4);

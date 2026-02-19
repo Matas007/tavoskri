@@ -1,23 +1,7 @@
-import { cloneElement, isValidElement } from 'react';
 import { Legend, ResponsiveContainer, Tooltip } from 'recharts';
 import './chart.css';
 
 export function ChartContainer({ className = '', children }) {
-  const hasResizeObserver =
-    typeof window !== 'undefined' && typeof window.ResizeObserver !== 'undefined';
-
-  if (!hasResizeObserver) {
-    const fallbackChild = isValidElement(children)
-      ? cloneElement(children, { width: 720, height: 280 })
-      : children;
-
-    return (
-      <div className={`ts-chart-container ts-chart-container-fallback ${className}`}>
-        {fallbackChild}
-      </div>
-    );
-  }
-
   return (
     <div className={`ts-chart-container ${className}`}>
       <ResponsiveContainer width="100%" height="100%">
