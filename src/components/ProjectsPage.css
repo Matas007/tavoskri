@@ -18,7 +18,11 @@
 .projects-title {
   font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 800;
-  color: #E8D5C4;
+  background: linear-gradient(118deg, #F5E9DA 0%, #E8D5C4 28%, #D4A574 56%, #C9A882 78%, #F3E6D8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 3rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5),
                0 0 20px rgba(232, 213, 196, 0.3);
@@ -78,7 +82,11 @@
 
 .projects-demo h2 {
   font-size: clamp(1.35rem, 2.6vw, 1.85rem);
-  color: #E8D5C4;
+  background: linear-gradient(132deg, #F1E2CF 0%, #D4A574 34%, #E8D5C4 67%, #C9A882 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   margin: 0 0 0.6rem;
   font-weight: 700;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.45);
@@ -188,7 +196,11 @@
 
 .projects-description h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
-  color: #E8D5C4;
+  background: linear-gradient(145deg, #E8D5C4 0%, #C9A882 42%, #D4A574 72%, #F4E8DB 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 2rem;
   font-weight: 700;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
@@ -252,12 +264,34 @@
 
 .project-card h3 {
   font-size: 1.5rem;
-  color: #f9f2e9;
+  background: linear-gradient(138deg, #F9F2E9 0%, #E8D5C4 46%, #D4A574 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   margin: 0;
   font-weight: 600;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
   width: 100%;
   word-wrap: break-word;
+}
+
+.project-card:nth-child(2) h3 {
+  background: linear-gradient(152deg, #F6EBDD 0%, #C9A882 40%, #E8D5C4 72%, #D4A574 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.project-card:nth-child(3) h3 {
+  background: linear-gradient(121deg, #E8D5C4 0%, #D4A574 35%, #F6EBDD 68%, #C9A882 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.project-card:nth-child(4) h3 {
+  background: linear-gradient(166deg, #F3E6D8 0%, #C9A882 30%, #D4A574 64%, #E8D5C4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .project-card p {

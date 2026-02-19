@@ -33,7 +33,7 @@ const ProjectsPage = () => {
         <section className="projects-demo" aria-label="Projektų demonstracija">
           <h2>Demo versija pasibandymui</h2>
           <p className="projects-demo-note">
-            Pasirink svetainę ir žemiau matysi gyvą demonstraciją (iframe).
+            Pasirinkite svetainę ir pasibandykite patys - čia ir dabar!
           </p>
           <div className="projects-demo-frame-wrap">
             <div className="projects-demo-topbar" role="group" aria-label="Demo svetainių pasirinkimas">
