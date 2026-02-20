@@ -23,9 +23,10 @@
 .calc-card-embedded {
   width: fit-content;
   max-width: min(100%, 680px);
-  min-height: clamp(430px, 52vh, 560px);
+  height: clamp(430px, 52vh, 560px);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
 }
 
 .calc-card.uiverse-card {
@@ -404,7 +405,7 @@
   }
 
   .calc-card-embedded {
-    min-height: auto;
+    height: auto;
     display: flex;
     grid-template-rows: none;
   }
