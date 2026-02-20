@@ -424,9 +424,6 @@ export default function CalculatorPage({ embedded = false }) {
 
       <header className="calc-header">
         <h1 className="calc-title">Paslaugų skaičiuotuvas</h1>
-        <p className="calc-subtitle">
-          Kliento kelionė: pasirinkimai pateikiami po vieną žingsnį, kad būtų aišku ir patogu.
-        </p>
         <div className="calc-step-meta">Žingsnis {step + 1} iš {stepCount}</div>
         <div className="calc-progress">
           <span className="calc-progress-fill" style={{ width: `${progress}%` }} />

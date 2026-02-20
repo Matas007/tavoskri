@@ -52,9 +52,6 @@ export default function CookieConsentBanner({ onAccept }) {
           <Link to="/privacy" className="cookie-consent-link">Privatumo politikoje</Link>.
         </p>
         <div className="cookie-consent-actions">
-          <Link to="/privacy" className="cookie-consent-btn cookie-consent-btn-secondary">
-            Politika
-          </Link>
           <button
             type="button"
             className="cookie-consent-btn cookie-consent-btn-secondary"
