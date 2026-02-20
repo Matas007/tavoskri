@@ -249,7 +249,7 @@ export default function CalculatorPage({ embedded = false }) {
   const [selected, setSelected] = useState(() => new Set());
   const [quantities, setQuantities] = useState(() => buildDefaultQuantities('website'));
   const [step, setStep] = useState(0);
-  const [stageMinHeight, setStageMinHeight] = useState(0);
+  const [stageHeight, setStageHeight] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     loop: false,
@@ -379,19 +379,17 @@ export default function CalculatorPage({ embedded = false }) {
   }, [emblaApi]);
 
   useEffect(() => {
-    const measure = () => {
-      const heights = slidesRef.current
-        .map((el) => (el ? el.scrollHeight : 0))
-        .filter((n) => n > 0);
-      if (!heights.length) return;
-      setStageMinHeight(Math.max(...heights));
+    const measureCurrent = () => {
+      const currentSlide = slidesRef.current[step];
+      if (!currentSlide) return;
+      setStageHeight(currentSlide.scrollHeight);
     };
 
-    measure();
+    measureCurrent();
     if (typeof window === 'undefined') return undefined;
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [serviceId, selected, quantities, stepCount]);
+    window.addEventListener('resize', measureCurrent);
+    return () => window.removeEventListener('resize', measureCurrent);
+  }, [step, serviceId, selected, quantities]);
 
   const handleNumberChange = (opt, rawValue) => {
     // Leidžiam vartotojui laikinai palikti tuščią lauką, kad įvedimas "nešokinėtų".
@@ -465,7 +463,7 @@ export default function CalculatorPage({ embedded = false }) {
         </div>
       </header>
 
-      <section className="calc-step-card" style={{ minHeight: stageMinHeight || undefined }}>
+      <section className="calc-step-card" style={{ height: stageHeight || undefined }}>
         <div className="calc-embla" ref={emblaRef}>
           <div className="calc-embla-container">
             {Array.from({ length: stepCount }).map((_, slideIndex) => {
