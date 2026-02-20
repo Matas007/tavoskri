@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useEmblaCarousel from 'embla-carousel-react';
+import { motion } from 'framer-motion';
 import SEO from './SEO';
 import './CalculatorPage.css';
 
@@ -247,6 +249,11 @@ export default function CalculatorPage({ embedded = false }) {
   const [selected, setSelected] = useState(() => new Set());
   const [quantities, setQuantities] = useState(() => buildDefaultQuantities('website'));
   const [step, setStep] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: 'start',
+    loop: false,
+    watchDrag: false
+  });
 
   const service = useMemo(() => SERVICES.find(s => s.id === serviceId) || SERVICES[0], [serviceId]);
   const optionGroups = useMemo(() => getOptionsForService(serviceId), [serviceId]);
@@ -352,11 +359,27 @@ export default function CalculatorPage({ embedded = false }) {
   const stepCount = optionGroups.length + 2; // 0: paslauga, 1..n: grupės, last: suvestinė
   const isServiceStep = step === 0;
   const isSummaryStep = step === stepCount - 1;
-  const currentGroup = !isServiceStep && !isSummaryStep ? optionGroups[step - 1] : null;
   const progress = ((step + 1) / stepCount) * 100;
 
   const nextStep = () => setStep(s => Math.min(s + 1, stepCount - 1));
   const prevStep = () => setStep(s => Math.max(s - 1, 0));
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollTo(step, true);
+  }, [emblaApi, step]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      const idx = emblaApi.selectedScrollSnap();
+      setStep(idx);
+    };
+    emblaApi.on('select', onSelect);
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
 
   const handleNumberChange = (opt, rawValue) => {
     // Leidžiam vartotojui laikinai palikti tuščią lauką, kad įvedimas "nešokinėtų".
@@ -431,80 +454,102 @@ export default function CalculatorPage({ embedded = false }) {
       </header>
 
       <section className="calc-step-card">
-        {isServiceStep && (
-          <>
-            <div className="calc-section-title">1. Kokios paslaugos reikia?</div>
-            <div className="calc-field">
-              <label className="calc-label" htmlFor="service">Paslauga</label>
-              <select
-                id="service"
-                className="calc-select"
-                value={serviceId}
-                onChange={(e) => {
-                  const nextId = e.target.value;
-                  setServiceId(nextId);
-                  setSelected(new Set());
-                  setQuantities(buildDefaultQuantities(nextId));
-                }}
-              >
-                {SERVICES.map(s => (
-                  <option key={s.id} value={s.id}>{s.label}</option>
-                ))}
-              </select>
-              <div className="calc-hint">{service.hint}</div>
-            </div>
-          </>
-        )}
+        <div className="calc-embla" ref={emblaRef}>
+          <div className="calc-embla-container">
+            {Array.from({ length: stepCount }).map((_, slideIndex) => {
+              const slideIsService = slideIndex === 0;
+              const slideIsSummary = slideIndex === stepCount - 1;
+              const slideGroup = !slideIsService && !slideIsSummary ? optionGroups[slideIndex - 1] : null;
 
-        {currentGroup && (
-          <>
-            <div className="calc-section-title">{currentGroup.title}</div>
-            <div className="calc-options-group calc-options-group-single">
-              {currentGroup.options.map(renderOption)}
-            </div>
-          </>
-        )}
+              return (
+                <div className="calc-embla-slide" key={`slide-${slideIndex}`}>
+                  <motion.div
+                    className="calc-slide-inner"
+                    initial={false}
+                    animate={{ opacity: slideIndex === step ? 1 : 0.88, y: slideIndex === step ? 0 : 6 }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                  >
+                    {slideIsService && (
+                      <>
+                        <div className="calc-section-title">1. Kokios paslaugos reikia?</div>
+                        <div className="calc-field">
+                          <label className="calc-label" htmlFor="service">Paslauga</label>
+                          <select
+                            id="service"
+                            className="calc-select"
+                            value={serviceId}
+                            onChange={(e) => {
+                              const nextId = e.target.value;
+                              setServiceId(nextId);
+                              setSelected(new Set());
+                              setQuantities(buildDefaultQuantities(nextId));
+                              setStep(0);
+                            }}
+                          >
+                            {SERVICES.map(s => (
+                              <option key={s.id} value={s.id}>{s.label}</option>
+                            ))}
+                          </select>
+                          <div className="calc-hint">{service.hint}</div>
+                        </div>
+                      </>
+                    )}
 
-        {isSummaryStep && (
-          <div className="calc-summary">
-            <div className="calc-summary-card">
-              <div className="calc-summary-kicker">Preliminariai</div>
-              <div className="calc-summary-price">
-                {eur(breakdown.min)} – {eur(breakdown.max)}
-              </div>
-              <div className="calc-summary-time">
-                {serviceId === 'maintenance'
-                  ? `Mėn.: ~${eur(breakdown.monthly)} / mėn. • Metinis: ~${eur(breakdown.annual)} / metus (−5%)`
-                  : `Terminas: ~${breakdown.weeksMin}–${breakdown.weeksMax} sav.`}
-              </div>
-            </div>
+                    {slideGroup && (
+                      <>
+                        <div className="calc-section-title">{slideGroup.title}</div>
+                        <div className="calc-options-group calc-options-group-single">
+                          {slideGroup.options.map(renderOption)}
+                        </div>
+                      </>
+                    )}
 
-            <div className="calc-breakdown">
-              <div className="calc-breakdown-title">Išklotinė</div>
-              <ul className="calc-breakdown-list">
-                {breakdown.items.map((it, idx) => (
-                  <li key={idx} className="calc-breakdown-item">
-                    <span className="calc-breakdown-label">{it.label}</span>
-                    <span className="calc-breakdown-val">{eur(it.min)}–{eur(it.max)}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="calc-note">
-                Tai orientacinis įvertis. Galutinė kaina priklauso nuo apimties, turinio, integracijų
-                sudėtingumo ir terminų.
-              </div>
-            </div>
+                    {slideIsSummary && (
+                      <div className="calc-summary">
+                        <div className="calc-summary-card">
+                          <div className="calc-summary-kicker">Preliminariai</div>
+                          <div className="calc-summary-price">
+                            {eur(breakdown.min)} – {eur(breakdown.max)}
+                          </div>
+                          <div className="calc-summary-time">
+                            {serviceId === 'maintenance'
+                              ? `Mėn.: ~${eur(breakdown.monthly)} / mėn. • Metinis: ~${eur(breakdown.annual)} / metus (−5%)`
+                              : `Terminas: ~${breakdown.weeksMin}–${breakdown.weeksMax} sav.`}
+                          </div>
+                        </div>
 
-            <div className="calc-actions">
-              <button type="button" className="calc-btn calc-btn-secondary" onClick={reset}>
-                Pradėti iš naujo
-              </button>
-              <Link to="/booking" className="calc-btn calc-btn-primary">
-                Susiskambinam
-              </Link>
-            </div>
+                        <div className="calc-breakdown">
+                          <div className="calc-breakdown-title">Išklotinė</div>
+                          <ul className="calc-breakdown-list">
+                            {breakdown.items.map((it, idx) => (
+                              <li key={idx} className="calc-breakdown-item">
+                                <span className="calc-breakdown-label">{it.label}</span>
+                                <span className="calc-breakdown-val">{eur(it.min)}–{eur(it.max)}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="calc-note">
+                            Tai orientacinis įvertis. Galutinė kaina priklauso nuo apimties, turinio, integracijų
+                            sudėtingumo ir terminų.
+                          </div>
+                        </div>
+
+                        <div className="calc-actions">
+                          <button type="button" className="calc-btn calc-btn-secondary" onClick={reset}>
+                            Pradėti iš naujo
+                          </button>
+                          <Link to="/booking" className="calc-btn calc-btn-primary">
+                            Susiskambinam
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
-        )}
+        </div>
       </section>
 
       <div className="calc-nav">
