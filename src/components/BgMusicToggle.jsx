@@ -30,6 +30,7 @@ const deleteCookie = (name) => {
 
 export default function BgMusicToggle({ src, consent, consentBannerVisible = false }) {
   const audioRef = useRef(null);
+  const srcRef = useRef(src);
   const initialEnabled = useMemo(() => {
     // Jei vartotojas atmetė – muzika pagal nutylėjimą neįjungta.
     if (consent === 'rejected') return false;
@@ -48,9 +49,41 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
   const [enabled, setEnabled] = useState(initialEnabled);
   const [needsUnlock, setNeedsUnlock] = useState(initialEnabled);
 
+  useEffect(() => {
+    srcRef.current = src;
+  }, [src]);
+
+  const clearMediaSession = () => {
+    if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.metadata = null;
+      navigator.mediaSession.playbackState = 'none';
+      navigator.mediaSession.setActionHandler('play', null);
+      navigator.mediaSession.setActionHandler('pause', null);
+      navigator.mediaSession.setActionHandler('stop', null);
+      navigator.mediaSession.setActionHandler('seekbackward', null);
+      navigator.mediaSession.setActionHandler('seekforward', null);
+      navigator.mediaSession.setActionHandler('seekto', null);
+      navigator.mediaSession.setActionHandler('previoustrack', null);
+      navigator.mediaSession.setActionHandler('nexttrack', null);
+    } catch (_) {
+      // Kai kuriose naršyklėse dalis handler'ių gali būti nepalaikomi.
+    }
+  };
+
+  const ensureAudioSource = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!audio.src || audio.getAttribute('src') !== srcRef.current) {
+      audio.src = srcRef.current;
+      audio.load();
+    }
+  };
+
   const playNow = () => {
     const audio = audioRef.current;
     if (!audio) return Promise.resolve(false);
+    ensureAudioSource();
     audio.volume = 0.22;
     // Svarbu: mobile naršyklėse play() turi būti iškviestas per user gesture.
     return audio
@@ -66,11 +99,21 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
     audio.currentTime = 0;
   };
 
+  const hardStop = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+    audio.removeAttribute('src');
+    audio.load();
+    clearMediaSession();
+  };
+
   // Sustabdom muziką, kai vartotojas palieka puslapį/tab'ą (kad neliktų groti fone).
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return undefined;
 
-    const stop = () => pauseNow();
+    const stop = () => hardStop();
 
     const onVisibility = () => {
       if (document.hidden) stop();
@@ -95,7 +138,7 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
       deleteCookie(PREF_COOKIE);
       setEnabled(false);
       setNeedsUnlock(false);
-      pauseNow();
+      hardStop();
     }
   }, [consent]);
 
@@ -109,7 +152,7 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
     }
 
     if (!enabled) {
-      pauseNow();
+      hardStop();
       return;
     }
   }, [enabled, consent]);
@@ -167,7 +210,7 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
                 // bandome iškart (nes tai user gesture)
                 playNow().then((ok) => ok && setNeedsUnlock(false));
               } else {
-                pauseNow();
+                hardStop();
                 setNeedsUnlock(false);
               }
             }}
@@ -188,7 +231,7 @@ export default function BgMusicToggle({ src, consent, consentBannerVisible = fal
             setNeedsUnlock(true);
             playNow().then((ok) => ok && setNeedsUnlock(false));
           } else {
-            pauseNow();
+            hardStop();
             setNeedsUnlock(false);
           }
         }}
