@@ -23,7 +23,7 @@
 .calc-card-embedded {
   width: fit-content;
   max-width: min(100%, 680px);
-  min-height: clamp(540px, 62vh, 700px);
+  min-height: clamp(430px, 52vh, 560px);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
 }
