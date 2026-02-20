@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'framer-motion';
@@ -249,11 +249,13 @@ export default function CalculatorPage({ embedded = false }) {
   const [selected, setSelected] = useState(() => new Set());
   const [quantities, setQuantities] = useState(() => buildDefaultQuantities('website'));
   const [step, setStep] = useState(0);
+  const [stageMinHeight, setStageMinHeight] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     loop: false,
     watchDrag: false
   });
+  const slidesRef = useRef([]);
 
   const service = useMemo(() => SERVICES.find(s => s.id === serviceId) || SERVICES[0], [serviceId]);
   const optionGroups = useMemo(() => getOptionsForService(serviceId), [serviceId]);
@@ -371,15 +373,25 @@ export default function CalculatorPage({ embedded = false }) {
 
   useEffect(() => {
     if (!emblaApi) return;
-    const onSelect = () => {
-      const idx = emblaApi.selectedScrollSnap();
-      setStep(idx);
-    };
+    const onSelect = () => setStep(emblaApi.selectedScrollSnap());
     emblaApi.on('select', onSelect);
-    return () => {
-      emblaApi.off('select', onSelect);
-    };
+    return () => emblaApi.off('select', onSelect);
   }, [emblaApi]);
+
+  useEffect(() => {
+    const measure = () => {
+      const heights = slidesRef.current
+        .map((el) => (el ? el.scrollHeight : 0))
+        .filter((n) => n > 0);
+      if (!heights.length) return;
+      setStageMinHeight(Math.max(...heights));
+    };
+
+    measure();
+    if (typeof window === 'undefined') return undefined;
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [serviceId, selected, quantities, stepCount]);
 
   const handleNumberChange = (opt, rawValue) => {
     // Leidžiam vartotojui laikinai palikti tuščią lauką, kad įvedimas "nešokinėtų".
@@ -453,7 +465,7 @@ export default function CalculatorPage({ embedded = false }) {
         </div>
       </header>
 
-      <section className="calc-step-card">
+      <section className="calc-step-card" style={{ minHeight: stageMinHeight || undefined }}>
         <div className="calc-embla" ref={emblaRef}>
           <div className="calc-embla-container">
             {Array.from({ length: stepCount }).map((_, slideIndex) => {
@@ -465,9 +477,10 @@ export default function CalculatorPage({ embedded = false }) {
                 <div className="calc-embla-slide" key={`slide-${slideIndex}`}>
                   <motion.div
                     className="calc-slide-inner"
+                    ref={(el) => { slidesRef.current[slideIndex] = el; }}
                     initial={false}
-                    animate={{ opacity: slideIndex === step ? 1 : 0.88, y: slideIndex === step ? 0 : 6 }}
-                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    animate={{ opacity: slideIndex === step ? 1 : 0.9, y: slideIndex === step ? 0 : 4 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
                   >
                     {slideIsService && (
                       <>
