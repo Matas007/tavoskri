@@ -123,7 +123,7 @@ export default function PrivacyPolicy() {
             <h2>8. Kontaktai</h2>
             <p>
               Klausimams dėl slapukų ar privatumo: <a href="mailto:info@tavoskriptas.lt">info@tavoskriptas.lt</a>,{' '}
-              <a href="tel:+37063792154">+370 637 92 154</a>.
+              <a href="tel:+37069420771">+370 694 20 771</a>.
             </p>
           </section>
 

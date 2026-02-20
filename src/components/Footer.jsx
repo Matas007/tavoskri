@@ -31,9 +31,9 @@ const Footer = () => {
             <FaEnvelope className="footer-contact-icon" />
             <span>info@tavoskriptas.lt</span>
           </a>
-          <a href="tel:+37063792154" className="footer-contact-item">
+          <a href="tel:+37069420771" className="footer-contact-item">
             <FaPhone className="footer-contact-icon" />
-            <span>+370 637 92 154</span>
+            <span>+370 694 20 771</span>
           </a>
         </div>
 
