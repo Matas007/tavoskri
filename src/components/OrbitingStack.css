@@ -1,0 +1,253 @@
+.orbiting-stack {
+  margin-top: 2.5rem;
+  padding: 2rem 1.4rem 2.2rem;
+  border-radius: 22px;
+  border: 1px solid rgba(201, 168, 130, 0.28);
+  background: linear-gradient(150deg, rgba(42, 31, 21, 0.7), rgba(26, 21, 16, 0.86));
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.orbiting-stack h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  background: linear-gradient(145deg, #f4e8db 0%, #d4a574 44%, #e8d5c4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.orbiting-stack-note {
+  margin: 0.55rem auto 1.25rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  max-width: 720px;
+}
+
+.orbiting-layer-legend {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.orbiting-layer-legend span {
+  padding: 0.24rem 0.68rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 168, 130, 0.34);
+  background: rgba(26, 21, 16, 0.68);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.orbiting-stage {
+  position: relative;
+  width: min(100%, 620px);
+  margin: 0 auto;
+  height: 430px;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at center, rgba(201, 168, 130, 0.2) 0%, rgba(201, 168, 130, 0) 55%),
+    linear-gradient(140deg, rgba(42, 31, 21, 0.55), rgba(17, 13, 10, 0.82));
+  border: 1px solid rgba(201, 168, 130, 0.2);
+}
+
+.orbiting-center {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: 106px;
+  height: 106px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 168, 130, 0.45);
+  background: rgba(24, 18, 13, 0.9);
+  display: grid;
+  place-content: center;
+  line-height: 1.15;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+}
+
+.orbiting-center span {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+}
+
+.orbiting-center strong {
+  font-size: 1.2rem;
+  color: #f5e9da;
+}
+
+.orbiting-guide {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  border: 1px dashed rgba(201, 168, 130, 0.2);
+}
+
+.orbiting-guide-front {
+  width: 168px;
+  height: 168px;
+}
+
+.orbiting-guide-back {
+  width: 280px;
+  height: 280px;
+}
+
+.orbiting-guide-db {
+  width: 388px;
+  height: 388px;
+}
+
+.orbiting-item {
+  --duration: 20;
+  --delay: 0;
+  --radius: 100;
+  --tilt: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  margin-top: -23px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(18, 13, 10, 0.9);
+  display: grid;
+  place-items: center;
+  color: var(--icon-color, #fff);
+  font-size: 1.35rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.33);
+  transform:
+    rotate(var(--tilt))
+    rotate(0deg)
+    translateY(calc(var(--radius) * 1px))
+    rotate(0deg);
+  animation: orbit calc(var(--duration) * 1s) linear infinite;
+  animation-delay: calc(var(--delay) * -1s);
+}
+
+.orbiting-item[data-reverse='true'] {
+  animation-direction: reverse;
+}
+
+.orbiting-item-front {
+  width: 42px;
+  height: 42px;
+  margin-left: -21px;
+  margin-top: -21px;
+  font-size: 1.15rem;
+}
+
+.orbiting-item-back {
+  width: 47px;
+  height: 47px;
+  margin-left: -23.5px;
+  margin-top: -23.5px;
+  font-size: 1.2rem;
+}
+
+.orbiting-item-db {
+  width: 52px;
+  height: 52px;
+  margin-left: -26px;
+  margin-top: -26px;
+  font-size: 1.3rem;
+}
+
+.orbiting-text-icon {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@keyframes orbit {
+  0% {
+    transform:
+      rotate(var(--tilt))
+      rotate(0deg)
+      translateY(calc(var(--radius) * 1px))
+      rotate(0deg);
+  }
+  100% {
+    transform:
+      rotate(var(--tilt))
+      rotate(360deg)
+      translateY(calc(var(--radius) * 1px))
+      rotate(-360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .orbiting-stack {
+    margin-top: 2rem;
+    padding: 1.5rem 1rem 1.6rem;
+  }
+
+  .orbiting-stage {
+    width: min(100%, 540px);
+    height: 380px;
+  }
+
+  .orbiting-guide-front {
+    width: 142px;
+    height: 142px;
+  }
+
+  .orbiting-guide-back {
+    width: 232px;
+    height: 232px;
+  }
+
+  .orbiting-guide-db {
+    width: 318px;
+    height: 318px;
+  }
+
+  .orbiting-item-front {
+    --radius: 70;
+    width: 38px;
+    height: 38px;
+    margin-left: -19px;
+    margin-top: -19px;
+    font-size: 1.05rem;
+  }
+
+  .orbiting-item-back {
+    --radius: 116;
+    width: 42px;
+    height: 42px;
+    margin-left: -21px;
+    margin-top: -21px;
+    font-size: 1.06rem;
+  }
+
+  .orbiting-item-db {
+    --radius: 160;
+    width: 44px;
+    height: 44px;
+    margin-left: -22px;
+    margin-top: -22px;
+    font-size: 1.08rem;
+  }
+
+  .orbiting-text-icon {
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbiting-item {
+    animation: none;
+    transform:
+      rotate(var(--tilt))
+      rotate(0deg)
+      translateY(calc(var(--radius) * 1px))
+      rotate(0deg);
+  }
+}
