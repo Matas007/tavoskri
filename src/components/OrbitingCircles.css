@@ -1,0 +1,46 @@
+.orbiting-path {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.orbiting-path circle {
+  stroke: rgba(201, 168, 130, 0.22);
+  stroke-width: 1;
+}
+
+.orbiting-circles {
+  --duration: 20;
+  --radius: 50;
+  --delay: -10;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: orbit calc(var(--duration) * 1s) linear infinite;
+  animation-delay: calc(var(--delay) * 1000ms);
+  will-change: transform;
+}
+
+.orbiting-circles.is-reverse {
+  animation-direction: reverse;
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateY(calc(var(--radius) * 1px)) rotate(-360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbiting-circles {
+    animation: none;
+    transform: rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg);
+  }
+}

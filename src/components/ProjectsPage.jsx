@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import SEO from './SEO';
 import CalculatorPage from './CalculatorPage';
+import OrbitingStack from './OrbitingStack';
 import './ProjectsPage.css';
 
 const ProjectsPage = () => {
@@ -30,6 +31,8 @@ const ProjectsPage = () => {
       <div className="projects-page">
       <div className="projects-container">
         <h1 className="projects-title">Mūsų Projektai</h1>
+
+        <OrbitingStack />
 
         <section className="projects-demo" aria-label="Projektų demonstracija">
           <h2>Demo versija pasibandymui</h2>

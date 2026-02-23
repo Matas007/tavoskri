@@ -1,0 +1,230 @@
+.orbiting-stack {
+  margin-top: 2.5rem;
+}
+
+.orbiting-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(340px, 620px);
+  align-items: center;
+  gap: clamp(1.2rem, 2.8vw, 3rem);
+}
+
+.orbiting-copy {
+  position: relative;
+  text-align: left;
+  padding: clamp(0.9rem, 1.6vw, 1.2rem);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(42, 31, 21, 0.34), rgba(24, 18, 13, 0.16));
+  border: 1px solid rgba(201, 168, 130, 0.16);
+  backdrop-filter: blur(2px);
+}
+
+.orbiting-copy::before {
+  content: '';
+  position: absolute;
+  inset: -24px -18px -16px -24px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 24px;
+  background: radial-gradient(circle at 22% 28%, rgba(212, 165, 116, 0.22) 0%, rgba(212, 165, 116, 0) 62%);
+  filter: blur(6px);
+}
+
+.orbiting-stack h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  background: linear-gradient(145deg, #f4e8db 0%, #d4a574 44%, #e8d5c4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.orbiting-stack-note {
+  margin: 0.8rem 0 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(0.96rem, 1.4vw, 1.05rem);
+  line-height: 1.62;
+  max-width: 46ch;
+}
+
+.orbiting-stage {
+  position: relative;
+  width: min(100%, 620px);
+  margin: 0;
+  justify-self: end;
+  height: 430px;
+  overflow: visible;
+  background: transparent;
+}
+
+.orbiting-inner-glow {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(212, 165, 116, 0.26) 0%, rgba(212, 165, 116, 0.1) 40%, rgba(212, 165, 116, 0) 72%);
+  filter: blur(2px);
+}
+
+.orbiting-center {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: auto;
+  border: 0;
+  background: transparent;
+  display: grid;
+  place-content: center;
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.42);
+}
+
+.orbiting-center span {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+}
+
+.orbiting-center strong {
+  font-size: 1.35rem;
+  color: #f5e9da;
+}
+
+.orbiting-guide {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  border: 1px dashed rgba(201, 168, 130, 0.28);
+}
+
+.orbiting-guide-front {
+  width: 168px;
+  height: 168px;
+}
+
+.orbiting-guide-back {
+  width: 280px;
+  height: 280px;
+}
+
+.orbiting-guide-db {
+  width: 388px;
+  height: 388px;
+}
+
+.orbiting-item {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--icon-color, #fff);
+  font-size: 1.35rem;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+.orbiting-item-front {
+  width: 42px;
+  height: 42px;
+  font-size: 1.15rem;
+}
+
+.orbiting-item-back {
+  width: 47px;
+  height: 47px;
+  font-size: 1.2rem;
+}
+
+.orbiting-item-db {
+  width: 52px;
+  height: 52px;
+  font-size: 1.3rem;
+}
+
+.orbiting-text-icon {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.orbiting-custom-icon {
+  width: 1.05em;
+  height: 1.05em;
+}
+
+@media (max-width: 768px) {
+  .orbiting-stack {
+    margin-top: 2rem;
+  }
+
+  .orbiting-layout {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .orbiting-copy {
+    text-align: center;
+    padding: 0.95rem 0.8rem;
+  }
+
+  .orbiting-stack-note {
+    max-width: none;
+  }
+
+  .orbiting-stage {
+    width: min(100%, 540px);
+    height: 380px;
+    justify-self: center;
+  }
+
+  .orbiting-inner-glow {
+    width: 190px;
+    height: 190px;
+  }
+
+  .orbiting-guide-front {
+    width: 142px;
+    height: 142px;
+  }
+
+  .orbiting-guide-back {
+    width: 232px;
+    height: 232px;
+  }
+
+  .orbiting-guide-db {
+    width: 318px;
+    height: 318px;
+  }
+
+  .orbiting-item-front {
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
+  }
+
+  .orbiting-item-back {
+    width: 42px;
+    height: 42px;
+    font-size: 1.06rem;
+  }
+
+  .orbiting-item-db {
+    width: 44px;
+    height: 44px;
+    font-size: 1.08rem;
+  }
+
+  .orbiting-text-icon {
+    font-size: 0.7rem;
+  }
+}
+
