@@ -121,7 +121,7 @@ const OrbitingStack = () => {
         <div className="orbiting-stage">
           <div className="orbiting-inner-glow" aria-hidden="true" />
           <div className="orbiting-center">
-            <span>Tavo</span>
+            <span>Mūsų</span>
             <strong>Stack</strong>
           </div>
 
