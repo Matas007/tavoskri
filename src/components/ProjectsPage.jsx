@@ -73,28 +73,36 @@ const ProjectsPage = () => {
           <div className="projects-grid">
             <div className="project-card">
               <div className="project-card-header">
-                <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                <div className="project-card-logo-ring">
+                  <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                </div>
                 <h3>Informacijos rinkimas</h3>
               </div>
               <p>Kruopščiai renkame ir analizuojame visą reikalingą informaciją, kad suprastume jūsų verslo poreikius ir tikslus.</p>
             </div>
             <div className="project-card">
               <div className="project-card-header">
-                <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                <div className="project-card-logo-ring">
+                  <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                </div>
                 <h3>Specifikavimas</h3>
               </div>
               <p>Detaliai aprašome projekto reikalavimus, funkcionalumą ir techninę architektūrą.</p>
             </div>
             <div className="project-card">
               <div className="project-card-header">
-                <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                <div className="project-card-logo-ring">
+                  <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                </div>
                 <h3>Projektavimas</h3>
               </div>
               <p>Kuriame modernias, interaktyvias ir lengvai naudojamas sąsajas, atitinkančias jūsų poreikius.</p>
             </div>
             <div className="project-card">
               <div className="project-card-header">
-                <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                <div className="project-card-logo-ring">
+                  <img src="/Untitled_design__10_-removebg-preview.png" alt="Logo" className="project-card-logo" />
+                </div>
                 <h3>Testavimas</h3>
               </div>
               <p>Atidžiai testuojame kiekvieną funkcionalumą, užtikrindami aukščiausią kokybę ir patikimumą.</p>
