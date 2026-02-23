@@ -1,15 +1,21 @@
 .orbiting-stack {
   margin-top: 2.5rem;
-  padding: 2rem 1.4rem 2.2rem;
-  border-radius: 22px;
-  border: 1px solid rgba(201, 168, 130, 0.28);
-  background: linear-gradient(150deg, rgba(42, 31, 21, 0.7), rgba(26, 21, 16, 0.86));
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.orbiting-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(340px, 620px);
+  align-items: center;
+  gap: clamp(1.2rem, 2.8vw, 3rem);
+}
+
+.orbiting-copy {
+  text-align: left;
 }
 
 .orbiting-stack h2 {
   margin: 0;
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
   background: linear-gradient(145deg, #f4e8db 0%, #d4a574 44%, #e8d5c4 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -18,56 +24,36 @@
 }
 
 .orbiting-stack-note {
-  margin: 0.55rem auto 1.25rem;
+  margin: 0.8rem 0 0;
   color: rgba(255, 255, 255, 0.75);
-  font-size: 0.95rem;
-  max-width: 720px;
-}
-
-.orbiting-layer-legend {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.orbiting-layer-legend span {
-  padding: 0.24rem 0.68rem;
-  border-radius: 999px;
-  border: 1px solid rgba(201, 168, 130, 0.34);
-  background: rgba(26, 21, 16, 0.68);
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: clamp(0.96rem, 1.4vw, 1.05rem);
+  line-height: 1.62;
+  max-width: 46ch;
 }
 
 .orbiting-stage {
   position: relative;
   width: min(100%, 620px);
-  margin: 0 auto;
+  margin: 0;
+  justify-self: end;
   height: 430px;
-  overflow: hidden;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at center, rgba(201, 168, 130, 0.2) 0%, rgba(201, 168, 130, 0) 55%),
-    linear-gradient(140deg, rgba(42, 31, 21, 0.55), rgba(17, 13, 10, 0.82));
-  border: 1px solid rgba(201, 168, 130, 0.2);
+  overflow: visible;
+  background: transparent;
 }
 
 .orbiting-center {
   position: absolute;
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
-  width: 106px;
-  height: 106px;
-  border-radius: 999px;
-  border: 1px solid rgba(201, 168, 130, 0.45);
-  background: rgba(24, 18, 13, 0.9);
+  width: auto;
+  height: auto;
+  border: 0;
+  background: transparent;
   display: grid;
   place-content: center;
   line-height: 1.15;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.42);
 }
 
 .orbiting-center span {
@@ -76,7 +62,7 @@
 }
 
 .orbiting-center strong {
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   color: #f5e9da;
 }
 
@@ -85,7 +71,7 @@
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  border: 1px dashed rgba(201, 168, 130, 0.2);
+  border: 1px dashed rgba(201, 168, 130, 0.28);
 }
 
 .orbiting-guide-front {
@@ -107,14 +93,12 @@
   position: relative;
   width: 46px;
   height: 46px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(18, 13, 10, 0.9);
   display: grid;
   place-items: center;
   color: var(--icon-color, #fff);
   font-size: 1.35rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.33);
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
 }
 
 .orbiting-item-front {
@@ -144,12 +128,25 @@
 @media (max-width: 768px) {
   .orbiting-stack {
     margin-top: 2rem;
-    padding: 1.5rem 1rem 1.6rem;
+  }
+
+  .orbiting-layout {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .orbiting-copy {
+    text-align: center;
+  }
+
+  .orbiting-stack-note {
+    max-width: none;
   }
 
   .orbiting-stage {
     width: min(100%, 540px);
     height: 380px;
+    justify-self: center;
   }
 
   .orbiting-guide-front {

@@ -62,7 +62,6 @@ const OrbitingStack = () => {
   const layers = [
     {
       id: 'frontend',
-      title: 'Front-end',
       className: 'orbiting-item-front',
       radius: 82,
       duration: 24,
@@ -71,7 +70,6 @@ const OrbitingStack = () => {
     },
     {
       id: 'backend',
-      title: 'Back-end',
       className: 'orbiting-item-back',
       radius: 138,
       duration: 34,
@@ -80,7 +78,6 @@ const OrbitingStack = () => {
     },
     {
       id: 'database',
-      title: 'Database',
       className: 'orbiting-item-db',
       radius: 192,
       duration: 44,
@@ -91,41 +88,42 @@ const OrbitingStack = () => {
 
   return (
     <section className="orbiting-stack" aria-label="Naudojamas technologijų stack">
-      <h2>Mūsų technologijų stack</h2>
-      <p className="orbiting-stack-note">
-        3 sluoksniai: front-end, back-end ir database.
-      </p>
-      <div className="orbiting-layer-legend" aria-hidden="true">
-        {layers.map(layer => (
-          <span key={layer.id}>{layer.title}</span>
-        ))}
-      </div>
-
-      <div className="orbiting-stage">
-        <div className="orbiting-center">
-          <span>Tavo</span>
-          <strong>Stack</strong>
+      <div className="orbiting-layout">
+        <div className="orbiting-copy">
+          <h2>Mūsų technologijų stack</h2>
+          <p className="orbiting-stack-note">
+            Kuriame greitas svetaines, sistemas ir automatikas: nuo UI/UX ir SEO iki API, duomenų bazių, administravimo bei
+            integracijų. Šis stack leidžia paleisti projektą greitai, auginti jį etapais ir užtikrinti stabilų veikimą
+            realiomis sąlygomis.
+          </p>
         </div>
 
-        <div className="orbiting-guide orbiting-guide-front" />
-        <div className="orbiting-guide orbiting-guide-back" />
-        <div className="orbiting-guide orbiting-guide-db" />
+        <div className="orbiting-stage">
+          <div className="orbiting-center">
+            <span>Tavo</span>
+            <strong>Stack</strong>
+          </div>
 
-        {layers.map(layer =>
-          layer.items.map((item, index) => (
-            <OrbitingCircles
-              key={`${layer.id}-${item.id}`}
-              className="orbiting-layer"
-              duration={layer.duration}
-              delay={(layer.duration / layer.items.length) * index}
-              radius={layer.radius}
-              reverse={layer.reverse}
-              path={false}
-            >
-              <OrbitingItem item={item} className={layer.className} />
-            </OrbitingCircles>
-          ))
-        )}
+          <div className="orbiting-guide orbiting-guide-front" />
+          <div className="orbiting-guide orbiting-guide-back" />
+          <div className="orbiting-guide orbiting-guide-db" />
+
+          {layers.map(layer =>
+            layer.items.map((item, index) => (
+              <OrbitingCircles
+                key={`${layer.id}-${item.id}`}
+                className="orbiting-layer"
+                duration={layer.duration}
+                delay={(layer.duration / layer.items.length) * index}
+                radius={layer.radius}
+                reverse={layer.reverse}
+                path={false}
+              >
+                <OrbitingItem item={item} className={layer.className} />
+              </OrbitingCircles>
+            ))
+          )}
+        </div>
       </div>
     </section>
   );
