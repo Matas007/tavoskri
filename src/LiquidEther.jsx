@@ -158,8 +158,8 @@ export default function LiquidEther({
           (this.docTarget && this.docTarget.defaultView) || (typeof window !== 'undefined' ? window : null);
         if (!defaultView) return;
         this.listenerTarget = defaultView;
-        this.listenerTarget.addEventListener('mousemove', this._onMouseMove);
         if (!this.disableTouch) {
+          this.listenerTarget.addEventListener('mousemove', this._onMouseMove);
           this.listenerTarget.addEventListener('touchstart', this._onTouchStart, { passive: true });
           this.listenerTarget.addEventListener('touchmove', this._onTouchMove, { passive: true });
           this.listenerTarget.addEventListener('touchend', this._onTouchEnd);
@@ -975,17 +975,7 @@ export default function LiquidEther({
         this.init();
         this._loop = this.loop.bind(this);
         this._resize = this.resize.bind(this);
-        this._scrollResumeTimer = null;
-        this._onScroll = () => {
-          if (!this.running) return;
-          this.pause();
-          if (this._scrollResumeTimer) clearTimeout(this._scrollResumeTimer);
-          this._scrollResumeTimer = setTimeout(() => {
-            if (!document.hidden && isVisibleRef.current) this.start();
-          }, 120);
-        };
         window.addEventListener('resize', this._resize);
-        window.addEventListener('scroll', this._onScroll, { passive: true });
         this._onVisibility = () => {
           const hidden = document.hidden;
           if (hidden) {
@@ -1041,11 +1031,6 @@ export default function LiquidEther({
       dispose() {
         try {
           window.removeEventListener('resize', this._resize);
-          window.removeEventListener('scroll', this._onScroll);
-          if (this._scrollResumeTimer) {
-            clearTimeout(this._scrollResumeTimer);
-            this._scrollResumeTimer = null;
-          }
           document.removeEventListener('visibilitychange', this._onVisibility);
           Mouse.dispose();
           if (Common.renderer) {

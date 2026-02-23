@@ -52,6 +52,7 @@ function AppContent() {
           takeoverDuration={0.2}
           autoResumeDelay={0}
           autoRampDuration={0.8}
+          disableTouchOnMobile
           mobileBreakpoint={1024}
         />
       </div>
