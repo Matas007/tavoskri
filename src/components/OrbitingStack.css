@@ -104,17 +104,9 @@
 }
 
 .orbiting-item {
-  --duration: 20;
-  --delay: 0;
-  --radius: 100;
-  --tilt: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: relative;
   width: 46px;
   height: 46px;
-  margin-left: -23px;
-  margin-top: -23px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(18, 13, 10, 0.9);
@@ -123,40 +115,23 @@
   color: var(--icon-color, #fff);
   font-size: 1.35rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.33);
-  transform:
-    rotate(var(--tilt))
-    rotate(0deg)
-    translateY(calc(var(--radius) * 1px))
-    rotate(0deg);
-  animation: orbit calc(var(--duration) * 1s) linear infinite;
-  animation-delay: calc(var(--delay) * -1s);
-}
-
-.orbiting-item[data-reverse='true'] {
-  animation-direction: reverse;
 }
 
 .orbiting-item-front {
   width: 42px;
   height: 42px;
-  margin-left: -21px;
-  margin-top: -21px;
   font-size: 1.15rem;
 }
 
 .orbiting-item-back {
   width: 47px;
   height: 47px;
-  margin-left: -23.5px;
-  margin-top: -23.5px;
   font-size: 1.2rem;
 }
 
 .orbiting-item-db {
   width: 52px;
   height: 52px;
-  margin-left: -26px;
-  margin-top: -26px;
   font-size: 1.3rem;
 }
 
@@ -164,23 +139,6 @@
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-}
-
-@keyframes orbit {
-  0% {
-    transform:
-      rotate(var(--tilt))
-      rotate(0deg)
-      translateY(calc(var(--radius) * 1px))
-      rotate(0deg);
-  }
-  100% {
-    transform:
-      rotate(var(--tilt))
-      rotate(360deg)
-      translateY(calc(var(--radius) * 1px))
-      rotate(-360deg);
-  }
 }
 
 @media (max-width: 768px) {
@@ -210,29 +168,20 @@
   }
 
   .orbiting-item-front {
-    --radius: 70;
     width: 38px;
     height: 38px;
-    margin-left: -19px;
-    margin-top: -19px;
     font-size: 1.05rem;
   }
 
   .orbiting-item-back {
-    --radius: 116;
     width: 42px;
     height: 42px;
-    margin-left: -21px;
-    margin-top: -21px;
     font-size: 1.06rem;
   }
 
   .orbiting-item-db {
-    --radius: 160;
     width: 44px;
     height: 44px;
-    margin-left: -22px;
-    margin-top: -22px;
     font-size: 1.08rem;
   }
 
@@ -241,13 +190,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .orbiting-item {
-    animation: none;
-    transform:
-      rotate(var(--tilt))
-      rotate(0deg)
-      translateY(calc(var(--radius) * 1px))
-      rotate(0deg);
-  }
-}

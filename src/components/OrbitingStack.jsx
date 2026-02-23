@@ -14,6 +14,7 @@ import {
   SiStreamlit
 } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
+import OrbitingCircles from './OrbitingCircles';
 import './OrbitingStack.css';
 
 const FRONTEND_LAYER = [
@@ -42,20 +43,13 @@ const DATABASE_LAYER = [
   { id: 'supabase', label: 'Supabase', Icon: SiSupabase, color: '#3ECF8E' }
 ];
 
-function OrbitingItem({ item, className, duration, delay, radius, reverse = false, tilt = 0 }) {
+function OrbitingItem({ item, className }) {
   const Icon = item.Icon;
 
   return (
     <div
-      className={`orbiting-item ${className}`}
-      style={{
-        '--duration': duration,
-        '--delay': delay,
-        '--radius': radius,
-        '--icon-color': item.color,
-        '--tilt': tilt
-      }}
-      data-reverse={reverse ? 'true' : 'false'}
+      className={`orbiting-item ${className}`.trim()}
+      style={{ '--icon-color': item.color }}
       aria-label={item.label}
       title={item.label}
     >
@@ -73,7 +67,6 @@ const OrbitingStack = () => {
       radius: 82,
       duration: 24,
       reverse: false,
-      tilt: -4,
       items: FRONTEND_LAYER
     },
     {
@@ -83,7 +76,6 @@ const OrbitingStack = () => {
       radius: 138,
       duration: 34,
       reverse: true,
-      tilt: 3,
       items: BACKEND_LAYER
     },
     {
@@ -93,7 +85,6 @@ const OrbitingStack = () => {
       radius: 192,
       duration: 44,
       reverse: false,
-      tilt: -2,
       items: DATABASE_LAYER
     }
   ];
@@ -122,16 +113,17 @@ const OrbitingStack = () => {
 
         {layers.map(layer =>
           layer.items.map((item, index) => (
-            <OrbitingItem
+            <OrbitingCircles
               key={`${layer.id}-${item.id}`}
-              item={item}
-              className={layer.className}
+              className="orbiting-layer"
               duration={layer.duration}
               delay={(layer.duration / layer.items.length) * index}
               radius={layer.radius}
               reverse={layer.reverse}
-              tilt={layer.tilt}
-            />
+              path={false}
+            >
+              <OrbitingItem item={item} className={layer.className} />
+            </OrbitingCircles>
           ))
         )}
       </div>
