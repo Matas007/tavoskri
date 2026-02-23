@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import LiquidEther from './LiquidEther';
 import BubbleMenu from './BubbleMenu';
 import Footer from './components/Footer';
@@ -20,6 +20,13 @@ const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 
 function AppContent() {
   const location = useLocation();
+  const isIOS = useMemo(() => {
+    if (typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent || '';
+    const iOSClassic = /iPad|iPhone|iPod/i.test(ua);
+    const iPadOSDesktopUA = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+    return iOSClassic || iPadOSDesktopUA;
+  }, []);
   const [consent, setConsent] = useState(() => getConsent());
   const isHome = location.pathname === '/';
   const isAbout = location.pathname === '/about';
@@ -35,26 +42,28 @@ function AppContent() {
 
   return (
     <div className="app">
-      <div className="liquid-background">
-        <LiquidEther
-          colors={['#C9A882', '#E8D5C4', '#9D7852']}
-          mouseForce={15}
-          cursorSize={80}
-          isViscous={false}
-          viscous={20}
-          iterationsViscous={16}
-          iterationsPoisson={16}
-          resolution={0.25}
-          isBounce={false}
-          autoDemo
-          autoSpeed={0.6}
-          autoIntensity={2.2}
-          takeoverDuration={0.2}
-          autoResumeDelay={0}
-          autoRampDuration={0.8}
-          disableTouchOnMobile
-          mobileBreakpoint={1024}
-        />
+      <div className={`liquid-background ${isIOS ? 'is-ios-static' : ''}`}>
+        {!isIOS && (
+          <LiquidEther
+            colors={['#C9A882', '#E8D5C4', '#9D7852']}
+            mouseForce={15}
+            cursorSize={80}
+            isViscous={false}
+            viscous={20}
+            iterationsViscous={16}
+            iterationsPoisson={16}
+            resolution={0.25}
+            isBounce={false}
+            autoDemo
+            autoSpeed={0.6}
+            autoIntensity={2.2}
+            takeoverDuration={0.2}
+            autoResumeDelay={0}
+            autoRampDuration={0.8}
+            disableTouchOnMobile
+            mobileBreakpoint={1024}
+          />
+        )}
       </div>
       
       <Link to="/" className="site-logo">

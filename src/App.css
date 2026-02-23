@@ -37,6 +37,15 @@
   pointer-events: none;
 }
 
+.liquid-background.is-ios-static {
+  opacity: 1;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(201, 168, 130, 0.2) 0%, rgba(201, 168, 130, 0) 42%),
+    radial-gradient(circle at 78% 28%, rgba(232, 213, 196, 0.16) 0%, rgba(232, 213, 196, 0) 46%),
+    radial-gradient(circle at 62% 74%, rgba(157, 120, 82, 0.22) 0%, rgba(157, 120, 82, 0) 50%),
+    linear-gradient(135deg, #1a1510 0%, #2a1f15 100%);
+}
+
 /* Site Logo */
 .site-logo {
   position: fixed;
