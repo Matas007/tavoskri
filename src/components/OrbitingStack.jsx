@@ -23,8 +23,10 @@ const FRONTEND_LAYER = [
   { id: 'typescript', label: 'TypeScript', Icon: SiTypescript, color: '#3178C6' },
   { id: 'tailwind', label: 'Tailwind', Icon: SiTailwindcss, color: '#38BDF8' },
   { id: 'svelte', label: 'Svelte', Icon: SiSvelte, color: '#FF3E00' },
+  { id: 'gsap', label: 'GSAP', text: 'GSAP', color: '#88CE02' },
+  { id: 'three', label: 'Three.js', text: '3D', color: '#FFFFFF' },
+  { id: 'webgl', label: 'WebGL', text: 'GL', color: '#67E8F9' },
   { id: 'radix', label: 'Radix UI', text: 'Rx', color: '#FFFFFF' },
-  { id: 'shadcn', label: 'shadcn/ui', text: 'ui', color: '#FFFFFF' },
   { id: 'android', label: 'Android', Icon: SiAndroid, color: '#3DDC84' }
 ];
 
@@ -92,9 +94,12 @@ const OrbitingStack = () => {
         <div className="orbiting-copy">
           <h2>Mūsų technologijų stack</h2>
           <p className="orbiting-stack-note">
-            Kuriame greitas svetaines, sistemas ir automatikas: nuo UI/UX ir SEO iki API, duomenų bazių, administravimo bei
-            integracijų. Šis stack leidžia paleisti projektą greitai, auginti jį etapais ir užtikrinti stabilų veikimą
-            realiomis sąlygomis.
+            Kuriame greitas, patikimas ir lengvai plečiamas svetaines, sistemas bei automatizavimo sprendimus - nuo
+            patrauklaus UI/UX dizaino ir SEO optimizacijos iki API kūrimo, duomenų bazių architektūros, administravimo bei
+            įvairių integracijų. Klientas gauna pilnai paruoštą, techniškai tvarkingą ir verslo poreikiams pritaikytą
+            sprendimą, kuris gali būti greitai paleidžiamas ir toliau vystomas etapais. Naudojamas technologinis sprendimų
+            rinkinys užtikrina stabilų veikimą realiomis sąlygomis, saugumą, našumą ir galimybę sistemą auginti kartu su
+            verslo plėtra.
           </p>
         </div>
 
