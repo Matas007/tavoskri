@@ -79,7 +79,7 @@ export default function LiquidEther({
         this.aspect = 1;
         this.pixelRatio = 1;
         this.isMobile = false;
-        this.breakpoint = 768;
+        this.breakpoint = mobileBreakpoint;
         this.fboWidth = null;
         this.fboHeight = null;
         this.time = 0;
@@ -90,8 +90,8 @@ export default function LiquidEther({
       }
       init(container) {
         this.container = container;
-        this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
         this.resize();
+        this.pixelRatio = Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.25 : 2);
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.autoClear = false;
         this.renderer.setClearColor(new THREE.Color(0x000000), 0);
@@ -109,7 +109,13 @@ export default function LiquidEther({
         this.width = Math.max(1, Math.floor(rect.width));
         this.height = Math.max(1, Math.floor(rect.height));
         this.aspect = this.width / this.height;
-        if (this.renderer) this.renderer.setSize(this.width, this.height, false);
+        this.isMobile = this.width <= this.breakpoint;
+        const nextPixelRatio = Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.25 : 2);
+        this.pixelRatio = nextPixelRatio;
+        if (this.renderer) {
+          this.renderer.setPixelRatio(this.pixelRatio);
+          this.renderer.setSize(this.width, this.height, false);
+        }
       }
       update() {
         this.delta = this.clock.getDelta();
@@ -969,7 +975,17 @@ export default function LiquidEther({
         this.init();
         this._loop = this.loop.bind(this);
         this._resize = this.resize.bind(this);
+        this._scrollResumeTimer = null;
+        this._onScroll = () => {
+          if (!this.running) return;
+          this.pause();
+          if (this._scrollResumeTimer) clearTimeout(this._scrollResumeTimer);
+          this._scrollResumeTimer = setTimeout(() => {
+            if (!document.hidden && isVisibleRef.current) this.start();
+          }, 120);
+        };
         window.addEventListener('resize', this._resize);
+        window.addEventListener('scroll', this._onScroll, { passive: true });
         this._onVisibility = () => {
           const hidden = document.hidden;
           if (hidden) {
@@ -984,6 +1000,16 @@ export default function LiquidEther({
       init() {
         this.props.$wrapper.prepend(Common.renderer.domElement);
         this.output = new Output();
+        if (isSmallScreen) {
+          const sim = this.output.simulation;
+          sim.options.resolution = Math.min(sim.options.resolution, 0.2);
+          sim.options.iterations_poisson = Math.min(sim.options.iterations_poisson, 10);
+          sim.options.iterations_viscous = Math.min(sim.options.iterations_viscous, 10);
+          sim.options.mouse_force = Math.min(sim.options.mouse_force, 12);
+          sim.options.cursor_size = Math.min(sim.options.cursor_size, 70);
+          sim.options.dt = Math.min(sim.options.dt, 0.012);
+          sim.resize();
+        }
       }
       resize() {
         Common.resize();
@@ -1015,6 +1041,11 @@ export default function LiquidEther({
       dispose() {
         try {
           window.removeEventListener('resize', this._resize);
+          window.removeEventListener('scroll', this._onScroll);
+          if (this._scrollResumeTimer) {
+            clearTimeout(this._scrollResumeTimer);
+            this._scrollResumeTimer = null;
+          }
           document.removeEventListener('visibilitychange', this._onVisibility);
           Mouse.dispose();
           if (Common.renderer) {
@@ -1143,17 +1174,25 @@ export default function LiquidEther({
     if (!webgl) return;
     const sim = webgl.output?.simulation;
     if (!sim) return;
+    const isSmallScreenNow =
+      typeof window !== 'undefined' && window.matchMedia && window.matchMedia(`(max-width: ${mobileBreakpoint}px)`).matches;
+    const tunedResolution = isSmallScreenNow ? Math.min(resolution, 0.2) : resolution;
+    const tunedPoisson = isSmallScreenNow ? Math.min(iterationsPoisson, 10) : iterationsPoisson;
+    const tunedViscous = isSmallScreenNow ? Math.min(iterationsViscous, 10) : iterationsViscous;
+    const tunedMouseForce = isSmallScreenNow ? Math.min(mouseForce, 12) : mouseForce;
+    const tunedCursorSize = isSmallScreenNow ? Math.min(cursorSize, 70) : cursorSize;
+    const tunedDt = isSmallScreenNow ? Math.min(dt, 0.012) : dt;
     const prevRes = sim.options.resolution;
     Object.assign(sim.options, {
-      mouse_force: mouseForce,
-      cursor_size: cursorSize,
+      mouse_force: tunedMouseForce,
+      cursor_size: tunedCursorSize,
       isViscous,
       viscous,
-      iterations_viscous: iterationsViscous,
-      iterations_poisson: iterationsPoisson,
-      dt,
+      iterations_viscous: tunedViscous,
+      iterations_poisson: tunedPoisson,
+      dt: tunedDt,
       BFECC,
-      resolution,
+      resolution: tunedResolution,
       isBounce
     });
     if (webgl.autoDriver) {
@@ -1185,7 +1224,8 @@ export default function LiquidEther({
     autoIntensity,
     takeoverDuration,
     autoResumeDelay,
-    autoRampDuration
+    autoRampDuration,
+    mobileBreakpoint
   ]);
 
   return <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style} />;
