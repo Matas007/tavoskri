@@ -41,6 +41,19 @@
   background: transparent;
 }
 
+.orbiting-inner-glow {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(212, 165, 116, 0.26) 0%, rgba(212, 165, 116, 0.1) 40%, rgba(212, 165, 116, 0) 72%);
+  filter: blur(2px);
+}
+
 .orbiting-center {
   position: absolute;
   inset: 50% auto auto 50%;
@@ -125,6 +138,11 @@
   letter-spacing: 0.02em;
 }
 
+.orbiting-custom-icon {
+  width: 1.05em;
+  height: 1.05em;
+}
+
 @media (max-width: 768px) {
   .orbiting-stack {
     margin-top: 2rem;
@@ -147,6 +165,11 @@
     width: min(100%, 540px);
     height: 380px;
     justify-self: center;
+  }
+
+  .orbiting-inner-glow {
+    width: 190px;
+    height: 190px;
   }
 
   .orbiting-guide-front {

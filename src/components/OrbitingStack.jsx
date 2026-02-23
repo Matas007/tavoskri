@@ -17,6 +17,21 @@ import { TbApi } from 'react-icons/tb';
 import OrbitingCircles from './OrbitingCircles';
 import './OrbitingStack.css';
 
+const ThreeJsIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="orbiting-custom-icon">
+    <path d="M12 3l8 4.5v9L12 21 4 16.5v-9L12 3z" fill="none" stroke="currentColor" strokeWidth="1.8" />
+    <path d="M12 3v18M4 7.5l8 4.5 8-4.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+  </svg>
+);
+
+const WebGlIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="orbiting-custom-icon">
+    <rect x="3.2" y="5.2" width="17.6" height="13.6" rx="3.2" fill="none" stroke="currentColor" strokeWidth="1.8" />
+    <path d="M7 15.2V8.8l2 5.3 2-5.3v6.4M14.1 15.2V8.8h3.8" fill="none" stroke="currentColor" strokeWidth="1.7" />
+    <path d="M14.1 12h3.2" fill="none" stroke="currentColor" strokeWidth="1.7" />
+  </svg>
+);
+
 const FRONTEND_LAYER = [
   { id: 'react', label: 'React', Icon: SiReact, color: '#61DAFB' },
   { id: 'next', label: 'Next.js', Icon: SiNextdotjs, color: '#FFFFFF' },
@@ -24,8 +39,8 @@ const FRONTEND_LAYER = [
   { id: 'tailwind', label: 'Tailwind', Icon: SiTailwindcss, color: '#38BDF8' },
   { id: 'svelte', label: 'Svelte', Icon: SiSvelte, color: '#FF3E00' },
   { id: 'gsap', label: 'GSAP', text: 'GSAP', color: '#88CE02' },
-  { id: 'three', label: 'Three.js', text: '3D', color: '#FFFFFF' },
-  { id: 'webgl', label: 'WebGL', text: 'GL', color: '#67E8F9' },
+  { id: 'three', label: 'Three.js', Icon: ThreeJsIcon, color: '#FFFFFF' },
+  { id: 'webgl', label: 'WebGL', Icon: WebGlIcon, color: '#67E8F9' },
   { id: 'radix', label: 'Radix UI', text: 'Rx', color: '#FFFFFF' },
   { id: 'android', label: 'Android', Icon: SiAndroid, color: '#3DDC84' }
 ];
@@ -104,6 +119,7 @@ const OrbitingStack = () => {
         </div>
 
         <div className="orbiting-stage">
+          <div className="orbiting-inner-glow" aria-hidden="true" />
           <div className="orbiting-center">
             <span>Tavo</span>
             <strong>Stack</strong>
