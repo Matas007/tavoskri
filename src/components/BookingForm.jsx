@@ -4,8 +4,10 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isTod
 import { supabase } from '../lib/supabase';
 import './BookingForm.css';
 
+const COOLDOWN_MS = 60_000; // 60s tarp submit bandymų
+
 export default function BookingForm() {
-  const [step, setStep] = useState(1); // 1 = date/time picker, 2 = details
+  const [step, setStep] = useState(1);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [formData, setFormData] = useState({
     name: '',
@@ -14,7 +16,8 @@ export default function BookingForm() {
     company: '',
     booking_date: '',
     booking_time: '',
-    message: ''
+    message: '',
+    _trap: '' // honeypot — botai užpildo, žmonės ne
   });
   
   const [loading, setLoading] = useState(false);
@@ -22,10 +25,28 @@ export default function BookingForm() {
   const [error, setError] = useState('');
   const [bookedTimes, setBookedTimes] = useState([]);
   const [fetchingTimes, setFetchingTimes] = useState(false);
+  const [cooldownUntil, setCooldownUntil] = useState(0);
+  const [cooldownSec, setCooldownSec] = useState(0);
   
   // Refs for scrolling
   const timePickerRef = useRef(null);
   const cardRef = useRef(null);
+
+  // Cooldown laikmatis
+  useEffect(() => {
+    if (cooldownUntil <= 0) return;
+    const interval = setInterval(() => {
+      const remaining = Math.ceil((cooldownUntil - Date.now()) / 1000);
+      if (remaining <= 0) {
+        setCooldownSec(0);
+        setCooldownUntil(0);
+        clearInterval(interval);
+      } else {
+        setCooldownSec(remaining);
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, [cooldownUntil]);
 
   // Fetch booked times when date is selected
   useEffect(() => {
@@ -104,6 +125,20 @@ export default function BookingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Honeypot: jei _trap užpildytas — botas, tyliai ignoruojame
+    if (formData._trap) {
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 4000);
+      return;
+    }
+
+    // Client-side cooldown
+    if (Date.now() < cooldownUntil) {
+      setError(`Palaukite ${cooldownSec}s prieš bandant dar kartą.`);
+      return;
+    }
+
     setLoading(true);
     setError('');
     
@@ -145,8 +180,6 @@ export default function BookingForm() {
 
       if (submitError) throw submitError;
 
-      console.log('🎉 Booking created successfully!');
-
       setSuccess(true);
       setStep(1);
       setFormData({
@@ -156,8 +189,10 @@ export default function BookingForm() {
         company: '',
         booking_date: '',
         booking_time: '',
-        message: ''
+        message: '',
+        _trap: ''
       });
+      setCooldownUntil(Date.now() + COOLDOWN_MS);
       
       // Scroll to top
       setTimeout(() => {
@@ -171,6 +206,7 @@ export default function BookingForm() {
     } catch (err) {
       console.error('❌ Error:', err);
       setError(err.message || 'Klaida išsaugant užsakymą');
+      setCooldownUntil(Date.now() + COOLDOWN_MS);
     } finally {
       setLoading(false);
     }
@@ -453,6 +489,20 @@ export default function BookingForm() {
               />
             </div>
 
+            {/* Honeypot: paslėptas nuo žmonių, botai užpildo */}
+            <div className="booking-trap" aria-hidden="true">
+              <label htmlFor="_trap">Palikite tuščią</label>
+              <input
+                type="text"
+                id="_trap"
+                name="_trap"
+                value={formData._trap}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             <div className="form-actions">
               <button
                 type="button"
@@ -481,12 +531,14 @@ export default function BookingForm() {
               <button
                 type="submit"
                 className="animated-button"
-                disabled={loading}
+                disabled={loading || cooldownSec > 0}
               >
                 <svg viewBox="0 0 24 24" className="arr-2" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
                 </svg>
-                <span className="text">{loading ? 'Siunčiama...' : 'Patvirtinti'}</span>
+                <span className="text">
+                  {loading ? 'Siunčiama...' : cooldownSec > 0 ? `Palaukite ${cooldownSec}s` : 'Patvirtinti'}
+                </span>
                 <span className="circle"></span>
                 <svg viewBox="0 0 24 24" className="arr-1" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
