@@ -1,3 +1,14 @@
+/* Honeypot: visiškai paslėptas nuo žmonių ir ekrano skaitytuvų */
+.booking-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .booking-form-container {
   min-height: 100vh;
   display: flex;
