@@ -98,7 +98,14 @@ function AppContent() {
               />
               <div className="content">
               <h1 className="title">
-                Stiprus prekių ženklas – <span className="gradient-text">geriausias pardavėjas</span>
+                {['Stiprus', 'prekių', 'ženklas', '–'].map((w, i) => (
+                  <span key={i} className="word-reveal" style={{ '--wi': i }}>{w} </span>
+                ))}
+                <span className="gradient-text">
+                  {['geriausias', 'pardavėjas'].map((w, i) => (
+                    <span key={i} className="word-reveal" style={{ '--wi': i + 4 }}>{w}{i === 0 ? ' ' : ''}</span>
+                  ))}
+                </span>
               </h1>
               <p className="subtitle">
                 Interaktyvūs sprendimai, reaguojantys į

@@ -47,13 +47,15 @@
 }
 
 /* ── Landing entrance animations ──────────────────────────── */
-@keyframes land-fade-down {
+@keyframes word-blur-in {
   from {
     opacity: 0;
-    transform: translateY(-14px);
+    filter: blur(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
   }
 }
@@ -61,7 +63,7 @@
 @keyframes land-fade-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
@@ -69,18 +71,14 @@
   }
 }
 
-@keyframes land-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+/* Word-by-word mysterious reveal */
+.word-reveal {
+  display: inline-block;
+  animation: word-blur-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.08s + var(--wi, 0) * 0.11s);
 }
 
-/* Site Logo */
+/* Site Logo — no animation */
 .site-logo {
   position: fixed;
   top: 2rem;
@@ -89,7 +87,6 @@
   display: block;
   pointer-events: auto;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  animation: land-fade-down 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
 
 .site-logo img {
@@ -154,7 +151,6 @@
   margin-bottom: 1.5rem;
   pointer-events: none;
   letter-spacing: -0.02em;
-  animation: land-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
 .gradient-text {
@@ -216,7 +212,6 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  animation: land-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.38s both;
 }
 
 .about-section {
@@ -261,7 +256,6 @@
   flex-wrap: wrap;
   justify-content: center;
   pointer-events: auto;
-  animation: land-scale-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
 }
 
 .btn {
@@ -510,11 +504,11 @@
 
 /* Disable landing animations for users preferring reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .site-logo,
-  .title,
-  .subtitle,
-  .buttons {
+  .word-reveal {
     animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
   }
 }
 
