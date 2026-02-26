@@ -22,93 +22,124 @@
   align-items: start;
 }
 
+/* ── Card wrap (for stagger animation) ────────────────────── */
+.t-card-wrap {
+  animation: t-in 0.5s ease both;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes t-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Card ──────────────────────────────────────────────────── */
 .t-card {
+  position: relative;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(232, 213, 196, 0.18);
   border-radius: 18px;
-  overflow: hidden;
+  overflow: visible;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.28),
+    0 10px 28px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(232, 213, 196, 0.06);
-  transform: rotate(var(--rotate, 0deg)) translateY(0);
+  transform: rotate(var(--rotate, 0deg));
   transition:
     transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.3s ease;
-  animation: t-card-in 0.55s ease both;
-  animation-delay: var(--delay, 0s);
   cursor: default;
 }
 
 .t-card:hover {
-  transform: rotate(0deg) translateY(-8px) scale(1.03);
+  transform: rotate(0deg) translateY(-6px);
   box-shadow:
-    0 22px 48px rgba(0, 0, 0, 0.38),
+    0 20px 44px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(232, 213, 196, 0.22),
-    0 0 28px rgba(201, 168, 130, 0.14);
-  z-index: 2;
+    0 0 24px rgba(201, 168, 130, 0.12);
+  z-index: 10;
 }
 
-@keyframes t-card-in {
-  from {
-    opacity: 0;
-    transform: rotate(var(--rotate, 0deg)) translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(var(--rotate, 0deg)) translateY(0);
-  }
-}
-
-/* ── Card image ────────────────────────────────────────────── */
-.t-card-img-wrap {
-  width: 100%;
-  height: 148px;
-  overflow: hidden;
-  position: relative;
-  transition: height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.t-card:hover .t-card-img-wrap {
-  height: 260px;
-}
-
-.t-card-img-wrap::after {
-  content: '';
+/* ── Floating popup ────────────────────────────────────────── */
+.t-popup {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, rgba(17, 13, 10, 0.72) 100%);
-  transition: opacity 0.38s ease;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 20;
+  width: 200px;
 }
 
-.t-card:hover .t-card-img-wrap::after {
-  opacity: 0.3;
+.t-popup.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
-.t-card-img {
+/* Browser chrome frame */
+.t-popup-screen {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 130, 0.3);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: rgba(17, 13, 10, 0.95);
+}
+
+.t-popup-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  background: rgba(30, 22, 15, 0.98);
+  border-bottom: 1px solid rgba(201, 168, 130, 0.15);
+}
+
+.t-popup-bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.t-popup-bar span:nth-child(1) { background: #ff5f56; }
+.t-popup-bar span:nth-child(2) { background: #ffbd2e; }
+.t-popup-bar span:nth-child(3) { background: #27c93f; }
+
+.t-popup-img {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: 140px;
   object-fit: cover;
   object-position: top;
-  display: block;
-  transition: transform 0.38s ease;
-}
-
-.t-card:hover .t-card-img {
-  transform: scale(1.0);
-  object-fit: contain;
-  object-position: center;
-  background: rgba(17, 13, 10, 0.9);
 }
 
 /* ── Card body ─────────────────────────────────────────────── */
 .t-card-body {
-  padding: 1rem 1.1rem 1.2rem;
+  padding: 1rem 1.1rem 1.15rem;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
+}
+
+.t-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Logo ──────────────────────────────────────────────────── */
+.t-card-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: 0.75;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
 }
 
 /* ── Stars ─────────────────────────────────────────────────── */
@@ -130,7 +161,7 @@
 .t-card-text {
   margin: 0;
   font-size: 0.88rem;
-  line-height: 1.6;
+  line-height: 1.62;
   color: rgba(255, 255, 255, 0.82);
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -144,7 +175,7 @@
   flex-direction: column;
   gap: 0.15rem;
   margin-top: 0.2rem;
-  padding-top: 0.65rem;
+  padding-top: 0.6rem;
   border-top: 1px solid rgba(232, 213, 196, 0.12);
 }
 
@@ -156,7 +187,7 @@
 
 .t-card-company {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.52);
 }
 
 /* ── Responsive ────────────────────────────────────────────── */
@@ -169,6 +200,10 @@
   .t-card {
     --rotate: 0deg !important;
   }
+
+  .t-popup {
+    display: none;
+  }
 }
 
 @media (max-width: 520px) {
@@ -180,9 +215,5 @@
   .t-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
-  }
-
-  .t-card-img-wrap {
-    height: 130px;
   }
 }
