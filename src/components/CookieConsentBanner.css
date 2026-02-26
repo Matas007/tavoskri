@@ -9,6 +9,48 @@
   border-top: 1px solid rgba(201, 168, 130, 0.35);
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.3);
   animation: cookie-consent-in 0.4s ease-out;
+  overflow: hidden;
+}
+
+/* ── Cookie icon decorative background ────────────────────── */
+.cookie-icons-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+}
+
+.cookie-icon-deco {
+  --ci: 0;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: rgba(201, 168, 130, 0.1);
+  /* slight rotation variety per icon */
+  transform: rotate(calc(var(--ci) * 23deg));
+  /* evenly distribute across full width */
+  position: absolute;
+  left: calc(var(--ci) * (100% / 17));
+  top: 50%;
+  translate: -50% -50%;
+}
+
+/* Alternating size/opacity for natural texture */
+.cookie-icon-deco:nth-child(odd) {
+  width: 28px;
+  height: 28px;
+  color: rgba(201, 168, 130, 0.07);
+  top: 30%;
+}
+
+.cookie-icon-deco:nth-child(3n) {
+  width: 44px;
+  height: 44px;
+  color: rgba(201, 168, 130, 0.13);
+  top: 65%;
 }
 
 @keyframes cookie-consent-in {
