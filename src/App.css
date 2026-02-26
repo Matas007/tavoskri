@@ -46,6 +46,40 @@
     linear-gradient(135deg, #1a1510 0%, #2a1f15 100%);
 }
 
+/* ── Landing entrance animations ──────────────────────────── */
+@keyframes land-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes land-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes land-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /* Site Logo */
 .site-logo {
   position: fixed;
@@ -55,6 +89,7 @@
   display: block;
   pointer-events: auto;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  animation: land-fade-down 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
 
 .site-logo img {
@@ -119,6 +154,7 @@
   margin-bottom: 1.5rem;
   pointer-events: none;
   letter-spacing: -0.02em;
+  animation: land-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
 .gradient-text {
@@ -180,6 +216,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  animation: land-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.38s both;
 }
 
 .about-section {
@@ -224,6 +261,7 @@
   flex-wrap: wrap;
   justify-content: center;
   pointer-events: auto;
+  animation: land-scale-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
 }
 
 .btn {
@@ -468,5 +506,15 @@
   padding: 1.5rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* Disable landing animations for users preferring reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .site-logo,
+  .title,
+  .subtitle,
+  .buttons {
+    animation: none;
+  }
 }
 
