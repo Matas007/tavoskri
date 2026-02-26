@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { TbCookie } from 'react-icons/tb';
 import './CookieConsentBanner.css';
 
 const CONSENT_COOKIE = 'ts_cookie_consent';
@@ -44,8 +45,16 @@ export default function CookieConsentBanner({ onAccept }) {
     onAccept?.('rejected');
   };
 
+  const COOKIE_COUNT = 18;
+
   return (
     <div className="cookie-consent" role="dialog" aria-label="Slapukų sutikimas">
+      {/* Decorative cookie icons background */}
+      <div className="cookie-icons-bg" aria-hidden="true">
+        {Array.from({ length: COOKIE_COUNT }).map((_, i) => (
+          <TbCookie key={i} className="cookie-icon-deco" style={{ '--ci': i }} />
+        ))}
+      </div>
       <div className="cookie-consent-inner">
         <p className="cookie-consent-text">
           Ši internetinė svetainė naudoja tik būtinus ir funkcinius slapukus. Daugiau informacijos –{' '}
