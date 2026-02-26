@@ -104,13 +104,13 @@ function AppContent() {
                 <span className="gradient-text">geriausias pardavėjas</span>
               </h1>
               <p className="subtitle">
-                Interaktyvūs sprendimai, reaguojantys į
+                Individualūs sprendimai, orientuoti į
                 <br />
-                vartotojo veiksmus
+                verslo tikslus
               </p>
               <div className="buttons">
                 <Link to="/booking" className="btn star-button" aria-label="Susiskambinam">
-                  Susiskambinam
+                  Konsultacija
                   <span className="star-1" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
