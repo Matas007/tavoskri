@@ -1,3 +1,65 @@
+.booking-privacy-consent {
+  margin: 1rem 0 0.5rem;
+}
+
+.booking-privacy-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.booking-privacy-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(201, 168, 130, 0.5);
+  background: rgba(26, 21, 16, 0.6);
+  cursor: pointer;
+  margin-top: 2px;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.booking-privacy-label input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #9D7852, #C9A882);
+  border-color: #C9A882;
+}
+
+.booking-privacy-label input[type="checkbox"]:checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #1a1510;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.booking-privacy-label input[type="checkbox"]:focus-visible {
+  outline: 2px solid rgba(201, 168, 130, 0.7);
+  outline-offset: 2px;
+}
+
+.booking-privacy-link {
+  color: #C9A882;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.booking-privacy-link:hover {
+  color: #f4e8db;
+}
+
 /* Honeypot: visiškai paslėptas nuo žmonių ir ekrano skaitytuvų */
 .booking-trap {
   position: absolute;

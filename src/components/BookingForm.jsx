@@ -27,6 +27,7 @@ export default function BookingForm() {
   const [fetchingTimes, setFetchingTimes] = useState(false);
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [cooldownSec, setCooldownSec] = useState(0);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   
   // Refs for scrolling
   const timePickerRef = useRef(null);
@@ -136,6 +137,11 @@ export default function BookingForm() {
     // Client-side cooldown
     if (Date.now() < cooldownUntil) {
       setError(`Palaukite ${cooldownSec}s prieš bandant dar kartą.`);
+      return;
+    }
+
+    if (!privacyAccepted) {
+      setError('Prašome sutikti su privatumo politika prieš pateikiant užklausą.');
       return;
     }
 
@@ -487,6 +493,24 @@ export default function BookingForm() {
                 rows="4"
                 placeholder="Trumpai apie jūsų poreikius..."
               />
+            </div>
+
+            <div className="booking-privacy-consent">
+              <label className="booking-privacy-label">
+                <input
+                  type="checkbox"
+                  checked={privacyAccepted}
+                  onChange={e => setPrivacyAccepted(e.target.checked)}
+                  required
+                />
+                <span>
+                  Sutinku su{' '}
+                  <Link to="/privacy" target="_blank" rel="noopener noreferrer" className="booking-privacy-link">
+                    privatumo politika
+                  </Link>{' '}
+                  ir duomenų tvarkymo sąlygomis *
+                </span>
+              </label>
             </div>
 
             {/* Honeypot: paslėptas nuo žmonių, botai užpildo */}
