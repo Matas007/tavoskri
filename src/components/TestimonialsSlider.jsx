@@ -1,141 +1,107 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './TestimonialsSlider.css';
 
 const testimonials = [
   {
     name: 'Aura S.',
     company: 'UAB "Eletis"',
-    text: 'Ačiū tau labai už atliktą internetinių svetainių analizę ir pastebėjimus. Ji tikrai vertinga ir reikalinga. '
+    text: 'Ačiū tau labai už atliktą internetinių svetainių analizę ir pastebėjimus. Ji tikrai vertinga ir reikalinga.',
+    image: '/previews/eletis-preview.png',
+    logo: '/Untitled_design__10_-removebg-preview.png',
+    stars: 5,
+    rotate: -2
   },
   {
     name: 'Giedrius V.',
     company: 'MB "Farmakoekonomikos institutas"',
-    text: 'Po atliktų darbų pastebimai pagerėjo svetainės techninė kokybė ir našumas. Įgyvendinus SEO optimizavimo sprendimus, pasiekti apčiuopiami rezultatai – pagrindinis raktinis žodis „vaistų kompensavimas“ šiuo metu yra rodomas pirmame „Google“ paieškos puslapyje, iškart po Valstybinės ligonių kasų svetainės.'
+    text: 'Pagrindinis raktinis žodis „vaistų kompensavimas" šiuo metu yra pirmame Google paieškos puslapyje.',
+    image: '/previews/farmako-preview.png',
+    logo: '/Untitled_design__10_-removebg-preview.png',
+    stars: 5,
+    rotate: 1.5
   },
   {
     name: 'Mantas L.',
-    company: 'MB "Baldu Mantas"',
-    text: 'Pagaliau. Viskas patinka sukurtoje internetinėje svetainėje.'
+    company: 'MB "Baldų Mantas"',
+    text: 'Pagaliau. Viskas patinka sukurtoje internetinėje svetainėje.',
+    image: '/previews/baldu-mantas-preview.png',
+    logo: '/Untitled_design__10_-removebg-preview.png',
+    stars: 5,
+    rotate: -1
   },
   {
     name: 'Julija S.',
     company: 'MB "Best Baldai"',
-    text: 'Ačiū už bendradarbiavimą.'
+    text: 'Ačiū už bendradarbiavimą.',
+    image: '/previews/best-baldai-preview.png',
+    logo: '/Untitled_design__10_-removebg-preview.png',
+    stars: 5,
+    rotate: 2
   }
 ];
 
+function Stars({ count }) {
+  return (
+    <div className="t-stars" aria-label={`${count} žvaigždutės`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span key={i} className={i < count ? 't-star filled' : 't-star'}>★</span>
+      ))}
+    </div>
+  );
+}
+
 export default function TestimonialsSlider() {
   const sectionRef = useRef(null);
-  const [index, setIndex] = useState(0);
-  const touchStartX = useRef(null);
-  const touchDeltaX = useRef(0);
-
-  const goTo = useCallback((nextIndex) => {
-    const total = testimonials.length;
-    const normalized = (nextIndex + total) % total;
-    setIndex(normalized);
-  }, []);
-
-  const handlePrev = useCallback(() => {
-    goTo(index - 1);
-  }, [goTo, index]);
-
-  const handleNext = useCallback(() => {
-    goTo(index + 1);
-  }, [goTo, index]);
-
-  const handleTouchStart = (event) => {
-    touchStartX.current = event.touches[0].clientX;
-    touchDeltaX.current = 0;
-  };
-
-  const handleTouchMove = (event) => {
-    if (touchStartX.current === null) return;
-    touchDeltaX.current = event.touches[0].clientX - touchStartX.current;
-  };
-
-  const handleTouchEnd = () => {
-    const delta = touchDeltaX.current;
-    if (Math.abs(delta) > 50) {
-      if (delta < 0) {
-        handleNext();
-      } else {
-        handlePrev();
-      }
-    }
-    touchStartX.current = null;
-    touchDeltaX.current = 0;
-  };
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
     const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      },
-      { threshold: 0.2 }
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('is-visible');
+      }),
+      { threshold: 0.15 }
     );
-
     observer.observe(section);
-
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="testimonials"
-      aria-label="Atsiliepimai"
-    >
-      <div
-        className="testimonials-slider"
-        role="group"
-        aria-roledescription="carousel"
-        aria-label="Atsiliepimų slideris"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <button className="slider-control prev" onClick={handlePrev} aria-label="Ankstesnis atsiliepimas">
-          ‹
-        </button>
+    <section ref={sectionRef} className="testimonials" aria-label="Atsiliepimai">
+      <div className="t-grid">
+        {testimonials.map((t, i) => (
+          <article
+            key={t.name}
+            className="t-card"
+            style={{ '--rotate': `${t.rotate}deg`, '--delay': `${i * 0.1}s` }}
+          >
+            {/* Floating image — appears in the air above the card on hover */}
+            <div className="t-float-img" aria-hidden="true">
+              <img src={t.image} alt={t.company} className="t-float-img-el" loading="lazy" />
+            </div>
 
-        <div className="testimonial-card">
-          <div className="testimonial-corner-glow" aria-hidden="true" />
-          <img
-            className="testimonial-logo"
-            src="/Untitled_design__10_-removebg-preview.png"
-            alt="Tavo Skriptas"
-          />
-          <div className="testimonial-quote">“</div>
-          <p className="testimonial-text">{testimonials[index].text}</p>
-          <div className="testimonial-author">
-            <span className="testimonial-name">{testimonials[index].name}</span>
-            <span className="testimonial-company">{testimonials[index].company}</span>
-          </div>
-        </div>
+            {/* Logo — top right */}
+            <img src={t.logo} alt="Tavo Skriptas" className="t-card-logo" />
 
-        <button className="slider-control next" onClick={handleNext} aria-label="Kitas atsiliepimas">
-          ›
-        </button>
-      </div>
+            {/* Stars */}
+            <Stars count={t.stars} />
 
-      <div className="slider-dots" aria-hidden="true">
-        {testimonials.map((item, dotIndex) => (
-          <button
-            key={item.name}
-            className={`slider-dot ${dotIndex === index ? 'is-active' : ''}`}
-            onClick={() => goTo(dotIndex)}
-            aria-label={`Rodyti atsiliepimą ${dotIndex + 1}`}
-          />
+            {/* Thumbnail + Quote */}
+            <div className="t-body-row">
+              <div className="t-thumb-wrap">
+                <img src={t.image} alt={t.company} className="t-thumb" loading="lazy" />
+              </div>
+              <p className="t-quote">"{t.text}"</p>
+            </div>
+
+            {/* Author */}
+            <div className="t-author-row">
+              <div className="t-author-info">
+                <span className="t-card-name">{t.name}</span>
+                <span className="t-card-company">{t.company}</span>
+              </div>
+            </div>
+          </article>
         ))}
       </div>
     </section>
