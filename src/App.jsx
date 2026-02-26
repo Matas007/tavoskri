@@ -99,8 +99,8 @@ function AppContent() {
               <div className="content">
               <h1 className="title">
                 {['Stiprus', 'prekių', 'ženklas', '–'].map((w, i) => (
-                  <span key={i} className="word-reveal" style={{ '--wi': i }}>{w} </span>
-                ))}
+                  <span key={i} className="word-reveal" style={{ '--wi': i }}>{w}</span>
+                ))}{' '}
                 <span className="gradient-text">geriausias pardavėjas</span>
               </h1>
               <p className="subtitle">

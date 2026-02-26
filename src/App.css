@@ -74,8 +74,13 @@
 /* Word-by-word mysterious reveal */
 .word-reveal {
   display: inline-block;
+  margin-right: 0.28em;
   animation: word-blur-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(0.08s + var(--wi, 0) * 0.11s);
+}
+
+.word-reveal:last-of-type {
+  margin-right: 0;
 }
 
 /* Site Logo — no animation */
