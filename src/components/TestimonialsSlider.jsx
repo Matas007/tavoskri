@@ -31,7 +31,7 @@ const testimonials = [
     company: 'MB "Best Baldai"',
     text: 'Ačiū už bendradarbiavimą.',
     image: '/previews/best-baldai-preview.png',
-    stars: 4,
+    stars: 5,
     rotate: 2.5
   }
 ];
