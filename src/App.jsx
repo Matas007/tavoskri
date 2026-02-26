@@ -101,11 +101,7 @@ function AppContent() {
                 {['Stiprus', 'prekių', 'ženklas', '–'].map((w, i) => (
                   <span key={i} className="word-reveal" style={{ '--wi': i }}>{w} </span>
                 ))}
-                <span className="gradient-text">
-                  {['geriausias', 'pardavėjas'].map((w, i) => (
-                    <span key={i} className="word-reveal" style={{ '--wi': i + 4 }}>{w}{i === 0 ? ' ' : ''}</span>
-                  ))}
-                </span>
+                <span className="gradient-text">geriausias pardavėjas</span>
               </h1>
               <p className="subtitle">
                 Interaktyvūs sprendimai, reaguojantys į
