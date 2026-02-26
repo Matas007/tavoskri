@@ -75,10 +75,18 @@ export default function TestimonialsSlider() {
             className="t-card"
             style={{ '--rotate': `${t.rotate}deg`, '--delay': `${i * 0.1}s` }}
           >
+            {/* Floating image — appears in the air above the card on hover */}
+            <div className="t-float-img" aria-hidden="true">
+              <img src={t.image} alt={t.company} className="t-float-img-el" loading="lazy" />
+            </div>
+
+            {/* Logo — top right */}
+            <img src={t.logo} alt="Tavo Skriptas" className="t-card-logo" />
+
             {/* Stars */}
             <Stars count={t.stars} />
 
-            {/* Thumbnail + Quote row */}
+            {/* Thumbnail + Quote */}
             <div className="t-body-row">
               <div className="t-thumb-wrap">
                 <img src={t.image} alt={t.company} className="t-thumb" loading="lazy" />
@@ -88,7 +96,6 @@ export default function TestimonialsSlider() {
 
             {/* Author */}
             <div className="t-author-row">
-              <img src={t.logo} alt="logo" className="t-author-avatar" />
               <div className="t-author-info">
                 <span className="t-card-name">{t.name}</span>
                 <span className="t-card-company">{t.company}</span>
