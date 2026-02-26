@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './TestimonialsSlider.css';
 
 const testimonials = [
@@ -50,42 +50,6 @@ function Stars({ count }) {
   );
 }
 
-function TestimonialCard({ t }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <article
-      className="t-card"
-      style={{ '--rotate': `${t.rotate}deg` }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* Floating image popup */}
-      <div className={`t-popup ${hovered ? 'is-visible' : ''}`} aria-hidden="true">
-        <div className="t-popup-screen">
-          <div className="t-popup-bar">
-            <span /><span /><span />
-          </div>
-          <img src={t.image} alt={t.company} className="t-popup-img" loading="lazy" />
-        </div>
-      </div>
-
-      {/* Card content */}
-      <div className="t-card-body">
-        <div className="t-card-top">
-          <Stars count={t.stars} />
-          <img src={t.logo} alt="Tavo Skriptas" className="t-card-logo" />
-        </div>
-        <p className="t-card-text">"{t.text}"</p>
-        <div className="t-card-author">
-          <span className="t-card-name">{t.name}</span>
-          <span className="t-card-company">{t.company}</span>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 export default function TestimonialsSlider() {
   const sectionRef = useRef(null);
 
@@ -106,9 +70,29 @@ export default function TestimonialsSlider() {
     <section ref={sectionRef} className="testimonials" aria-label="Atsiliepimai">
       <div className="t-grid">
         {testimonials.map((t, i) => (
-          <div key={t.name} className="t-card-wrap" style={{ '--delay': `${i * 0.1}s` }}>
-            <TestimonialCard t={t} />
-          </div>
+          <article
+            key={t.name}
+            className="t-card"
+            style={{ '--rotate': `${t.rotate}deg`, '--delay': `${i * 0.1}s` }}
+          >
+            {/* Image teaser — always visible, expands on hover */}
+            <div className="t-img-wrap">
+              <img src={t.image} alt={t.company} className="t-img" loading="lazy" />
+            </div>
+
+            {/* Card body */}
+            <div className="t-card-body">
+              <div className="t-card-top">
+                <Stars count={t.stars} />
+                <img src={t.logo} alt="Tavo Skriptas" className="t-card-logo" />
+              </div>
+              <p className="t-card-text">"{t.text}"</p>
+              <div className="t-card-author">
+                <span className="t-card-name">{t.name}</span>
+                <span className="t-card-company">{t.company}</span>
+              </div>
+            </div>
+          </article>
         ))}
       </div>
     </section>
