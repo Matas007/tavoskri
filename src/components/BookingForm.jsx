@@ -174,12 +174,19 @@ export default function BookingForm() {
         }
       }
 
-      // 2. If available, create the booking
+      // 2. If available, create the booking (do not send _trap — not a DB column)
+      const { name, email, phone, company, booking_date, booking_time, message } = formData;
       const { data, error: submitError } = await supabase
         .from('bookings')
         .insert([
           {
-            ...formData,
+            name,
+            email,
+            phone,
+            company,
+            booking_date,
+            booking_time,
+            message,
             status: 'pending'
           }
         ]);
