@@ -66,6 +66,12 @@
   color: #E8D5C4;
 }
 
+.privacy-section h3 {
+  margin: 0.5rem 0 0.35rem;
+  font-size: clamp(0.96rem, 2vw, 1.1rem);
+  color: #f1e2cf;
+}
+
 .privacy-section p {
   margin: 0;
   font-size: clamp(0.9rem, 1.8vw, 1rem);
