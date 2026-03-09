@@ -8,7 +8,6 @@ import BgMusicToggle from './components/BgMusicToggle';
 import SEO from './components/SEO';
 import TestimonialsSlider from './components/TestimonialsSlider';
 import ServicesLoop from './components/ServicesLoop';
-import LandingLoader from './components/LandingLoader';
 import './App.css';
 
 const AboutPage = lazy(() => import('./components/AboutPage'));
@@ -36,12 +35,6 @@ function AppContent() {
   const isPrivacy = location.pathname === '/privacy';
   const showFooter = isHome || isAbout || isProjects || isArticles || isPrivacy;
   const consentBannerVisible = showFooter && consent === null;
-  const [showLoader, setShowLoader] = useState(true);
-
-  useEffect(() => {
-    const t = setTimeout(() => setShowLoader(false), 900);
-    return () => clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -49,7 +42,6 @@ function AppContent() {
 
   return (
     <div className="app">
-      {showLoader && <LandingLoader />}
       <div className={`liquid-background ${isIOS ? 'is-ios-static' : ''}`}>
         {!isIOS && (
           <LiquidEther
